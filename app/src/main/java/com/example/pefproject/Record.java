@@ -17,8 +17,8 @@ public class Record {
     private boolean timeOfDay;
 
     public Record() {
-        normalAirflow = new ArrayList<Integer>();
-        medicineAirflow = new ArrayList<Integer>();
+        normalAirflow = new ArrayList<>();
+        medicineAirflow = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
             this.timeOfDay = true;
@@ -65,8 +65,8 @@ public class Record {
     public int getPeakNormalAirflow(){
         int tempPeak = 0;
         for (Integer number : normalAirflow) {
-            if(number.intValue() >= tempPeak){
-                tempPeak = number.intValue();
+            if(number >= tempPeak){
+                tempPeak = number;
             }
         }
         return tempPeak;
@@ -74,8 +74,8 @@ public class Record {
     public int getPeakMedicineAirflow(){
         int tempPeak = 0;
         for (Integer number : medicineAirflow) {
-            if(number.intValue() >= tempPeak){
-                tempPeak = number.intValue();
+            if(number >= tempPeak){
+                tempPeak = number;
             }
         }
         return tempPeak;
