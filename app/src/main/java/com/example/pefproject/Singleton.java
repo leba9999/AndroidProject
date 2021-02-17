@@ -19,11 +19,11 @@ public class Singleton {
         recording.add(record);
     }
 
-    private ArrayList<Record> getRecording() {
+    public ArrayList<Record> getRecording() {
         return recording;
     }
 
-    private Record getRecord(int i) {
+    public Record getRecord(int i) {
         return recording.get(i);
     }
 }
