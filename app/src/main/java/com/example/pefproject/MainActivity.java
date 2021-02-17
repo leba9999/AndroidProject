@@ -16,5 +16,6 @@ public class MainActivity extends AppCompatActivity {
         int test2 = 23;
 
         int test3 = 123;
+        Record record = new Record();
     }
 }
