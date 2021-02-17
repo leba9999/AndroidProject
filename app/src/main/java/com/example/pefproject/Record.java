@@ -15,9 +15,10 @@ public class Record {
     private String date;
     private String time;
     private boolean timeOfDay;
-    public Record(){
+
+    public Record() {
         Calendar calendar = Calendar.getInstance();
-        if (calendar.get(Calendar.AM_PM) == Calendar.PM){
+        if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
             this.timeOfDay = true;
         }
         this.timeOfDay = false;
@@ -33,38 +34,52 @@ public class Record {
         Log.i("RECORD.JAVA", "Current am/pm => " + calendar.get(Calendar.AM_PM) + "  am = " + Calendar.AM + " pm = " + Calendar.PM);
 
     }
-    public Record(String date, String time){
+
+    public Record(String date, String time) {
         this.date = date;
         this.time = time;
     }
-    public void addNormalAirflow(int AirflowValue){
+
+    public void addNormalAirflow(int AirflowValue) {
         normalAirflow.add(AirflowValue);
     }
-    public void addMedicineAirflow(int AirflowValue){
+
+    public void addMedicineAirflow(int AirflowValue) {
         medicineAirflow.add(AirflowValue);
     }
-    public void setComment(String comment){
+
+    public void setComment(String comment) {
         this.comment = comment;
     }
-    public void setTime(String time){
+
+    public void setTime(String time) {
         this.time = time;
     }
-    public void setDate(String date){
+
+    public void setDate(String date) {
         this.date = date;
     }
-    public ArrayList<Integer> getNormalAirflow(){
+
+    public ArrayList<Integer> getNormalAirflow() {
         return normalAirflow;
     }
-    public ArrayList<Integer> getMedicineAirflow(){
+
+    public ArrayList<Integer> getMedicineAirflow() {
         return medicineAirflow;
     }
-    public String getComment(){
+
+    public String getComment() {
         return this.comment;
     }
-    public String getTime(){
+
+    public String getTime() {
         return this.time;
     }
-    public String getDate(){
+
+    public String getDate() {
         return this.date;
+    }
+    public boolean getTimeOfDay() {
+        return this.timeOfDay;
     }
 }
