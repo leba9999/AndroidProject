@@ -36,11 +36,11 @@ public class Record {
         Log.i("RECORD.JAVA", "Current am/pm => " + calendar.get(Calendar.AM_PM) + "  am = " + Calendar.AM + " pm = " + Calendar.PM);
     }
     public void addNormalAirflow(int AirflowValue) {
-        normalAirflow.add(AirflowValue);
+        this.normalAirflow.add(AirflowValue);
     }
 
     public void addMedicineAirflow(int AirflowValue) {
-        medicineAirflow.add(AirflowValue);
+        this.medicineAirflow.add(AirflowValue);
     }
 
     public void setComment(String comment) {
@@ -56,15 +56,15 @@ public class Record {
     }
 
     public ArrayList<Integer> getNormalAirflowList() {
-        return normalAirflow;
+        return this.normalAirflow;
     }
 
     public ArrayList<Integer> getMedicineAirflowList() {
-        return medicineAirflow;
+        return this.medicineAirflow;
     }
     public int getPeakNormalAirflow(){
         int tempPeak = 0;
-        for (Integer number : normalAirflow) {
+        for (Integer number : this.normalAirflow) {
             if(number >= tempPeak){
                 tempPeak = number;
             }
@@ -73,7 +73,7 @@ public class Record {
     }
     public int getPeakMedicineAirflow(){
         int tempPeak = 0;
-        for (Integer number : medicineAirflow) {
+        for (Integer number : this.medicineAirflow) {
             if(number >= tempPeak){
                 tempPeak = number;
             }
