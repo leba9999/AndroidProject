@@ -17,6 +17,8 @@ public class Record {
     private boolean timeOfDay;
 
     public Record() {
+        normalAirflow = new ArrayList<Integer>();
+        medicineAirflow = new ArrayList<Integer>();
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
             this.timeOfDay = true;
@@ -32,14 +34,7 @@ public class Record {
         Log.i("RECORD.JAVA", "Current date => " + this.date);
         Log.i("RECORD.JAVA", "Current time => " + this.time);
         Log.i("RECORD.JAVA", "Current am/pm => " + calendar.get(Calendar.AM_PM) + "  am = " + Calendar.AM + " pm = " + Calendar.PM);
-
     }
-
-    public Record(String date, String time) {
-        this.date = date;
-        this.time = time;
-    }
-
     public void addNormalAirflow(int AirflowValue) {
         normalAirflow.add(AirflowValue);
     }
@@ -60,14 +55,31 @@ public class Record {
         this.date = date;
     }
 
-    public ArrayList<Integer> getNormalAirflow() {
+    public ArrayList<Integer> getNormalAirflowList() {
         return normalAirflow;
     }
 
-    public ArrayList<Integer> getMedicineAirflow() {
+    public ArrayList<Integer> getMedicineAirflowList() {
         return medicineAirflow;
     }
-
+    public int getPeakNormalAirflow(){
+        int tempPeak = 0;
+        for (Integer number : normalAirflow) {
+            if(number.intValue() >= tempPeak){
+                tempPeak = number.intValue();
+            }
+        }
+        return tempPeak;
+    }
+    public int getPeakMedicineAirflow(){
+        int tempPeak = 0;
+        for (Integer number : medicineAirflow) {
+            if(number.intValue() >= tempPeak){
+                tempPeak = number.intValue();
+            }
+        }
+        return tempPeak;
+    }
     public String getComment() {
         return this.comment;
     }
