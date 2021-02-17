@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PefProject</string>
+    <string name="OldRecordButton">Vanha Merkintä</string>
+    <string name="NewRecordButton">Uusi Merkintä</string>
+    <string name="huomenta">Huomenta</string>
+    <string name="terve_vaan">Terve vaan</string>
 </resources>
