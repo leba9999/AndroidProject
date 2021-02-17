@@ -15,15 +15,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Record record = new Record();
-        record.addNormalAirflow(500);
-        record.addNormalAirflow(510);
-        record.addNormalAirflow(600);
-        record.addNormalAirflow(490);
-        record.addMedicineAirflow(530);
-        record.addMedicineAirflow(532);
-        record.addMedicineAirflow(531);
-        Log.i("MAIN_APP", "Peak Airflow => " + record.getPeakNormalAirflow());
-        Log.i("MAIN_APP", "Peak Airflow => " + record.getPeakMedicineAirflow());
     }
 
     public void onNewRecordClicked (View view) {
