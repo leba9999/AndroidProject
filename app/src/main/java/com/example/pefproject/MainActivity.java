@@ -1,6 +1,7 @@
 package com.example.pefproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,20 +29,42 @@ public class MainActivity extends AppCompatActivity {
         BarChart barChart = findViewById(R.id.barView);
 
         ArrayList<BarEntry> airflow = new ArrayList<>();
-        airflow.add(new BarEntry(0, 200));
-        airflow.add(new BarEntry(1, 210));
-        airflow.add(new BarEntry(2, 300));
-        airflow.add(new BarEntry(3, 340));
-        airflow.add(new BarEntry(3, 320));
-        BarDataSet barDataSet = new BarDataSet(airflow, "PEF");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16.f);
+        for (int i = 0; i < 7; i++){
+            airflow.add(new BarEntry(i, 0));
+            float [] values = {
+                    200f + 10*i, 300f + 10*i
+            };
+            airflow.get(i).setVals(values);
+        }
 
-        BarData barData = new BarData(barDataSet);
+        Log.i("MAIN_ACTIVITY", "Color.BLACK: " + Color.BLACK + " colors.xml: " + R.color.black);
+        Log.i("MAIN_ACTIVITY", "Color.BLACK: " + Color.BLACK + " ContextCompat  Black: "  +  ContextCompat.getColor(this, R.color.black) );
+
+        BarDataSet medicineBarDataSet = new BarDataSet(airflow, "");
+        Color.rgb(48, 174, 255);
+        medicineBarDataSet.setColor(ContextCompat.getColor(this, R.color.light_blue));
+        medicineBarDataSet.setValueTextColor(Color.BLACK);
+        medicineBarDataSet.setValueTextSize(16.f);
+        int [] color = {
+                ContextCompat.getColor(this, R.color.white_230) ,
+                ContextCompat.getColor(this, R.color.light_blue)
+        };
+        String [] colorLabels = {
+                "Normal" ,
+                "Medicine"
+        };
+        medicineBarDataSet.setColors(color);
+        medicineBarDataSet.setStackLabels(colorLabels);
+
+        BarData barData = new BarData(medicineBarDataSet);
+        barChart.getXAxis().setValueFormatter(new MyValueFormatter());
+        //barChart.getXAxis().setGranularity(2f);
+
         barChart.setFitBars(true);
+        barChart.getXAxis().getFormattedLabel(0);
         barChart.setData(barData);
         barChart.getDescription().setText("Peak AirFlow");
+        barChart.getDescription().setYOffset(-10f);
 
     }
 
