@@ -20,7 +20,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    private final String logTag = "com.example.pefproject.APP_MainActivity.java";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
             airflow.get(i).setVals(values);
         }
 
-        Log.i("MAIN_ACTIVITY", "Color.BLACK: " + Color.BLACK + " colors.xml: " + R.color.black);
-        Log.i("MAIN_ACTIVITY", "Color.BLACK: " + Color.BLACK + " ContextCompat  Black: "  +  ContextCompat.getColor(this, R.color.black) );
+        Log.i(logTag, "Color.BLACK: " + Color.BLACK + " colors.xml: " + R.color.black);
+        Log.i(logTag, "Color.BLACK: " + Color.BLACK + " ContextCompat  Black: "  +  ContextCompat.getColor(this, R.color.black) );
 
         BarDataSet barDataSet = new BarDataSet(airflow, "");
         Color.rgb(48, 174, 255);

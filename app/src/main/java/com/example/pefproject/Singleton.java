@@ -3,6 +3,7 @@ package com.example.pefproject;
 import java.util.ArrayList;
 
 public class Singleton {
+    private final String logTag = "com.example.pefproject.APP_Singleton.java";
 
     private static final Singleton instance = new Singleton();
     private ArrayList<Record> recording;

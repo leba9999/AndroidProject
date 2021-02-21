@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Record {
+    private final String logTag = "com.example.pefproject.APP_Record.java";
     private ArrayList<Integer> normalAirflow;
     private ArrayList<Integer> medicineAirflow;
     private String comment;
@@ -31,9 +32,9 @@ public class Record {
         this.date = dateFormat.format(date);
         this.time = timeFormat.format(date);
 
-        Log.i("RECORD.JAVA", "Current date => " + this.date);
-        Log.i("RECORD.JAVA", "Current time => " + this.time);
-        Log.i("RECORD.JAVA", "Current am/pm => " + calendar.get(Calendar.AM_PM) + "  am = " + Calendar.AM + " pm = " + Calendar.PM);
+        Log.i(logTag, "Current date => " + this.date);
+        Log.i(logTag, "Current time => " + this.time);
+        Log.i(logTag, "Current am/pm => " + calendar.get(Calendar.AM_PM) + "  am = " + Calendar.AM + " pm = " + Calendar.PM);
     }
     public void addNormalAirflow(int AirflowValue) {
         this.normalAirflow.add(AirflowValue);
