@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -40,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
         Log.i("MAIN_ACTIVITY", "Color.BLACK: " + Color.BLACK + " colors.xml: " + R.color.black);
         Log.i("MAIN_ACTIVITY", "Color.BLACK: " + Color.BLACK + " ContextCompat  Black: "  +  ContextCompat.getColor(this, R.color.black) );
 
-        BarDataSet medicineBarDataSet = new BarDataSet(airflow, "");
+        BarDataSet barDataSet = new BarDataSet(airflow, "");
         Color.rgb(48, 174, 255);
-        medicineBarDataSet.setColor(ContextCompat.getColor(this, R.color.light_blue));
-        medicineBarDataSet.setValueTextColor(Color.BLACK);
-        medicineBarDataSet.setValueTextSize(16.f);
+        barDataSet.setColor(ContextCompat.getColor(this, R.color.light_blue));
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16.f);
+
         int [] color = {
                 ContextCompat.getColor(this, R.color.white_230) ,
                 ContextCompat.getColor(this, R.color.light_blue)
@@ -53,15 +55,17 @@ public class MainActivity extends AppCompatActivity {
                 "Normal" ,
                 "Medicine"
         };
-        medicineBarDataSet.setColors(color);
-        medicineBarDataSet.setStackLabels(colorLabels);
+        barDataSet.setColors(color);
+        barDataSet.setStackLabels(colorLabels);
 
-        BarData barData = new BarData(medicineBarDataSet);
+        BarData barData = new BarData(barDataSet);
         barChart.getXAxis().setValueFormatter(new MyValueFormatter());
-        //barChart.getXAxis().setGranularity(2f);
+        //barChart.getXAxis().setCenterAxisLabels(true);
+        //barChart.getXAxis().setGranularity(1f);
+        barChart.getXAxis().setDrawGridLines(false);
 
         barChart.setFitBars(true);
-        barChart.getXAxis().getFormattedLabel(0);
+        barChart.setDrawValueAboveBar(false);
         barChart.setData(barData);
         barChart.getDescription().setText("Peak AirFlow");
         barChart.getDescription().setYOffset(-10f);

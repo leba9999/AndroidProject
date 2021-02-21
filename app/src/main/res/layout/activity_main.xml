@@ -10,29 +10,29 @@
         android:id="@+id/NewRecordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginBottom="64dp"
         android:onClick="buttonPressed"
         android:text="@string/NewRecordButton"
+        app:layout_constraintBottom_toTopOf="@+id/OldRecordActivity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/OldRecordActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="307dp"
+        android:layout_marginBottom="64dp"
         android:onClick="buttonPressed"
         android:text="@string/OldRecordButton"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/barView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <view
         android:id="@+id/barView"
         class="com.github.mikephil.charting.charts.BarChart"
-        android:layout_width="376dp"
-        android:layout_height="169dp"
+        android:layout_width="369dp"
+        android:layout_height="292dp"
         android:layout_marginBottom="32dp"
         android:onClick="buttonPressed"
         app:layout_constraintBottom_toBottomOf="parent"
