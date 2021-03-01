@@ -40,7 +40,7 @@ public class Singleton {
     }
 
     /**
-     * Tallentaa sharedPreferenseihin ArrayListin joka sisältää Record classin
+     * Tallentaa sharedPreferenseihin ArrayListin joka sisältää Record classin. Kannattaa laittaa onPause() ja onStop() funktioihin. Tallentaa sitten aina kun activity pysähtyy
      * @param context Activityn contexti mistä tallennus kutsutaan
      */
     public void saveData(Context context){
@@ -59,7 +59,7 @@ public class Singleton {
     }
 
     /**
-     * Lataa sharedPreferenseistä Record classin ArrayListin
+     * Lataa sharedPreferenseistä Record classin ArrayListin. Ainakin activityjen onCreate() funktiossa kannattaa olla preffien lataus
      * @param context Activityn contexti mistä lataus kutsutaan
      */
     public void loadData(Context context){

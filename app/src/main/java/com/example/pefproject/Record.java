@@ -56,7 +56,7 @@ public class Record {
 
     /**
      * Lisää medicineAirflow Arraylistiin uuden arvon joka annetaan parametrissä
-     * @param AirflowValue Lääkee puhalluksen arvo
+     * @param AirflowValue Lääke puhalluksen arvo
      */
     public void addMedicineAirflow(int AirflowValue) {
         this.medicineAirflow.add(AirflowValue);
@@ -72,7 +72,8 @@ public class Record {
 
     /**
      * Asetetaan aika tarvittaessa
-     * @param time uusi aika arvo. Muodolla ei varsinaisesti väliä. (11:23 pm tai 23:23... jne)
+     * Muodolla ei varsinaisesti väliä. (11:23 pm tai 23:23... jne)
+     * @param time uusi aika arvo.
      */
     public void setTime(String time) {
         this.time = time;
@@ -80,7 +81,8 @@ public class Record {
 
     /**
      * Asetetaan päivämäärä tarvittaessa
-     * @param date uusi päivämäärä arvo. Muodolla ei varsinaisesti väliä (3/1/2021 tai 1.3.2021... jne)
+     * Muodolla ei varsinaisesti väliä (3/1/2021 tai 1.3.2021... jne)
+     * @param date uusi päivämäärä arvo.
      */
     public void setDate(String date) {
         this.date = date;
@@ -88,7 +90,8 @@ public class Record {
 
     /**
      * haetaan normalAirflown ArrayList
-     * @return ArrayList<Integer> normalAirflow palauttaa normalAirflow arraylistin
+     * palauttaa normalAirflow arraylistin
+     * @return ArrayList<Integer> normalAirflow
      */
     public ArrayList<Integer> getNormalAirflowList() {
         return this.normalAirflow;
@@ -96,7 +99,8 @@ public class Record {
 
     /**
      * haetaan medicineAirflow ArrayList
-     * @return ArrayList<Integer> medicineAirflow palauttaa medicineAirflow Arraylistin
+     * palauttaa medicineAirflow Arraylistin
+     * @return ArrayList<Integer> medicineAirflow
      */
     public ArrayList<Integer> getMedicineAirflowList() {
         return this.medicineAirflow;
@@ -104,7 +108,8 @@ public class Record {
 
     /**
      * haetaan huippu arvo normalAirflow ArrrayListasta
-     * @return int tempPeak palauttaa huippu arvon
+     * palauttaa huippu arvon
+     * @return int tempPeak
      */
     public int getPeakNormalAirflow(){
         int tempPeak = 0;
@@ -118,7 +123,8 @@ public class Record {
 
     /**
      * haetaan huippu arvo medicineAirflow ArrrayListasta
-     * @return int tempPeak palauttaa huippu arvon
+     * palauttaa huippu arvon
+     * @return int tempPeak
      */
     public int getPeakMedicineAirflow(){
         int tempPeak = 0;
@@ -132,7 +138,8 @@ public class Record {
 
     /**
      * Haetaan merkinnän kommentti
-     * @return String comment palauttaa merkinnän kommentin
+     * palauttaa merkinnän kommentin
+     * @return String comment
      */
     public String getComment() {
         return this.comment;
@@ -140,7 +147,8 @@ public class Record {
 
     /**
      * Haetaan merkinnän aika
-     * @return String time palauttaa merkinnän ajan
+     * palauttaa merkinnän ajan
+     * @return String time
      */
     public String getTime() {
         return this.time;
@@ -148,7 +156,8 @@ public class Record {
 
     /**
      * Haetaan merkinnän päivämäärä
-     * @return String date palauttaa merkinnän päivämäärän
+     * palauttaa merkinnän päivämäärän
+     * @return String date
      */
     public String getDate() {
         return this.date;
@@ -156,13 +165,15 @@ public class Record {
 
     /**
      * Käytännössä PM tai AM. Eli onko merkintä tehty aamulla vai illalla.
-     * @return boolean timeOfDay true == PM && false == AM
+     * true == PM && false == AM
+     * @return boolean timeOfDay
      */
     public boolean getTimeOfDay() {
         return this.timeOfDay;
     }
+
     @Override
     public String toString() {
-        return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow()+ " Date: " + this.date;
+        return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow()+ " Date: " + this.date + " Time: " + this.time;
     }
 }

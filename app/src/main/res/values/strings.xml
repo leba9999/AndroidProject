@@ -4,4 +4,9 @@
     <string name="NewRecordButton">Uusi Merkintä</string>
     <string name="huomenta">Huomenta</string>
     <string name="terve_vaan">Terve vaan</string>
+    <string name="ChartButton">Taulukko</string>
+    <string name="Record">Merkintä</string>
+    <string name="Evening">Ilta</string>
+    <string name="Morning">Aamu</string>
+    <string name="Extra">Ylimääräinen</string>
 </resources>
