@@ -8,14 +8,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Record record = new Record();
+        Log.i(logTag, " Load: ");
+        Singleton.getInstance().loadData(this);
+
+        for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
+            Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
+        }
 
         BarChart barChart = findViewById(R.id.barView);
 
@@ -92,5 +94,26 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+    @Override
+    protected void onPause() {
+        Log.i(logTag, "onPause");
+        Singleton.getInstance().addRecord(new Record());
+        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(130);
+        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(145);
+        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(140);
+        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(222);
+        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(212);
+        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(232);
+        Singleton.getInstance().saveData(this);
+        super.onPause();
+    }
+    @Override
+    protected void onResume() {
+        Log.i(logTag, "onResume");
+        for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
+            Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
+        }
+        super.onResume();
     }
 }
