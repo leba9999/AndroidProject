@@ -83,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, NewRecordActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.OldRecordActivity:
+            /*case R.id.OldRecordActivity:
                 intent = new Intent(this, OldRecordActivity.class);
                 startActivity(intent);
                 break;
             case R.id.barView:
+                break;*/
+            default:
                 intent = new Intent(this, OldRecordActivity.class);
                 startActivity(intent);
-                break;
-            default:
                 break;
         }
     }
