@@ -16,8 +16,6 @@ public class Singleton {
     private final String sharedName = "Records";
     private final String sharedKey = "Recordings";
 
-    private SharedPreferences sharedPrefs;
-
     private static final Singleton instance = new Singleton();
     private ArrayList<Record> recording;
 
