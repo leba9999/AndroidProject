@@ -24,8 +24,10 @@ public class Record {
     private String dateFormat;
 
     private Date date;
-    private boolean timeOfDay;
-
+    private int type;
+    public static final int AM = 0;
+    public static final int PM = 1;
+    public static final int EXTRA = 2;
     /**
      * Record constructor asettaa tämän hetkisen päivämäärän ja kellon ajan kalenterin avulla
      * Luo myöskin uudet ArrayListit normal- ja medicineAirflow listoille
@@ -35,9 +37,9 @@ public class Record {
         medicineAirflow = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
-            this.timeOfDay = true;
+            this.type = PM;
         } else {
-            this.timeOfDay = false;
+            this.type = AM;
         }
         date = calendar.getTime();
 
@@ -68,25 +70,13 @@ public class Record {
         this.comment = comment;
     }
 
-    /*
-     * Asetetaan aika tarvittaessa
-     * @param time uusi aika arvo.
+    /**
+     * Asetetaan päivämäärä tarvittaessa ja aika
+     * @param date uusi arvo.
      */
-    /*
-    public void setTime(String time) {
-        this.time = time;
-    }
-    */
-
-    /*
-     * Asetetaan päivämäärä tarvittaessa
-     * @param date uusi päivämäärä arvo.
-     */
-    /*
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-    */
 
     /**
      * haetaan normalAirflown ArrayList
@@ -154,9 +144,11 @@ public class Record {
         SimpleDateFormat TimeFormat = new SimpleDateFormat(this.timeFormat, Locale.getDefault());
         return TimeFormat.format(this.date);
     }
+
     public void setTimeFormat(String timeFormat) {
         this.timeFormat = timeFormat;
     }
+
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
     }
@@ -171,12 +163,12 @@ public class Record {
     }
 
     /**
-     * Käytännössä PM tai AM. Eli onko merkintä tehty aamulla vai illalla.
-     * true == PM && false == AM
-     * @return boolean timeOfDay
+     * Millainen merkintä kyseessä. Onko merkintä aamu, ilta vai extra
+     * AM = 0, PM = 1, EXTRA = 2
+     * @return int type
      */
-    public boolean getTimeOfDay() {
-        return this.timeOfDay;
+    public int getType() {
+        return this.type;
     }
 
     @Override

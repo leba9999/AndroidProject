@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
 public class MainActivity extends AppCompatActivity {
     private final String logTag = "com.example.pefproject.APP_MainActivity.java";
     private TextView morningTextView;
@@ -65,12 +64,16 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
             if (dateFormat.format(records.get(i).getDate()).equals(dateFormat.format(calendar.getTime()))){
                 Log.i(logTag, " loadDayRecord");
-                if (records.get(i).getTimeOfDay()){
+                if (records.get(i).getType() == records.get(i).PM){
                     eveningTextView.setText(getString(R.string.Evening) +":\n"
                             + getString(R.string.Normal) + ": " + records.get(i).getPeakNormalAirflow() +"\n"
                             + getString(R.string.Medicine) + ": " + records.get(i).getPeakMedicineAirflow());
-                }else if (!records.get(i).getTimeOfDay()) {
+                }else if (records.get(i).getType() == records.get(i).AM) {
                     morningTextView.setText(getString(R.string.Morning) +":\n"
+                            + getString(R.string.Normal) + ": " + records.get(i).getPeakNormalAirflow() + "\n"
+                            + getString(R.string.Medicine) + ": " + records.get(i).getPeakMedicineAirflow());
+                }else if (records.get(i).getType() == records.get(i).EXTRA) {
+                    extraTextView.setText(getString(R.string.Extra) +":\n"
                             + getString(R.string.Normal) + ": " + records.get(i).getPeakNormalAirflow() + "\n"
                             + getString(R.string.Medicine) + ": " + records.get(i).getPeakMedicineAirflow());
                 }
