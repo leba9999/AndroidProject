@@ -16,15 +16,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="0.7">
 
-            <Button
-                android:id="@+id/NewRecordButton"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:onClick="buttonPressed"
-                android:text="@string/NewRecordButton" />
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/NewRecordButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:onClick="buttonPressed"
+                    android:text="@string/NewRecordButton"/>
+            </FrameLayout>
 
             <Button
                 android:id="@+id/OldRecordActivity"

@@ -75,7 +75,7 @@ public class Singleton {
      * Lataa sharedPreferenseistä Record classin ArrayListin. Ainakin activityjen onCreate() funktiossa kannattaa olla preffien lataus
      * @param context Activityn contexti mistä lataus kutsutaan
      */
-    public boolean loadData(Context context){
+    public void loadData(Context context){
         // Luodaan sharedPreferences ja käytetään jonkun activityn contextia jotta voidaan ladata dataa
         SharedPreferences sharedPreferences = context.getSharedPreferences(sharedName, MODE_PRIVATE);
         // Luodaan Gson olio jolla pystyy lataamaan kokonaisia olio luokkia ja listoja
@@ -84,12 +84,11 @@ public class Singleton {
         String json = sharedPreferences.getString(sharedKey, null);
         // Jos json stringi on null, ei jatketa pidemmälle koska sharedpreferenseissä ei ollut dataa
         if (json == null){
-             return false;
+             return;
         }
         // Luodaan type olio joka pystyy ottamaan vastaan Arraylistin joka sisältää Record classin
         Type type = new TypeToken<ArrayList<Record>>() {}.getType();
         // Muunnetaan json string gson.fromJson funktiolla ArrayListiksi ja asetetaan se recording listaan
         recording = gson.fromJson(json, type);
-        return false;
     }
 }
