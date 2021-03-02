@@ -17,9 +17,13 @@ public class Record {
     private final String logTag = "com.example.pefproject.APP_Record.java";
     private ArrayList<Integer> normalAirflow;
     private ArrayList<Integer> medicineAirflow;
+
     private String comment;
-    private String date;
-    private String time;
+
+    private String timeFormat;
+    private String dateFormat;
+
+    private Date date;
     private boolean timeOfDay;
 
     /**
@@ -32,18 +36,12 @@ public class Record {
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
             this.timeOfDay = true;
+        } else {
+            this.timeOfDay = false;
         }
-        this.timeOfDay = false;
+        date = calendar.getTime();
 
-        Date date = calendar.getTime();
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MMM.yyyy", Locale.getDefault());
-        this.date = dateFormat.format(date);
-        this.time = timeFormat.format(date);
-
-        Log.i(logTag, "Current date => " + this.date);
-        Log.i(logTag, "Current time => " + this.time);
-        Log.i(logTag, "Current am/pm => " + calendar.get(Calendar.AM_PM) + "  am = " + Calendar.AM + " pm = " + Calendar.PM);
+        Log.i(logTag, "Current date => " + date);
     }
 
     /**
@@ -70,23 +68,25 @@ public class Record {
         this.comment = comment;
     }
 
-    /**
+    /*
      * Asetetaan aika tarvittaessa
-     * Muodolla ei varsinaisesti väliä. (11:23 pm tai 23:23... jne)
      * @param time uusi aika arvo.
      */
+    /*
     public void setTime(String time) {
         this.time = time;
     }
+    */
 
-    /**
+    /*
      * Asetetaan päivämäärä tarvittaessa
-     * Muodolla ei varsinaisesti väliä (3/1/2021 tai 1.3.2021... jne)
      * @param date uusi päivämäärä arvo.
      */
+    /*
     public void setDate(String date) {
         this.date = date;
     }
+    */
 
     /**
      * haetaan normalAirflown ArrayList
@@ -151,7 +151,14 @@ public class Record {
      * @return String time
      */
     public String getTime() {
-        return this.time;
+        SimpleDateFormat TimeFormat = new SimpleDateFormat(this.timeFormat, Locale.getDefault());
+        return TimeFormat.format(this.date);
+    }
+    public void setTimeFormat(String timeFormat) {
+        this.timeFormat = timeFormat;
+    }
+    public void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     /**
@@ -159,7 +166,7 @@ public class Record {
      * palauttaa merkinnän päivämäärän
      * @return String date
      */
-    public String getDate() {
+    public Date getDate() {
         return this.date;
     }
 
@@ -174,6 +181,8 @@ public class Record {
 
     @Override
     public String toString() {
-        return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow()+ " Date: " + this.date + " Time: " + this.time;
+        SimpleDateFormat TimeFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
+        SimpleDateFormat DateFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+        return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow()+ " Date: " + DateFormat.format(date) + " Time: " + TimeFormat.format(date);
     }
 }

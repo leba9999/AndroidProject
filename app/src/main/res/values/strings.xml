@@ -9,4 +9,6 @@
     <string name="Evening">Ilta</string>
     <string name="Morning">Aamu</string>
     <string name="Extra">Ylimääräinen</string>
+    <string name="Normal">N</string>
+    <string name="Medicine">L</string>
 </resources>
