@@ -10,7 +10,7 @@ public class MyValueFormatter extends ValueFormatter {
     private final String [] days = {"Aamu","Ilta"};
     @Override
     public String getAxisLabel(float value, AxisBase axis){
-        Log.i(logTag, "Formating value: " + (int)value + " to " + days[(int)value % 2]);
+        //Log.i(logTag, "Formating value: " + (int)value + " to " + days[(int)value % 2]);
         return days[(int)value % 2];
     }
 }
