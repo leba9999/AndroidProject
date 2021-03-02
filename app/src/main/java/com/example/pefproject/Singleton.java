@@ -20,8 +20,8 @@ public class Singleton {
     private static final Singleton instance = new Singleton();
     private ArrayList<Record> recording;
 
-    private String timeFormat;
-    private String dateFormat;
+    private final String timeFormat;
+    private final String dateFormat;
 
     private Singleton () {
         recording = new ArrayList<>();

@@ -9,8 +9,8 @@
     <string name="Evening">Ilta</string>
     <string name="Morning">Aamu</string>
     <string name="Extra">Ylimääräinen</string>
-    <string name="Normal">N</string>
-    <string name="Medicine">L</string>
+    <string name="Normal">Normaali</string>
+    <string name="Medicine">Lääke</string>
     <string name="tallennaButton">Tallenna</string>
     <string name="aamuButton">Aamu</string>
     <string name="ylimaarainenButton">Ylimääräinen</string>

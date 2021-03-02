@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView eveningTextView;
     private TextView extraTextView;
     private TextView recordTextView;
+
+    private String normalFirstLetter;
+    private String medicineFirstLetter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +54,13 @@ public class MainActivity extends AppCompatActivity {
 
         recordTextView.setText(getString(R.string.Record) + ": " + dateFormat.format(date));
         loadDayRecord();
-        morningTextView.setText(getString(R.string.Morning) +":\n"+ getString(R.string.Normal) + ":---\n" + getString(R.string.Medicine) + ":---");
-        eveningTextView.setText(getString(R.string.Evening) +":\n"+ getString(R.string.Normal) + ":---\n" + getString(R.string.Medicine) + ":---");
-        extraTextView.setText(getString(R.string.Extra) +":\n"+ getString(R.string.Normal) + ":---\n" + getString(R.string.Medicine) + ":---");
+
+        normalFirstLetter = getString(R.string.Normal).substring(0, getString(R.string.Normal).length()-(getString(R.string.Normal).length() - 1));
+        medicineFirstLetter = getString(R.string.Medicine).substring(0, getString(R.string.Medicine).length()-(getString(R.string.Medicine).length() - 1));
+
+        morningTextView.setText(getString(R.string.Morning) +":\n"+ normalFirstLetter + ":---\n" + medicineFirstLetter + ":---");
+        eveningTextView.setText(getString(R.string.Evening) +":\n"+ normalFirstLetter + ":---\n" + medicineFirstLetter + ":---");
+        extraTextView.setText(getString(R.string.Extra) +":\n"+ normalFirstLetter + ":---\n" + medicineFirstLetter + ":---");
         Log.i(logTag, " Create: Ready");
     }
     private void loadDayRecord(){
@@ -64,18 +74,18 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
             if (dateFormat.format(records.get(i).getDate()).equals(dateFormat.format(calendar.getTime()))){
                 Log.i(logTag, " loadDayRecord");
-                if (records.get(i).getType() == records.get(i).PM){
+                if (records.get(i).getType() == Record.PM){
                     eveningTextView.setText(getString(R.string.Evening) +":\n"
-                            + getString(R.string.Normal) + ": " + records.get(i).getPeakNormalAirflow() +"\n"
-                            + getString(R.string.Medicine) + ": " + records.get(i).getPeakMedicineAirflow());
-                }else if (records.get(i).getType() == records.get(i).AM) {
+                            + normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
+                            + medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
+                }else if (records.get(i).getType() == Record.AM) {
                     morningTextView.setText(getString(R.string.Morning) +":\n"
-                            + getString(R.string.Normal) + ": " + records.get(i).getPeakNormalAirflow() + "\n"
-                            + getString(R.string.Medicine) + ": " + records.get(i).getPeakMedicineAirflow());
-                }else if (records.get(i).getType() == records.get(i).EXTRA) {
+                            + normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
+                            + medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
+                }else if (records.get(i).getType() == Record.EXTRA) {
                     extraTextView.setText(getString(R.string.Extra) +":\n"
-                            + getString(R.string.Normal) + ": " + records.get(i).getPeakNormalAirflow() + "\n"
-                            + getString(R.string.Medicine) + ": " + records.get(i).getPeakMedicineAirflow());
+                            + normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
+                            + medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
                 }
             }
         }
@@ -84,12 +94,90 @@ public class MainActivity extends AppCompatActivity {
         BarChart barChart = findViewById(R.id.barView);
         // Testi arvot
         ArrayList<BarEntry> airflow = new ArrayList<>();
+        ArrayList<BarEntry> airflowNight = new ArrayList<>();
+        ArrayList<BarEntry> airflowExrta = new ArrayList<>();
+        for (int i = 0; i < 7; i++){
+            airflow.add(new BarEntry(i, 0));
+            airflowNight.add(new BarEntry(i, 0));
+            airflowExrta.add(new BarEntry(i, 0));
+            float [] values = {
+                    300f + 10*i,
+                    200f + 10*i
+            };
+            float [] values_2 = {
+                    320f + 10*i,
+                    250f + 10*i
+            };
+            float [] values_3 = {
+                    400f + 10*i
+            };
+            airflow.get(i).setVals(values);
+            airflowNight.get(i).setVals(values_2);
+            airflowExrta.get(i).setVals(values_3);
+
+
+        }
+
+        int [] color = {
+                ContextCompat.getColor(this, R.color.white_230) ,
+                ContextCompat.getColor(this, R.color.light_blue)
+        };
+        int [] nightColor = {
+                ContextCompat.getColor(this, R.color.grey) ,
+                ContextCompat.getColor(this, R.color.dark_blue)
+        };
+        String [] colorLabels = {
+                getString(R.string.Normal) ,
+                getString(R.string.Medicine)
+        };
+        BarDataSet barDataSet = new BarDataSet(airflow, "");
+        barDataSet.setColors(color);
+        barDataSet.setStackLabels(colorLabels);
+        //barDataSet.setColor(ContextCompat.getColor(this, R.color.white_230));
+
+
+        BarDataSet barDataSet_2 = new BarDataSet(airflowNight, "");
+        barDataSet_2.setColors(nightColor);
+        barDataSet_2.setStackLabels(colorLabels);
+
+        BarDataSet barDataSet_3 = new BarDataSet(airflowExrta, "Ylimär.");
+        barDataSet_3.setColor(ContextCompat.getColor(this, R.color.yellow));
+
+        BarData data = new BarData(barDataSet, barDataSet_2, barDataSet_3);
+        float groupSpace = 0f;
+        float barSpace = 0;
+        float barWidth = 0.5f;
+        barChart.setData(data);
+        data.setBarWidth(barChart.getXAxis().getGridLineWidth() / 3);
+
+        barChart.groupBars(0, groupSpace, barSpace);
+        barChart.setFitBars(true);
+        //barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        barChart.getXAxis().setCenterAxisLabels(true);
+        barChart.getXAxis().setAvoidFirstLastClipping(true);
+        barChart.setVisibleXRange(0f, 7.4f);
+        barChart.setScaleYEnabled(false);
+        //barChart.getXAxis().setAxisMaximum(9);
+        barChart.getXAxis().setAxisMinimum(0);
+        barChart.getXAxis().setValueFormatter(new MyValueFormatter());
+        //barChart.getXAxis().setGranularity(1f);
+
+        /*
+        ArrayList<BarEntry> airflow = new ArrayList<>();
         for (int i = 0; i < 7; i++){
             airflow.add(new BarEntry(i, 0));
             float [] values = {
-                    200f + 10*i, 300f + 10*i
+                    300f + 10*i
             };
             airflow.get(i).setVals(values);
+        }
+        ArrayList<BarEntry> airflow2 = new ArrayList<>();
+        for (int i = 0; i < 7; i++){
+            airflow2.add(new BarEntry(i, 0));
+            float [] values = {
+                    200f + 10*i
+            };
+            airflow2.get(i).setVals(values);
         }
 
         BarDataSet barDataSet = new BarDataSet(airflow, "");
@@ -103,13 +191,17 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(this, R.color.light_blue)
         };
         String [] colorLabels = {
-                "Normal" ,
-                "Medicine"
+                getString(R.string.Normal) ,
+                getString(R.string.Medicine)
         };
         barDataSet.setColors(color);
-        barDataSet.setStackLabels(colorLabels);
 
-        BarData barData = new BarData(barDataSet);
+        BarDataSet barDataSet_2 = new BarDataSet(airflow2, "");
+        barDataSet_2.setColor(ContextCompat.getColor(this, R.color.dark_blue));
+        barDataSet_2.setValueTextColor(Color.BLACK);
+        barDataSet_2.setValueTextSize(16.f);
+
+        BarData barData = new BarData(barDataSet, barDataSet_2);
         barChart.getXAxis().setValueFormatter(new MyValueFormatter());
         //barChart.getXAxis().setCenterAxisLabels(true);
         //barChart.getXAxis().setGranularity(1f);
@@ -117,9 +209,16 @@ public class MainActivity extends AppCompatActivity {
 
         barChart.setFitBars(true);
         barChart.setDrawValueAboveBar(false);
+        float groupSpace = 0.1f;
+        float barSpace = 0.02f;
+        float barWidth = 0.43f;
+        barData.setBarWidth(barWidth);
+        //barChart.groupBars(1, groupSpace, barSpace);
+
         barChart.setData(barData);
         barChart.getDescription().setText("Peak AirFlow");
         barChart.getDescription().setYOffset(-10f);
+        */
     }
     public void buttonPressed (View view) {
         //Get widgets view id
@@ -151,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
             Singleton.getInstance().getRecording().get(i).addMedicineAirflow(222+ 10*i);
             Singleton.getInstance().getRecording().get(i).addMedicineAirflow(212+ 10*i);
             Singleton.getInstance().getRecording().get(i).addMedicineAirflow(232+ 10*i);
+
             Calendar calendar = Calendar.getInstance();
             calendar.set(2021, 2, i+1);
             Singleton.getInstance().getRecording().get(i).setDate(calendar.getTime());

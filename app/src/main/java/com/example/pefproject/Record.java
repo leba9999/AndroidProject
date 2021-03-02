@@ -15,8 +15,8 @@ import java.util.Locale;
  */
 public class Record {
     private final String logTag = "com.example.pefproject.APP_Record.java";
-    private ArrayList<Integer> normalAirflow;
-    private ArrayList<Integer> medicineAirflow;
+    private final ArrayList<Integer> normalAirflow;
+    private final ArrayList<Integer> medicineAirflow;
 
     private String comment;
 
