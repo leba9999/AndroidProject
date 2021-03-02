@@ -11,4 +11,21 @@
     <string name="Extra">Ylimääräinen</string>
     <string name="Normal">N</string>
     <string name="Medicine">L</string>
+    <string name="tallennaButton">Tallenna</string>
+    <string name="aamuButton">Aamu</string>
+    <string name="ylimaarainenButton">Ylimääräinen</string>
+    <string name="iltaButton">Ilta</string>
+    <string name="textViewDate">Pv</string>
+    <string name="textViewMedles">Lääketön</string>
+    <string name="textViewMed">Lääkkeellä</string>
+    <string name="radioButtonOver">Ylimääräinen</string>
+    <string name="radioButtonEve">Ilta</string>
+    <string name="radioButtonMorn">Aamu</string>
+    <string name="textViewComment">Kommentti</string>
+    <string name="editTextThirdNumberNormal">3.</string>
+    <string name="editTextFirstNumberNormal">1.</string>
+    <string name="editTextSecondNumberNormal">2.</string>
+    <string name="editTextFirstNumberMed">1.</string>
+    <string name="editTextSecondNumberMed">2.</string>
+    <string name="editTextThirdNumberMed">3.</string>
 </resources>

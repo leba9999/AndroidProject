@@ -6,13 +6,178 @@
     android:layout_height="match_parent"
     tools:context=".NewRecordActivity">
 
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="380dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6dp"
+        android:onClick="onSaveButtonClicked"
+        android:text="@string/tallennaButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
-        android:id="@+id/textViewTesti1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="147dp"
-        android:text="@string/huomenta"
+        android:id="@+id/textViewDate"
+        android:layout_width="360dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="17dp"
+        android:background="@drawable/myrect"
+        android:text="@string/textViewDate"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextComment"
+        android:layout_width="380dp"
+        android:layout_height="148dp"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/myrect"
+        android:ems="10"
+        android:hint="@string/textViewComment"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:importantForAutofill="no" />
+
+    <TextView
+        android:id="@+id/textViewMedles"
+        android:layout_width="152dp"
+        android:layout_height="189dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="45dp"
+        android:background="@drawable/myrect"
+        android:text="@string/textViewMedles"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextComment"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextThirdNumberNormal"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:hint="@string/editTextThirdNumberNormal"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/textViewMedles"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSecondNumberNormal"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/editTextFirstNumberNormal"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:hint="@string/editTextFirstNumberNormal"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberNormal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMedles"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/editTextSecondNumberNormal"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:ems="10"
+        android:hint="@string/editTextSecondNumberNormal"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/editTextThirdNumberNormal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFirstNumberNormal"
+        android:importantForAutofill="no" />
+
+    <TextView
+        android:id="@+id/textViewMed"
+        android:layout_width="152dp"
+        android:layout_height="189dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/myrect"
+        android:text="@string/textViewMed"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextComment"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextFirstNumberMed"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="@string/editTextFirstNumberMed"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberMed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMed"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/editTextSecondNumberMed"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="@string/editTextSecondNumberMed"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/editTextThirdNumberMed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFirstNumberMed"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/editTextThirdNumberMed"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="@string/editTextThirdNumberMed"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/textViewMed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSecondNumberMed"
+        android:importantForAutofill="no" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupTime"
+        android:layout_width="360dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate">
+
+        <RadioButton
+            android:id="@+id/radioButtonMorn"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/radioButtonMorn" />
+
+        <RadioButton
+            android:id="@+id/radioButtonEve"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/radioButtonEve" />
+
+        <RadioButton
+            android:id="@+id/radioButtonOver"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/radioButtonOver" />
+    </RadioGroup>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
