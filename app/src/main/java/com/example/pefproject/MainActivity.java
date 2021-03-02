@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
     private final String logTag = "com.example.pefproject.APP_MainActivity.java";
     private TextView morningTextView;
@@ -31,11 +32,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(logTag, " Create: Start");
-        Singleton.getInstance().loadData(this);
+        //Singleton.getInstance().loadData(this);
 
-        for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
-            Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
-        }
+        setTestRecords();
+
         setUpChart();
         morningTextView = findViewById(R.id.morningTextView);
         eveningTextView = findViewById(R.id.eveningTextView);
@@ -142,15 +142,25 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+    private void setTestRecords(){
+        for (int i = 0; i < 7; i++) {
+            Singleton.getInstance().addRecord(new Record());
+            Singleton.getInstance().getRecording().get(i).addNormalAirflow(130 + 10*i);
+            Singleton.getInstance().getRecording().get(i).addNormalAirflow(145+ 10*i);
+            Singleton.getInstance().getRecording().get(i).addNormalAirflow(140+ 10*i);
+            Singleton.getInstance().getRecording().get(i).addMedicineAirflow(222+ 10*i);
+            Singleton.getInstance().getRecording().get(i).addMedicineAirflow(212+ 10*i);
+            Singleton.getInstance().getRecording().get(i).addMedicineAirflow(232+ 10*i);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2021, 2, i+1);
+            Singleton.getInstance().getRecording().get(i).setDate(calendar.getTime());
+        }
+        for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
+            Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
+        }
+    }
     @Override
     protected void onPause() {
-        Singleton.getInstance().addRecord(new Record());
-        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(130);
-        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(145);
-        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(140);
-        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(222);
-        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(212);
-        Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(232);
         Singleton.getInstance().saveData(this);
         super.onPause();
     }
