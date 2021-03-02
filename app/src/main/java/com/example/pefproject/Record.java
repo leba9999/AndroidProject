@@ -171,6 +171,15 @@ public class Record {
         return this.type;
     }
 
+    /**
+     * Millainen merkintä kyseessä. Onko merkintä aamu, ilta vai extra
+     * AM = 0, PM = 1, EXTRA = 2
+     * @param type
+     */
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         SimpleDateFormat TimeFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
