@@ -18,21 +18,35 @@
             android:baselineAligned="false"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/NewRecordButton"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:onClick="buttonPressed"
-                android:text="@string/NewRecordButton" />
+                android:layout_height="78dp">
+
+                <Button
+                    android:id="@+id/NewRecordButton"
+                    android:layout_width="380sp"
+                    android:layout_height="wrap_content"
+                    android:onClick="buttonPressed"
+                    android:text="@string/NewRecordButton"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"/>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="78dp">
 
             <Button
                 android:id="@+id/OldRecordActivity"
-                android:layout_width="match_parent"
+                android:layout_width="380sp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:onClick="buttonPressed"
-                android:text="@string/OldRecordButton" />
+                android:text="@string/OldRecordButton"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,13 +95,20 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/ChartButton"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:onClick="buttonPressed"
-                android:text="@string/ChartButton" />
+                android:layout_height="69dp">
+
+                <Button
+                    android:id="@+id/ChartButton"
+                    android:layout_width="380sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:onClick="buttonPressed"
+                    android:text="@string/ChartButton" />
+
+            </RelativeLayout>
 
             <view
                 android:id="@+id/barView"
