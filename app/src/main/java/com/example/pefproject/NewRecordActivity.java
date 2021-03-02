@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class NewRecordActivity extends AppCompatActivity {
         medlesTextView = findViewById(R.id.textViewMedles);
         medTextView = findViewById(R.id.textViewMed);
         radioGroupTime = findViewById(R.id.radioGroupTime);
+        record = new Record();
 
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -47,39 +49,34 @@ public class NewRecordActivity extends AppCompatActivity {
     public void saveRecords() {
         switch (radioGroupTime.getCheckedRadioButtonId()) {
             case R.id.radioButtonEve:
-                record.addNormalAirflow(R.id.editTextFirstNumberNormal);
-                record.addNormalAirflow(R.id.editTextSecondNumberNormal);
-                record.addNormalAirflow(R.id.editTextThirdNumberNormal);
-                record.addMedicineAirflow(R.id.editTextFirstNumberMed);
-                record.addMedicineAirflow(R.id.editTextSecondNumberMed);
-                record.addMedicineAirflow(R.id.editTextThirdNumberMed);
-                record.setComment(Integer.toString(R.id.editTextComment));
-                record.setDate(calendar.getTime());
-                record.setType(1);
+                record.setType(Record.PM);
                 break;
             case R.id.radioButtonMorn:
-                record.addNormalAirflow(R.id.editTextFirstNumberNormal);
-                record.addNormalAirflow(R.id.editTextSecondNumberNormal);
-                record.addNormalAirflow(R.id.editTextThirdNumberNormal);
-                record.addMedicineAirflow(R.id.editTextFirstNumberMed);
-                record.addMedicineAirflow(R.id.editTextSecondNumberMed);
-                record.addMedicineAirflow(R.id.editTextThirdNumberMed);
-                record.setComment(Integer.toString(R.id.editTextComment));
-                record.setDate(calendar.getTime());
-                record.setType(0);
+                record.setType(Record.AM);
                 break;
             case R.id.radioButtonOver:
-                record.addNormalAirflow(R.id.editTextFirstNumberNormal);
-                record.addNormalAirflow(R.id.editTextSecondNumberNormal);
-                record.addNormalAirflow(R.id.editTextThirdNumberNormal);
-                record.addMedicineAirflow(R.id.editTextFirstNumberMed);
-                record.addMedicineAirflow(R.id.editTextSecondNumberMed);
-                record.addMedicineAirflow(R.id.editTextThirdNumberMed);
-                record.setComment(Integer.toString(R.id.editTextComment));
-                record.setDate(calendar.getTime());
-                record.setType(2);
+                record.setType(Record.EXTRA);
+                break;
+            default:
                 break;
         }
+        EditText firstNumberNormal = (EditText) findViewById(R.id.editTextFirstNumberNormal);
+        EditText secondNumberNormal = (EditText) findViewById(R.id.editTextSecondNumberNormal);
+        EditText thirdNumberNormal = (EditText) findViewById(R.id.editTextThirdNumberNormal);
+        EditText firstNumberMed = (EditText) findViewById(R.id.editTextFirstNumberMed);
+        EditText secondNumberMed = (EditText) findViewById(R.id.editTextSecondNumberMed);
+        EditText thirdNumberMed = (EditText) findViewById(R.id.editTextThirdNumberMed);
+        EditText comment = (EditText) findViewById(R.id.editTextComment);
+
+
+        record.addNormalAirflow(Integer.getInteger(firstNumberNormal.getText().toString()));
+        record.addNormalAirflow(Integer.getInteger(secondNumberNormal.getText().toString()));
+        record.addNormalAirflow(Integer.getInteger(thirdNumberNormal.getText().toString()));
+        record.addMedicineAirflow(Integer.getInteger(firstNumberMed.getText().toString()));
+        record.addMedicineAirflow(Integer.getInteger(secondNumberMed.getText().toString()));
+        record.addMedicineAirflow(Integer.getInteger(thirdNumberMed.getText().toString()));
+        record.setComment(comment.getText().toString());
+        record.setDate(calendar.getTime());
         Singleton.getInstance().addRecord(record);
     }
 

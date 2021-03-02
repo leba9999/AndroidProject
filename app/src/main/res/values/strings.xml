@@ -28,4 +28,8 @@
     <string name="editTextFirstNumberMed">1.</string>
     <string name="editTextSecondNumberMed">2.</string>
     <string name="editTextThirdNumberMed">3.</string>
+    <string name="title_activity_old_record_2">old_record_2</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_old_record">OldRecordActivity</string>
 </resources>
