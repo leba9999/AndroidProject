@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
             Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
         }
+        Singleton.getInstance().getRecording().get(0).setType(0);
     }
     @Override
     protected void onPause() {
