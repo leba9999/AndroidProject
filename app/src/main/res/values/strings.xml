@@ -16,7 +16,7 @@
     <string name="ylimaarainenButton">Ylimääräinen</string>
     <string name="iltaButton">Ilta</string>
     <string name="textViewDate">Pv</string>
-    <string name="textViewMedles">Lääketön</string>
+    <string name="textViewMedles">Lääkkeetön</string>
     <string name="textViewMed">Lääkkeellä</string>
     <string name="radioButtonOver">Ylimääräinen</string>
     <string name="radioButtonEve">Ilta</string>

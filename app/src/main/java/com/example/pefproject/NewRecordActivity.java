@@ -22,6 +22,7 @@ public class NewRecordActivity extends AppCompatActivity {
     private Record record;
     private Calendar calendar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class NewRecordActivity extends AppCompatActivity {
         radioGroupTime = findViewById(R.id.radioGroupTime);
         record = new Record();
 
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
 
@@ -68,13 +69,12 @@ public class NewRecordActivity extends AppCompatActivity {
         EditText thirdNumberMed = (EditText) findViewById(R.id.editTextThirdNumberMed);
         EditText comment = (EditText) findViewById(R.id.editTextComment);
 
-
-        record.addNormalAirflow(Integer.getInteger(firstNumberNormal.getText().toString()));
-        record.addNormalAirflow(Integer.getInteger(secondNumberNormal.getText().toString()));
-        record.addNormalAirflow(Integer.getInteger(thirdNumberNormal.getText().toString()));
-        record.addMedicineAirflow(Integer.getInteger(firstNumberMed.getText().toString()));
-        record.addMedicineAirflow(Integer.getInteger(secondNumberMed.getText().toString()));
-        record.addMedicineAirflow(Integer.getInteger(thirdNumberMed.getText().toString()));
+        record.addNormalAirflow(Integer.parseInt(firstNumberNormal.getText().toString()));
+        record.addNormalAirflow(Integer.parseInt(secondNumberNormal.getText().toString()));
+        record.addNormalAirflow(Integer.parseInt(thirdNumberNormal.getText().toString()));
+        record.addMedicineAirflow(Integer.parseInt(firstNumberMed.getText().toString()));
+        record.addMedicineAirflow(Integer.parseInt(secondNumberMed.getText().toString()));
+        record.addMedicineAirflow(Integer.parseInt(thirdNumberMed.getText().toString()));
         record.setComment(comment.getText().toString());
         record.setDate(calendar.getTime());
         Singleton.getInstance().addRecord(record);
