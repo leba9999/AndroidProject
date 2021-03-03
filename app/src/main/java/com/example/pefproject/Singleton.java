@@ -11,6 +11,15 @@ import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * Singleton luokka sisältää Merkintöjen listan, aika- ja päiväformaatit
+ * Singletonilla on tarkoitus helpottaa muiden luokkien pääsy merkkien tietoihin, lisäämään niitä ja muokkaamaan suhteellisen hallitusti
+ * Luokka tallentaa ja lataa SharedPreferenceseistä merkkien tiedot
+ * @author Leevi Koskinen
+ * @author Peetu Salonen
+ * @version 03.03.2021
+ */
+
 public class Singleton {
     private final String sharedName = "Records";
     private final String sharedKey = "Recordings";

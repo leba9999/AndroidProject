@@ -11,7 +11,7 @@ import java.util.Locale;
 /**
  * Luokka sisältää merkinnälle kaiken tarpeellisen datan. Esim pv, aika, kommentti ja ilmankulun arvot
  * @author Leevi Koskinen
- * @version 0.01 1.3.2021
+ * @version 03.03.2021
  */
 public class Record {
     // Normaali puhalluksen arvolista
