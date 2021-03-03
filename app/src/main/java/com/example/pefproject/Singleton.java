@@ -2,36 +2,30 @@ package com.example.pefproject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class Singleton {
-    private final String logTag = "com.example.pefproject.APP_Singleton.java";
     private final String sharedName = "Records";
     private final String sharedKey = "Recordings";
 
     private static final Singleton instance = new Singleton();
     private ArrayList<Record> recording;
 
-    private ArrayList<Date> dates;
-    private ArrayList<String> dateString;
     private final String timeFormat;
     private final String dateFormat;
 
+    /**
+     * Singleton constructor luo uuden merkintöjen listan ja asettaa aika-, päiväformaatin
+     */
     private Singleton () {
         recording = new ArrayList<>();
-        dates = new ArrayList<>();
-        dateString = new ArrayList<>();
         timeFormat = "HH:mm:ss";
         dateFormat = "dd.MM.yyyy";
     }
@@ -40,43 +34,39 @@ public class Singleton {
         return instance;
     }
 
+    /**
+     * Lisätään uusi merkintä merkintöjen listaan parametrilla record
+     * @param record asetetaan merkintä listaan
+     */
     public void addRecord(Record record) {
         record.setTimeFormat(timeFormat);
         record.setDateFormat(dateFormat);
         recording.add(record);
     }
+
+    /**
+     * Palauttaa päivämääräformaatin eli missä muodossa päivämäärä pitäisi näyttää. Esim: 03.02.2021 tai 02/03/2021 jne...
+     * @return String dateformat
+     */
     public String getDateFormat(){
         return this.dateFormat;
     }
+
+    /**
+     * Palauttaa aikaformaatin eli missä muodossa kellonaika pitäisi näyttää. Esim: 21:49 tai 9.49 jne...
+     * @return String timeFormat
+     */
     public String getTimeFormat(){
         return this.timeFormat;
     }
+
+    /**
+     * Palauttaa merkintöjen listan.
+     * @return ArrayList<Record> recording
+     */
     public ArrayList<Record> getRecording() {
         return recording;
     }
-    /*
-    public ArrayList<Date> getDates() {
-        for (Record record : this.recording) {
-            dates.add(record.getDate());
-        }
-        return dates;
-    }
-    public ArrayList<String> getDatesString() {
-
-        SimpleDateFormat formatDate = new SimpleDateFormat(this.dateFormat, Locale.getDefault());
-        for (Record record : this.recording) {
-            if (dateString.isEmpty()){
-                dateString.add(formatDate.format(record.getDate()));
-            }
-            for (String duplicate : dateString){
-                if (!duplicate.equals(formatDate.format(record.getDate()))){
-                    dateString.add(formatDate.format(record.getDate()));
-                }
-            }
-        }
-        return dateString;
-    }
-*/
     /**
      * Tallentaa sharedPreferenseihin ArrayListin joka sisältää Record classin. Kannattaa laittaa onPause() ja onStop() funktioihin. Tallentaa sitten aina kun activity pysähtyy
      * @param context Activityn contexti mistä tallennus kutsutaan
