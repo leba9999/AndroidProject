@@ -16,6 +16,7 @@
         android:layout_marginBottom="6dp"
         android:onClick="onSaveButtonClicked"
         android:text="@string/tallennaButton"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -40,6 +41,7 @@
         android:layout_marginBottom="9dp"
         android:background="@drawable/myrect"
         android:ems="10"
+        android:gravity="top"
         android:hint="@string/textViewComment"
         android:importantForAutofill="no"
         android:inputType="textPersonName"

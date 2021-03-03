@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,6 +38,7 @@ public class NewRecordActivity extends AppCompatActivity {
     private RadioButton rbMorn, rbEve, rbExtra;
     private Date date;
     private Intent nextActivity;
+    private Button buttonSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +51,26 @@ public class NewRecordActivity extends AppCompatActivity {
         medlesTextView = findViewById(R.id.textViewMedles);
         medTextView = findViewById(R.id.textViewMed);
         radioGroupTime = findViewById(R.id.radioGroupTime);
+        commentText = findViewById(R.id.editTextComment);
+        record = new Record();
+        rbMorn = findViewById(R.id.radioButtonMorn);
+        rbEve = findViewById(R.id.radioButtonEve);
+        rbExtra = findViewById(R.id.radioButtonOver);
+        buttonSave = findViewById(R.id.buttonSave);
         firstNumberNormal = findViewById(R.id.editTextFirstNumberNormal);
         secondNumberNormal = findViewById(R.id.editTextSecondNumberNormal);
         thirdNumberNormal = findViewById(R.id.editTextThirdNumberNormal);
         firstNumberMed = findViewById(R.id.editTextFirstNumberMed);
         secondNumberMed = findViewById(R.id.editTextSecondNumberMed);
         thirdNumberMed = findViewById(R.id.editTextThirdNumberMed);
-        commentText = findViewById(R.id.editTextComment);
-        record = new Record();
-        rbMorn = findViewById(R.id.radioButtonMorn);
-        rbEve = findViewById(R.id.radioButtonEve);
-        rbExtra = findViewById(R.id.radioButtonOver);
+
+        firstNumberNormal.addTextChangedListener(saveTextWatcher);
+        secondNumberNormal.addTextChangedListener(saveTextWatcher);
+        thirdNumberNormal.addTextChangedListener(saveTextWatcher);
+        firstNumberMed.addTextChangedListener(saveTextWatcher);
+        secondNumberMed.addTextChangedListener(saveTextWatcher);
+        thirdNumberMed.addTextChangedListener(saveTextWatcher);
+
 
         Bundle b = getIntent().getExtras();
         int i = b.getInt(OldRecordActivity.EXTRA, -1);
@@ -98,6 +111,33 @@ public class NewRecordActivity extends AppCompatActivity {
         }
 
     }
+
+    private TextWatcher saveTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String firstNormalInput = firstNumberNormal.getText().toString();
+            String secondNormalInput = secondNumberNormal.getText().toString();
+            String thirdNormalInput = thirdNumberNormal.getText().toString();
+            String firstMedInput = firstNumberMed.getText().toString();
+            String secondMedInput = secondNumberMed.getText().toString();
+            String thirdMedInput = thirdNumberMed.getText().toString();
+
+            buttonSave.setEnabled(!firstNormalInput.isEmpty() && !secondNormalInput.isEmpty() &&
+                                  !thirdNormalInput.isEmpty() && !firstMedInput.isEmpty() &&
+                                  !secondMedInput.isEmpty() && !thirdMedInput.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
     public void onSaveButtonClicked(View view) {
         saveRecords();
         Singleton.getInstance().saveData(this);
