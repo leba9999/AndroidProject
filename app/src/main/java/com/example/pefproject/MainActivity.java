@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         loadDayRecord();
         Log.i(logTag, "onCreate: End");
     }
+
+    /**
+     * Lataa päivän huippu arvot näkyviin MainActivityssä
+     */
     private void loadDayRecord(){
         Log.i(logTag, " loadDayRecord: Start");
         ArrayList<Record> records = Singleton.getInstance().getRecording();
@@ -90,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i(logTag, " loadDayRecord: Ready");
     }
+
+    /**
+     * Asettaa taulukolle viikon puhallusten huippu arvot ja värit
+     */
     private void setUpChart(){
         Log.i(logTag, " setUpChart: Start");
         BarChart barChart = findViewById(R.id.barView);
@@ -154,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
         int [] morningColors = {
                 ContextCompat.getColor(this, R.color.white_230) ,
                 ContextCompat.getColor(this, R.color.light_blue)
@@ -200,6 +207,11 @@ public class MainActivity extends AppCompatActivity {
         barChart.setDrawValueAboveBar(false);
         Log.i(logTag, " setUpChart: Ready");
     }
+
+    /**
+     * Tutkitaan mitä näkymää painettiin ja tehdään tarvittavat toimen piteet
+     * @param view haetaan painetun näkymän id arvo view:llä
+     */
     public void buttonPressed (View view) {
         //Get widgets view id
         Intent intent;
@@ -271,8 +283,14 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
     @Override
+    protected void onStop() {
+        Singleton.getInstance().saveData(this);
+        super.onStop();
+    }
+    @Override
     protected void onResume() {
         Log.i(logTag, "onResume: Start");
+        Singleton.getInstance().loadData(this);
         loadDayRecord();
         super.onResume();
         Log.i(logTag, "onResume: End");

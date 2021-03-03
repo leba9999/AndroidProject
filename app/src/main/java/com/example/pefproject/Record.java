@@ -1,6 +1,6 @@
 package com.example.pefproject;
 
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,36 +14,58 @@ import java.util.Locale;
  * @version 0.01 1.3.2021
  */
 public class Record {
-    private final String logTag = "com.example.pefproject.APP_Record.java";
+    // Normaali puhalluksen arvolista
     private final ArrayList<Integer> normalAirflow;
+    // Lääke puhalluksen arvolista
     private final ArrayList<Integer> medicineAirflow;
 
+    // Käyttäjän vapaa muotoinen komentti
     private String comment;
 
+    // Päivämäärän formaatti eli missä muodossa näytetään päivämäärä
     private String timeFormat;
+    // Kellonajan formaatti eli missä muodossa näytetään kellonaika
     private String dateFormat;
 
+    // Merkinnän päivämäärä ja kellonaika muuttuja
     private Date date;
+
+    // Määrittelee merkinnän tyypin eli on aamu, ilta vai ylimääräinen merkintä
+    // luokka kun luodaan tyyppi valitaan automaattisesti riippuen kellonajasta
     private int type;
+    /**
+     * Merkinnän tyyppi AM.
+     * Arvo = 0
+     */
     public static final int AM = 0;
+    /**
+     * Merkinnän tyyppi PM.
+     * Arvo = 1
+     */
     public static final int PM = 1;
+    /**
+     * Merkinnän tyyppi EXTRA.
+     * Arvo = 2
+     */
     public static final int EXTRA = 2;
     /**
      * Record constructor asettaa tämän hetkisen päivämäärän ja kellon ajan kalenterin avulla
-     * Luo myöskin uudet ArrayListit normal- ja medicineAirflow listoille
+     * Luo myöskin uudet tyhjät ArrayListit normal- ja medicineAirflow listoille
      */
     public Record() {
+        // Luodaan uudet listat
         normalAirflow = new ArrayList<>();
         medicineAirflow = new ArrayList<>();
+        // Haetaan java kalenteri ja sen kautta kellon aika
         Calendar calendar = Calendar.getInstance();
+        // vertaillaan onko aamu vai ilta ja asetetaan merkinnän tyyppi sen mukaan
         if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
             this.type = PM;
         } else {
             this.type = AM;
         }
+        // Asetetaan merkinnän päivämäärä
         date = calendar.getTime();
-
-        Log.i(logTag, "Current date => " + date);
     }
 
     /**
@@ -103,6 +125,7 @@ public class Record {
      */
     public int getPeakNormalAirflow(){
         int tempPeak = 0;
+        // Käydään läpi normaalien puhallusten arvot ja asetetaan aina suurin tempPeak muuttujaan
         for (Integer number : this.normalAirflow) {
             if(number >= tempPeak){
                 tempPeak = number;
@@ -118,6 +141,7 @@ public class Record {
      */
     public int getPeakMedicineAirflow(){
         int tempPeak = 0;
+        // Käydään läpi lääke puhallusten arvot ja asetetaan aina suurin tempPeak muuttujaan
         for (Integer number : this.medicineAirflow) {
             if(number >= tempPeak){
                 tempPeak = number;
@@ -127,8 +151,7 @@ public class Record {
     }
 
     /**
-     * Haetaan merkinnän kommentti
-     * palauttaa merkinnän kommentin
+     * Palauttaa merkinnän kommentin
      * @return String comment
      */
     public String getComment() {
@@ -136,19 +159,28 @@ public class Record {
     }
 
     /**
-     * Haetaan merkinnän aika
-     * palauttaa merkinnän ajan
+     * Palauttaa merkinnän kellonajan
      * @return String time
      */
     public String getTime() {
+        // Formatoidaan kellonaika haluttuun muotoon
         SimpleDateFormat TimeFormat = new SimpleDateFormat(this.timeFormat, Locale.getDefault());
         return TimeFormat.format(this.date);
     }
 
+    /**
+     * Asetetaan formaatti missä muodossa kellonaika näkyy. Esim: 21:49 tai 9.49 jne...
+     * @param timeFormat asettaa kellonajan muodon
+     */
     public void setTimeFormat(String timeFormat) {
         this.timeFormat = timeFormat;
     }
 
+    /**
+     * Asetetaan formaatti missä muodossa päivämäärä näkyy. Esim: 03.02.2021 tai 02/03/2021 jne...
+     * Käytettään toString funktiossa
+     * @param dateFormat asettaa päivämäärän muodon
+     */
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
     }
@@ -174,16 +206,19 @@ public class Record {
     /**
      * Millainen merkintä kyseessä. Onko merkintä aamu, ilta vai extra
      * AM = 0, PM = 1, EXTRA = 2
-     * @param type
+     * @param type asettaa merkinnän tyypin (0, 1, 2)
      */
     public void setType(int type) {
         this.type = type;
     }
 
     @Override
+    @NonNull
     public String toString() {
+        // Formatoidaan kellonaika ja päivämäärä haluttuun muotoon
         SimpleDateFormat TimeFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
         SimpleDateFormat DateFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
+        // palautetaan puhallusten huippu arvot ja formaatit
         return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow()+ " Date: " + DateFormat.format(date) + " Time: " + TimeFormat.format(date);
     }
 }
