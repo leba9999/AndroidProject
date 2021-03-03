@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Singleton.getInstance().loadData(this);
+        //setTestRecords();
 
         calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -111,16 +112,22 @@ public class MainActivity extends AppCompatActivity {
         if (Singleton.getInstance().getRecording().isEmpty()){
             return;
         }
+        // Käydään läpi singletonissa olevat merkinnät ja lisätään ne records listaan jotta voidaan
+        // ongelmitta lisätä tyhjiä merkintöjä tarvittaessa ilman että ne tallentuu Singletoniin
         for (int x = 0; x < Singleton.getInstance().getRecording().size(); x++){
             records.add(Singleton.getInstance().getRecording().get(x));
+            // jos dates lista on tyhjä lisätään sinne päivämäärä
             if (dates.isEmpty()){
                 dates.add(dateFormat.format(records.get(x).getDate()));
                 continue;
             }
+            // tarkastetaan sisältääkö dates jo kyseisen päivämäärän jos ei niin lisätään se listaan
             if (!dates.contains(dateFormat.format(records.get(x).getDate()))){
                 dates.add(dateFormat.format(records.get(x).getDate()));
             }
         }
+        // jos uniikkeja päivämääriä ei ollut tarpeeksi singletonissa tallennettuna tarvitaan lisätä
+        // tyhjiä merkintöjä jotka sisältävät uniikin päivämäärän
         while (dates.size() < 7){
             Record record = new Record();
             Calendar calendar = Calendar.getInstance();
@@ -128,25 +135,32 @@ public class MainActivity extends AppCompatActivity {
             calendar.add(Calendar.DATE, 1);
             record.setDate(calendar.getTime());
             records.add(record);
+            // jos vahingossa jollain merkinnällä onkin sama päivämäärä niin varmisteaan se ja ei lisätä kopiota
             if (!dates.contains(dateFormat.format(records.get(records.size()-1).getDate()))){
                 dates.add(dateFormat.format(records.get(records.size()-1).getDate()));
             }
         }
+        // Taulukkoon halutaan 7 päivän tulokset
         for (int i = 0; i < 7; i++){
+            // Lisätään BarEntryjä jotka siis sisältävät X arvon ja y arvon
             morningAirflow.add(new BarEntry(i, 0));
             eveningAirflow.add(new BarEntry(i, 0));
             extraAirflow.add(new BarEntry(i, 0));
+            // asetetaan Airflow listoille arvoksi nollat jotta saadaan kaikkiin väreihin tekstit näkyviin
+            // jostain syystyä jos ei anna mitään arvoa niin tekstejä ei näy
             float [] zeroValues = {0,0,};
             morningAirflow.get(i).setVals(zeroValues);
             eveningAirflow.get(i).setVals(zeroValues);
             extraAirflow.get(i).setVals(zeroValues);
+            // Käydään kaikki merkinnät läpi ja vertaillaan viimeisempien merkintöjen päivämääriä uusimpien päivämäärien kanssa
+            // jos päivämäärät ovat samat lisätään kyseisen päivämäärän merkinnän tiedot taulukkoon values muuttujalla
             for (int d  = 0; d < records.size(); d++){
-
                 if (dateFormat.format(records.get(d).getDate()).equals(dates.get((dates.size()- 1) - i))) {
                     float [] values = {
                             records.get(d).getPeakNormalAirflow(),
                             records.get(d).getPeakMedicineAirflow(),
                     };
+                    // Tarkastetaan vielä minkä tyyppinen merkintä on kyseessä jotta tiedot menevät oikealle palkille
                     switch (records.get(d).getType()){
                         case Record.AM:
                             morningAirflow.get(i).setVals(values);
@@ -236,46 +250,28 @@ public class MainActivity extends AppCompatActivity {
     }
     /*
     private void setTestRecords(){
-        for (int i = 0; i < 1; i++) {
-            Singleton.getInstance().addRecord(new Record());
-            Singleton.getInstance().getRecording().get(i).addNormalAirflow(130 + 10*i);
-            Singleton.getInstance().getRecording().get(i).addNormalAirflow(145+ 10*i);
-            Singleton.getInstance().getRecording().get(i).addNormalAirflow(140+ 10*i);
-            Singleton.getInstance().getRecording().get(i).addMedicineAirflow(222+ 10*i);
-            Singleton.getInstance().getRecording().get(i).addMedicineAirflow(212+ 10*i);
-            Singleton.getInstance().getRecording().get(i).addMedicineAirflow(232+ 10*i);
-            Singleton.getInstance().getRecording().get(i).setType(Record.AM);
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 7; i++) {
+                Singleton.getInstance().addRecord(new Record());
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, i);
-            Singleton.getInstance().getRecording().get(i).setDate(calendar.getTime());
-        }
-        for (int i = 0; i < 0; i++) {
-            Singleton.getInstance().addRecord(new Record());
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(330 + 10*i);
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(432+ 10*i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(130 + j * 5 + 10 * i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(145 + j * 5 + 10 * i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(140 + j * 5 + 10 * i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(222 + j * 5 + 10 * i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(212 + j * 5 + 10 * i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(232 + j * 5 + 10 * i);
 
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setType(Record.PM);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, i);
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setDate(calendar.getTime());
-        }
-        for (int i = 0; i < 0; i++) {
-            Singleton.getInstance().addRecord(new Record());
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(330 + 10*i);
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addMedicineAirflow(432+ 10*i);
-
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setType(Record.EXTRA);
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, i);
-            Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setDate(calendar.getTime());
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setType(j);
+                calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, i);
+                Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setDate(calendar.getTime());
+            }
         }
         for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
             Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
         }
     }
+
      */
     @Override
     protected void onPause() {
