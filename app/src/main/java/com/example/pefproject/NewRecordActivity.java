@@ -2,13 +2,16 @@ package com.example.pefproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -21,7 +24,17 @@ public class NewRecordActivity extends AppCompatActivity {
     private RadioGroup radioGroupTime;
     private Record record;
     private Calendar calendar;
-
+    private EditText firstNumberNormal;
+    private EditText secondNumberNormal;
+    private EditText thirdNumberNormal;
+    private EditText firstNumberMed;
+    private EditText secondNumberMed;
+    private EditText thirdNumberMed;
+    private EditText commentText;
+    private String recordType;
+    private RadioButton rbMorn, rbEve, rbExtra;
+    private Date date;
+    private Intent nextActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +42,78 @@ public class NewRecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_record);
         Singleton.getInstance().loadData(this);
 
+        ArrayList<Record> records = Singleton.getInstance().getRecording();
         dateTextView = findViewById(R.id.textViewDate);
         medlesTextView = findViewById(R.id.textViewMedles);
         medTextView = findViewById(R.id.textViewMed);
         radioGroupTime = findViewById(R.id.radioGroupTime);
+        firstNumberNormal = findViewById(R.id.editTextFirstNumberNormal);
+        secondNumberNormal = findViewById(R.id.editTextSecondNumberNormal);
+        thirdNumberNormal = findViewById(R.id.editTextThirdNumberNormal);
+        firstNumberMed = findViewById(R.id.editTextFirstNumberMed);
+        secondNumberMed = findViewById(R.id.editTextSecondNumberMed);
+        thirdNumberMed = findViewById(R.id.editTextThirdNumberMed);
+        commentText = findViewById(R.id.editTextComment);
         record = new Record();
+        rbMorn = findViewById(R.id.radioButtonMorn);
+        rbEve = findViewById(R.id.radioButtonEve);
+        rbExtra = findViewById(R.id.radioButtonOver);
 
-        calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
+        Bundle b = getIntent().getExtras();
+        int i = b.getInt(OldRecordActivity.EXTRA, -1);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        Calendar calendar = Calendar.getInstance();
 
-        dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
+        if (i == -1) {
+            //Date date = calendar.getTime();
+            date = record.getDate();
+            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
+        } else {
+            date = records.get(i).getDate();
+            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
+            //for(int index = 0; index < records.get(i).getNormalAirflowList().size(); index++) {
+            firstNumberNormal.setText(records.get(i).getNormalAirflowList().get(0).toString());
+            secondNumberNormal.setText(records.get(i).getNormalAirflowList().get(1).toString());
+            thirdNumberNormal.setText(records.get(i).getNormalAirflowList().get(2).toString());
+            firstNumberMed.setText(records.get(i).getMedicineAirflowList().get(0).toString());
+            secondNumberMed.setText(records.get(i).getMedicineAirflowList().get(1).toString());
+            thirdNumberMed.setText(records.get(i).getMedicineAirflowList().get(2).toString());
+            commentText.setText(records.get(i).getComment());
+
+        }
+
+        switch (record.getType()) {
+            case Record.AM:
+                rbMorn.setChecked(true);
+                break;
+            case Record.PM:
+                rbEve.setChecked(true);
+                break;
+            case Record.EXTRA:
+                rbExtra.setChecked(true);
+                break;
+            default:
+                radioGroupTime.clearCheck();
+                break;
+        }
+
     }
-
     public void onSaveButtonClicked(View view) {
         saveRecords();
         Singleton.getInstance().saveData(this);
+
+        Bundle b = getIntent().getExtras();
+        int i = b.getInt(OldRecordActivity.EXTRA, -1);
+
+        if (i == -1) {
+            nextActivity = new Intent(this, MainActivity.class);
+            //nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
+        } else {
+            nextActivity = new Intent(this, OldRecordActivity.class);
+            nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
+        }
+        startActivity(nextActivity);
+
     }
 
     public void saveRecords() {
@@ -61,13 +130,13 @@ public class NewRecordActivity extends AppCompatActivity {
             default:
                 break;
         }
-        EditText firstNumberNormal = (EditText) findViewById(R.id.editTextFirstNumberNormal);
-        EditText secondNumberNormal = (EditText) findViewById(R.id.editTextSecondNumberNormal);
-        EditText thirdNumberNormal = (EditText) findViewById(R.id.editTextThirdNumberNormal);
-        EditText firstNumberMed = (EditText) findViewById(R.id.editTextFirstNumberMed);
-        EditText secondNumberMed = (EditText) findViewById(R.id.editTextSecondNumberMed);
-        EditText thirdNumberMed = (EditText) findViewById(R.id.editTextThirdNumberMed);
-        EditText comment = (EditText) findViewById(R.id.editTextComment);
+        //EditText firstNumberNormal = (EditText) firstNumberNormal;
+        //EditText secondNumberNormal = (EditText) findViewById(R.id.editTextSecondNumberNormal);
+        //EditText thirdNumberNormal = (EditText) findViewById(R.id.editTextThirdNumberNormal);
+        //EditText firstNumberMed = (EditText) findViewById(R.id.editTextFirstNumberMed);
+        //EditText secondNumberMed = (EditText) findViewById(R.id.editTextSecondNumberMed);
+        //EditText thirdNumberMed = (EditText) findViewById(R.id.editTextThirdNumberMed);
+        //EditText comment = (EditText) findViewById(R.id.editTextComment);
 
         record.addNormalAirflow(Integer.parseInt(firstNumberNormal.getText().toString()));
         record.addNormalAirflow(Integer.parseInt(secondNumberNormal.getText().toString()));
@@ -75,8 +144,8 @@ public class NewRecordActivity extends AppCompatActivity {
         record.addMedicineAirflow(Integer.parseInt(firstNumberMed.getText().toString()));
         record.addMedicineAirflow(Integer.parseInt(secondNumberMed.getText().toString()));
         record.addMedicineAirflow(Integer.parseInt(thirdNumberMed.getText().toString()));
-        record.setComment(comment.getText().toString());
-        record.setDate(calendar.getTime());
+        record.setComment(commentText.getText().toString());
+        record.setDate(date);
         Singleton.getInstance().addRecord(record);
     }
 
