@@ -8,7 +8,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -20,11 +23,15 @@ public class Singleton {
     private static final Singleton instance = new Singleton();
     private ArrayList<Record> recording;
 
+    private ArrayList<Date> dates;
+    private ArrayList<String> dateString;
     private final String timeFormat;
     private final String dateFormat;
 
     private Singleton () {
         recording = new ArrayList<>();
+        dates = new ArrayList<>();
+        dateString = new ArrayList<>();
         timeFormat = "HH:mm:ss";
         dateFormat = "dd.MM.yyyy";
     }
@@ -47,11 +54,29 @@ public class Singleton {
     public ArrayList<Record> getRecording() {
         return recording;
     }
-
-    public Record getRecord(int i) {
-        return recording.get(i);
+    /*
+    public ArrayList<Date> getDates() {
+        for (Record record : this.recording) {
+            dates.add(record.getDate());
+        }
+        return dates;
     }
+    public ArrayList<String> getDatesString() {
 
+        SimpleDateFormat formatDate = new SimpleDateFormat(this.dateFormat, Locale.getDefault());
+        for (Record record : this.recording) {
+            if (dateString.isEmpty()){
+                dateString.add(formatDate.format(record.getDate()));
+            }
+            for (String duplicate : dateString){
+                if (!duplicate.equals(formatDate.format(record.getDate()))){
+                    dateString.add(formatDate.format(record.getDate()));
+                }
+            }
+        }
+        return dateString;
+    }
+*/
     /**
      * Tallentaa sharedPreferenseihin ArrayListin joka sisältää Record classin. Kannattaa laittaa onPause() ja onStop() funktioihin. Tallentaa sitten aina kun activity pysähtyy
      * @param context Activityn contexti mistä tallennus kutsutaan
