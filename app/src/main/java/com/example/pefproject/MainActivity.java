@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             // Buttons id:
             case R.id.NewRecordButton:
                 intent = new Intent(this, NewRecordActivity.class);
+                intent.putExtra(OldRecordActivity.EXTRA, -1);
                 startActivity(intent);
                 break;
             /*case R.id.OldRecordActivity:

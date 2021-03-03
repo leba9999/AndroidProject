@@ -16,6 +16,7 @@
         android:layout_marginBottom="6dp"
         android:onClick="onSaveButtonClicked"
         android:text="@string/tallennaButton"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -40,6 +41,7 @@
         android:layout_marginBottom="9dp"
         android:background="@drawable/myrect"
         android:ems="10"
+        android:gravity="top"
         android:hint="@string/textViewComment"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
@@ -69,6 +71,7 @@
         android:hint="@string/editTextThirdNumberNormal"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/textViewMedles"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSecondNumberNormal" />
@@ -82,6 +85,7 @@
         android:hint="@string/editTextFirstNumberNormal"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberNormal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMedles" />
@@ -95,6 +99,7 @@
         android:hint="@string/editTextSecondNumberNormal"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextThirdNumberNormal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextFirstNumberNormal" />
@@ -104,7 +109,7 @@
         android:layout_width="152dp"
         android:layout_height="189dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="45dp"
         android:background="@drawable/myrect"
         android:text="@string/textViewMed"
         android:textColor="@color/black"
@@ -121,6 +126,7 @@
         android:hint="@string/editTextFirstNumberMed"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberMed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMed" />
@@ -134,6 +140,7 @@
         android:hint="@string/editTextSecondNumberMed"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextThirdNumberMed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextFirstNumberMed" />
@@ -147,6 +154,7 @@
         android:hint="@string/editTextThirdNumberMed"
         android:importantForAutofill="no"
         android:inputType="number"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/textViewMed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSecondNumberMed" />
