@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +28,7 @@ import java.util.List;
 public class OldRecordActivity extends AppCompatActivity {
 
     public static final String EXTRA = "OldRecords";
+    private String recordType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +36,29 @@ public class OldRecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_old_record);
         ListView listView = findViewById(R.id.listViewDates);
 
+        ArrayList<Record> records = Singleton.getInstance().getRecording();
+
         List<String> dateList = new ArrayList<String>();
         //Calendar calendar = Calendar.getInstance();
-        for (int i=0; i<Singleton.getInstance().getRecording().size(); i++) {
+        for (int i=0; i<records.size(); i++) {
           //  calendar.add(Calendar.DATE, 1);
             SimpleDateFormat curFormater = new SimpleDateFormat(Singleton.getInstance().getDateFormat());
 
-            String s = " ";
-            switch (Singleton.getInstance().getRecording().get(i).getType()) {
+            //String s = " ";
+            switch (records.get(i).getType()) {
                 case Record.AM:
-                    s = "Aamu";
+                    recordType = "Aamu";
                     break;
                 case Record.PM:
-                    s = "Ilta";
+                    recordType = "Ilta";
                     break;
                 case Record.EXTRA:
-                    s = "Extra";
+                    recordType = "Extra";
                     break;
             }
-            dateList.add(curFormater.format(Singleton.getInstance().getRecording().get(i).getDate()) + "         " + s + "    " +
-                    + Singleton.getInstance().getRecording().get(i).getPeakNormalAirflow() + "    "
-                    + Singleton.getInstance().getRecording().get(i).getPeakMedicineAirflow());
+            dateList.add(curFormater.format(records.get(i).getDate()) + "\t \t" + recordType + "\t" +
+                    + records.get(i).getPeakNormalAirflow() + "\t"
+                    + records.get(i).getPeakMedicineAirflow());
         }
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dateList));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

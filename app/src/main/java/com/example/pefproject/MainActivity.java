@@ -179,13 +179,11 @@ public class MainActivity extends AppCompatActivity {
             };
             airflow2.get(i).setVals(values);
         }
-
         BarDataSet barDataSet = new BarDataSet(airflow, "");
         Color.rgb(48, 174, 255);
         barDataSet.setColor(ContextCompat.getColor(this, R.color.light_blue));
         barDataSet.setValueTextColor(Color.BLACK);
         barDataSet.setValueTextSize(16.f);
-
         int [] color = {
                 ContextCompat.getColor(this, R.color.white_230) ,
                 ContextCompat.getColor(this, R.color.light_blue)
@@ -195,18 +193,15 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.Medicine)
         };
         barDataSet.setColors(color);
-
         BarDataSet barDataSet_2 = new BarDataSet(airflow2, "");
         barDataSet_2.setColor(ContextCompat.getColor(this, R.color.dark_blue));
         barDataSet_2.setValueTextColor(Color.BLACK);
         barDataSet_2.setValueTextSize(16.f);
-
         BarData barData = new BarData(barDataSet, barDataSet_2);
         barChart.getXAxis().setValueFormatter(new MyValueFormatter());
         //barChart.getXAxis().setCenterAxisLabels(true);
         //barChart.getXAxis().setGranularity(1f);
         barChart.getXAxis().setDrawGridLines(false);
-
         barChart.setFitBars(true);
         barChart.setDrawValueAboveBar(false);
         float groupSpace = 0.1f;
@@ -214,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
         float barWidth = 0.43f;
         barData.setBarWidth(barWidth);
         //barChart.groupBars(1, groupSpace, barSpace);
-
         barChart.setData(barData);
         barChart.getDescription().setText("Peak AirFlow");
         barChart.getDescription().setYOffset(-10f);
@@ -227,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
             // Buttons id:
             case R.id.NewRecordButton:
                 intent = new Intent(this, NewRecordActivity.class);
+                intent.putExtra(OldRecordActivity.EXTRA, -1);
                 startActivity(intent);
                 break;
             /*case R.id.OldRecordActivity:

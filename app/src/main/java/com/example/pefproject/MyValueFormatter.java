@@ -29,7 +29,8 @@ public class MyValueFormatter extends ValueFormatter {
             calendar.add(Calendar.DATE, 1);
             return DateFormat.format(calendar.getTime());
         }
-        Date date = Singleton.getInstance().getRecording().get(( Singleton.getInstance().getRecording().size()- 1) - (6 - (int)value)).getDate();
-        return  DateFormat.format(date);
+        return "jee";
+        //Date date = Singleton.getInstance().getRecording().get(( Singleton.getInstance().getRecording().size()- 1) - (6 - (int)value)).getDate();
+        //return  DateFormat.format(date);
     }
 }
