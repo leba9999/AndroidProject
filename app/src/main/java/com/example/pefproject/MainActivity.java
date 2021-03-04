@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -216,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         barChart.setVisibleXRange(0f, 7.4f);
         barChart.setScaleYEnabled(false);
         barChart.getXAxis().setAxisMinimum(0);
-        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates));
+        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, dates.size()));
         barChart.getDescription().setText(getString(R.string.PeakAirflow));
         barChart.setDrawValueAboveBar(false);
         Log.i(logTag, " setUpChart: Ready");
@@ -236,6 +233,11 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(OldRecordActivity.EXTRA, -1);
                 startActivity(intent);
                 break;
+            case R.id.ChartButton:
+                intent = new Intent(this, ChartActivity.class);
+                //intent.putExtra(OldRecordActivity.EXTRA, -1);
+                startActivity(intent);
+                break;
             /*case R.id.OldRecordActivity:
                 intent = new Intent(this, OldRecordActivity.class);
                 startActivity(intent);
@@ -248,10 +250,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    /*
     private void setTestRecords(){
         for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 17; i++) {
                 Singleton.getInstance().addRecord(new Record());
 
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(130 + j * 5 + 10 * i);
@@ -272,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-     */
     @Override
     protected void onPause() {
         Singleton.getInstance().saveData(this);
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         Log.i(logTag, "onResume: Start");
-        Singleton.getInstance().loadData(this);
+        //Singleton.getInstance().loadData(this);
         loadDayRecord();
         super.onResume();
         Log.i(logTag, "onResume: End");
