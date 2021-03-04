@@ -33,6 +33,9 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private SimpleDateFormat dateFormat;
     private long day_1;
     private long day_2;
+    private Date startDay;
+    private Date endDay;
+    private Calendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,28 +47,34 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         endDateText = findViewById(R.id.endDateTextView);
         dayTextView = true;
 
-        Calendar calendar = Calendar.getInstance();
-        startDateText.setText(dateFormat.format(calendar.getTime()));
-        Date date = calendar.getTime();
-        Log.i("APP_PEF", "1 Calendar:" + calendar.getTimeInMillis());
-        day_1 = date.getTime();
+        calendar = Calendar.getInstance();
+
+        startDay = new Date();
+        endDay = new Date();
+
+        startDay = calendar.getTime();
         calendar.add(Calendar.DATE, 10);
-        date = calendar.getTime();
-        endDateText.setText(dateFormat.format(calendar.getTime()));
-        day_2 = date.getTime();
+        endDay = calendar.getTime();
+
+        day_1 = startDay.getTime();
+        day_2 = endDay.getTime();
+
+        startDateText.setText(dateFormat.format(startDay.getTime()));
+        endDateText.setText(dateFormat.format(endDay.getTime()));
 
         Log.i("APP_PEF", "2 Calendar:" + calendar.getTimeInMillis());
         Log.i("APP_PEF", "3 Calendar:" + ((day_2 - day_1) / (24 * 60 * 60 * 1000)));
         dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
         setUpChart();
     }
-    public void showDatePickerDialog(){
+    public void showDatePickerDialog(Date date){
+        calendar.setTimeInMillis(date.getTime());
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
@@ -74,32 +83,28 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         this.year = year;
         this.month = month;
         this.day = day;
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(this.year, this.month , this.day);
 
         if (dayTextView){
-            startDateText.setText(dateFormat.format(calendar.getTime()));
+            calendar.set(this.year, this.month , this.day);
+            startDay = calendar.getTime();
+            startDateText.setText(dateFormat.format(startDay.getTime()));
             day_1 = calendar.getTimeInMillis();
         } else{
-            endDateText.setText(dateFormat.format(calendar.getTime()));
+            calendar.set(this.year, this.month , this.day);
+            endDay = calendar.getTime();
+            endDateText.setText(dateFormat.format(endDay.getTime()));
             day_2 = calendar.getTimeInMillis();
         }
         dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
         setUpChart();
     }
     public void buttonPressed (View view) {
-        switch (view.getId()) {
-            // Buttons id:
-            case R.id.startDateTextView:
-                showDatePickerDialog();
-                dayTextView = true;
-                break;
-            case R.id.endDateTextView:
-                showDatePickerDialog();
-                dayTextView = false;
-                break;
-            default:
-                break;
+        if (view.getId() == R.id.startDateTextView){
+            showDatePickerDialog(startDay);
+            dayTextView = true;
+        } else {
+            showDatePickerDialog(endDay);
+            dayTextView = false;
         }
     }
 
@@ -112,39 +117,38 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         ArrayList<BarEntry> extraAirflow = new ArrayList<>();
         ArrayList<Record> records = new ArrayList<>();
         ArrayList<String> dates = new ArrayList<>();
+        ArrayList<Long> dateLong = new ArrayList<>();
 
         if (Singleton.getInstance().getRecording().isEmpty()){
             return;
         }
-        // Käydään läpi singletonissa olevat merkinnät ja lisätään ne records listaan jotta voidaan
-        // ongelmitta lisätä tyhjiä merkintöjä tarvittaessa ilman että ne tallentuu Singletoniin
-        for (int x = 0; x < Singleton.getInstance().getRecording().size(); x++){
-            records.add(Singleton.getInstance().getRecording().get(x));
-            // jos dates lista on tyhjä lisätään sinne päivämäärä
-            if (dates.isEmpty()){
-                dates.add(dateFormat.format(records.get(x).getDate()));
-                continue;
-            }
-            // tarkastetaan sisältääkö dates jo kyseisen päivämäärän jos ei niin lisätään se listaan
-            if (!dates.contains(dateFormat.format(records.get(x).getDate()))){
-                dates.add(dateFormat.format(records.get(x).getDate()));
-            }
-        }
-        // jos uniikkeja päivämääriä ei ollut tarpeeksi singletonissa tallennettuna tarvitaan lisätä
-        // tyhjiä merkintöjä jotka sisältävät uniikin päivämäärän
-        while (dates.size() <= dayCount){
-            Record record = new Record();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(records.get(records.size()-1).getDate());
+        calendar.setTime(startDay);
+        dates.add(dateFormat.format(startDay));
+        for (int i = 1; i < dayCount; i++){
             calendar.add(Calendar.DATE, 1);
-            record.setDate(calendar.getTime());
-            records.add(record);
-            // jos vahingossa jollain merkinnällä onkin sama päivämäärä niin varmisteaan se ja ei lisätä kopiota
-            if (!dates.contains(dateFormat.format(records.get(records.size()-1).getDate()))){
-                dates.add(dateFormat.format(records.get(records.size()-1).getDate()));
+            if (!dates.contains(dateFormat.format(calendar.getTime()))) {
+                dates.add(dateFormat.format(calendar.getTime()));
             }
         }
-        Log.i("APP_PEF", "datesSize: " + dates.size() + " Count" + dayCount);
+        for (int i = 0; i < dayCount; i++){
+            if (records.isEmpty()){
+                Record record = new Record();
+                record.setDate(startDay);
+                records.add(record);
+            }
+            for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
+                if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
+                        records.add(Singleton.getInstance().getRecording().get(s));
+                } else {
+                    Record record = new Record();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(records.get(records.size() - 1).getDate());
+                    calendar.add(Calendar.DATE, 1);
+                    record.setDate(calendar.getTime());
+                    records.add(record);
+                }
+            }
+        }
         // Taulukkoon halutaan 7 päivän tulokset
         for (int i = 0; i < dayCount; i++){
             // Lisätään BarEntryjä jotka siis sisältävät X arvon ja y arvon
@@ -160,7 +164,8 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             // Käydään kaikki merkinnät läpi ja vertaillaan viimeisempien merkintöjen päivämääriä uusimpien päivämäärien kanssa
             // jos päivämäärät ovat samat lisätään kyseisen päivämäärän merkinnän tiedot taulukkoon values muuttujalla
             for (int d  = 0; d < records.size(); d++){
-                if (dateFormat.format(records.get(d).getDate()).equals(dates.get(((int)dayCount - 1) - i))) {
+                //Log.i("APP_PEF", "datesSize: " + dates.size() + " dayCount:" + dayCount+ " tempCount:" + tempCount+ " i:" + i + " KOKO:" + (((int)dayCount - 1) - i));
+                if (dateFormat.format(records.get(d).getDate()).equals(dates.get((  (((int)dayCount - 1) - i))))) {
                     float [] values = {
                             records.get(d).getPeakNormalAirflow(),
                             records.get(d).getPeakMedicineAirflow(),
@@ -199,27 +204,27 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         BarDataSet morningDataSet = new BarDataSet(morningAirflow, "");
         morningDataSet.setColors(morningColors);
         morningDataSet.setStackLabels(colorLabels);
+        morningDataSet.setValueTextSize(12f);
 
         BarDataSet eveningDataSet = new BarDataSet(eveningAirflow, "");
         eveningDataSet.setColors(eveningColors);
         eveningDataSet.setStackLabels(colorLabels);
+        eveningDataSet.setValueTextSize(12f);
 
         BarDataSet extraDataSet = new BarDataSet(extraAirflow, "");
         extraDataSet.setColors(extraColors);
         extraDataSet.setStackLabels(colorLabels);
+        extraDataSet.setValueTextSize(12f);
 
         BarData barData = new BarData(morningDataSet, eveningDataSet, extraDataSet);
 
         barData.setBarWidth(1f / 3f);
 
-        //barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         barChart.getXAxis().setCenterAxisLabels(true);
-        //barChart.getXAxis().setAvoidFirstLastClipping(true);
 
         barChart.setData(barData);
         barChart.groupBars(0f, 0f, 0f);
 
-        //barChart.setVisibleXRange(0f, 8f);
         barChart.getXAxis().setAxisMinimum(0);
         barChart.getXAxis().setAxisMaximum(dayCount);
         barChart.setPinchZoom(true);
@@ -230,6 +235,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, (int)dayCount ));
         barChart.getDescription().setText(getString(R.string.PeakAirflow));
         barChart.setDrawValueAboveBar(false);
+
         barChart.invalidate();
     }
 }

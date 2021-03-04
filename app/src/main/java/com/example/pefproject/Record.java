@@ -22,11 +22,6 @@ public class Record {
     // Käyttäjän vapaa muotoinen komentti
     private String comment;
 
-    // Päivämäärän formaatti eli missä muodossa näytetään päivämäärä
-    private String timeFormat;
-    // Kellonajan formaatti eli missä muodossa näytetään kellonaika
-    private String dateFormat;
-
     // Merkinnän päivämäärä ja kellonaika muuttuja
     private Date date;
 
@@ -159,33 +154,6 @@ public class Record {
     }
 
     /**
-     * Palauttaa merkinnän kellonajan
-     * @return String time
-     */
-    public String getTime() {
-        // Formatoidaan kellonaika haluttuun muotoon
-        SimpleDateFormat TimeFormat = new SimpleDateFormat(this.timeFormat, Locale.getDefault());
-        return TimeFormat.format(this.date);
-    }
-
-    /**
-     * Asetetaan formaatti missä muodossa kellonaika näkyy. Esim: 21:49 tai 9.49 jne...
-     * @param timeFormat asettaa kellonajan muodon
-     */
-    public void setTimeFormat(String timeFormat) {
-        this.timeFormat = timeFormat;
-    }
-
-    /**
-     * Asetetaan formaatti missä muodossa päivämäärä näkyy. Esim: 03.02.2021 tai 02/03/2021 jne...
-     * Käytettään toString funktiossa
-     * @param dateFormat asettaa päivämäärän muodon
-     */
-    public void setDateFormat(String dateFormat) {
-        this.dateFormat = dateFormat;
-    }
-
-    /**
      * Haetaan merkinnän päivämäärä
      * palauttaa merkinnän päivämäärän
      * @return String date
@@ -215,10 +183,7 @@ public class Record {
     @Override
     @NonNull
     public String toString() {
-        // Formatoidaan kellonaika ja päivämäärä haluttuun muotoon
-        SimpleDateFormat TimeFormat = new SimpleDateFormat(timeFormat, Locale.getDefault());
-        SimpleDateFormat DateFormat = new SimpleDateFormat(dateFormat, Locale.getDefault());
         // palautetaan puhallusten huippu arvot ja formaatit
-        return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow()+ " Date: " + DateFormat.format(date) + " Time: " + TimeFormat.format(date);
+        return " Normal: " + getPeakNormalAirflow() + " Medicine: " + getPeakMedicineAirflow() + " AM/PM/E:" + getType();
     }
 }

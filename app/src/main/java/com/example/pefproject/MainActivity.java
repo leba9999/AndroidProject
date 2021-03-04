@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Singleton.getInstance().loadData(this);
-        //setTestRecords();
+        setTestRecords();
 
         calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -109,55 +109,58 @@ public class MainActivity extends AppCompatActivity {
         if (Singleton.getInstance().getRecording().isEmpty()){
             return;
         }
-        // Käydään läpi singletonissa olevat merkinnät ja lisätään ne records listaan jotta voidaan
-        // ongelmitta lisätä tyhjiä merkintöjä tarvittaessa ilman että ne tallentuu Singletoniin
-        for (int x = 0; x < Singleton.getInstance().getRecording().size(); x++){
-            records.add(Singleton.getInstance().getRecording().get(x));
-            // jos dates lista on tyhjä lisätään sinne päivämäärä
-            if (dates.isEmpty()){
-                dates.add(dateFormat.format(records.get(x).getDate()));
-                continue;
-            }
-            // tarkastetaan sisältääkö dates jo kyseisen päivämäärän jos ei niin lisätään se listaan
-            if (!dates.contains(dateFormat.format(records.get(x).getDate()))){
-                dates.add(dateFormat.format(records.get(x).getDate()));
-            }
-        }
-        // jos uniikkeja päivämääriä ei ollut tarpeeksi singletonissa tallennettuna tarvitaan lisätä
-        // tyhjiä merkintöjä jotka sisältävät uniikin päivämäärän
-        while (dates.size() < 7){
-            Record record = new Record();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(records.get(records.size()-1).getDate());
+        calendar = Calendar.getInstance();
+        Date startDay = calendar.getTime();
+        calendar.add(Calendar.DATE, 6);
+        Date endDay = calendar.getTime();
+        calendar.setTime(startDay);
+        long dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+
+        dates.add(dateFormat.format(startDay));
+        for (int i = 1; i < dayCount; i++){
             calendar.add(Calendar.DATE, 1);
-            record.setDate(calendar.getTime());
-            records.add(record);
-            // jos vahingossa jollain merkinnällä onkin sama päivämäärä niin varmisteaan se ja ei lisätä kopiota
-            if (!dates.contains(dateFormat.format(records.get(records.size()-1).getDate()))){
-                dates.add(dateFormat.format(records.get(records.size()-1).getDate()));
+            if (!dates.contains(dateFormat.format(calendar.getTime()))) {
+                dates.add(dateFormat.format(calendar.getTime()));
             }
         }
-        // Taulukkoon halutaan 7 päivän tulokset
-        for (int i = 0; i < 7; i++){
-            // Lisätään BarEntryjä jotka siis sisältävät X arvon ja y arvon
+        for (int i = 0; i < dayCount; i++){
+            if (records.isEmpty()){
+                Record record = new Record();
+                record.setDate(startDay);
+                records.add(record);
+            }
+            for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
+                if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
+                    records.add(Singleton.getInstance().getRecording().get(s));
+                } else {
+                    Record record = new Record();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(records.get(records.size() - 1).getDate());
+                    calendar.add(Calendar.DATE, 1);
+                    record.setDate(calendar.getTime());
+                    records.add(record);
+                }
+            }
+        }
+        for (int i = 0; i < dayCount; i++){
+
             morningAirflow.add(new BarEntry(i, 0));
             eveningAirflow.add(new BarEntry(i, 0));
             extraAirflow.add(new BarEntry(i, 0));
-            // asetetaan Airflow listoille arvoksi nollat jotta saadaan kaikkiin väreihin tekstit näkyviin
-            // jostain syystyä jos ei anna mitään arvoa niin tekstejä ei näy
+
             float [] zeroValues = {0,0,};
             morningAirflow.get(i).setVals(zeroValues);
             eveningAirflow.get(i).setVals(zeroValues);
             extraAirflow.get(i).setVals(zeroValues);
-            // Käydään kaikki merkinnät läpi ja vertaillaan viimeisempien merkintöjen päivämääriä uusimpien päivämäärien kanssa
-            // jos päivämäärät ovat samat lisätään kyseisen päivämäärän merkinnän tiedot taulukkoon values muuttujalla
+
             for (int d  = 0; d < records.size(); d++){
-                if (dateFormat.format(records.get(d).getDate()).equals(dates.get((dates.size()- 1) - i))) {
+
+                if (dateFormat.format(records.get(d).getDate()).equals(dates.get((  (((int)dayCount - 1) - i))))) {
                     float [] values = {
                             records.get(d).getPeakNormalAirflow(),
                             records.get(d).getPeakMedicineAirflow(),
                     };
-                    // Tarkastetaan vielä minkä tyyppinen merkintä on kyseessä jotta tiedot menevät oikealle palkille
+
                     switch (records.get(d).getType()){
                         case Record.AM:
                             morningAirflow.get(i).setVals(values);
@@ -224,35 +227,22 @@ public class MainActivity extends AppCompatActivity {
      * @param view haetaan painetun näkymän id arvo view:llä
      */
     public void buttonPressed (View view) {
-        //Get widgets view id
         Intent intent;
-        switch (view.getId()) {
-            // Buttons id:
-            case R.id.NewRecordButton:
-                intent = new Intent(this, NewRecordActivity.class);
-                intent.putExtra(OldRecordActivity.EXTRA, -1);
-                startActivity(intent);
-                break;
-            case R.id.ChartButton:
-                intent = new Intent(this, ChartActivity.class);
-                //intent.putExtra(OldRecordActivity.EXTRA, -1);
-                startActivity(intent);
-                break;
-            /*case R.id.OldRecordActivity:
-                intent = new Intent(this, OldRecordActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.barView:
-                break;*/
-            default:
-                intent = new Intent(this, OldRecordActivity.class);
-                startActivity(intent);
-                break;
+        if (view.getId() == R.id.NewRecordButton){
+            intent = new Intent(this, NewRecordActivity.class);
+            intent.putExtra(OldRecordActivity.EXTRA, -1);
+            startActivity(intent);
+        } else if (view.getId() == R.id.ChartButton){
+            intent = new Intent(this, ChartActivity.class);
+            startActivity(intent);
+        } else {
+            intent = new Intent(this, OldRecordActivity.class);
+            startActivity(intent);
         }
     }
     private void setTestRecords(){
         for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 17; i++) {
+            for (int i = 0; i < 10; i++) {
                 Singleton.getInstance().addRecord(new Record());
 
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(130 + j * 5 + 10 * i);
@@ -268,6 +258,11 @@ public class MainActivity extends AppCompatActivity {
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setDate(calendar.getTime());
             }
         }
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 15);
+        Singleton.getInstance().getRecording().get(4).setDate(calendar.getTime());
+        calendar.add(Calendar.DATE, 10);
+        Singleton.getInstance().getRecording().get(8).setDate(calendar.getTime());
         for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
             Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
         }
