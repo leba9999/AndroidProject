@@ -139,7 +139,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                         records.add(Singleton.getInstance().getRecording().get(s));
-                } else {
+                } else if (!dates.get(i).equals(dateFormat.format(records.get(records.size() - 1).getDate()))) {
                     Record record = new Record();
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(records.get(records.size() - 1).getDate());
@@ -148,6 +148,10 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                     records.add(record);
                 }
             }
+        }
+        Log.i("APP_PEF", "Records:" + records.size());
+        for (int i = 0; i < records.size(); i++){
+            Log.i("APP_PEF", "Date:"+  dateFormat.format(records.get(i).getDate()) +" Records:" + records.get(i).toString());
         }
         // Taulukkoon halutaan 7 päivän tulokset
         for (int i = 0; i < dayCount; i++){

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class OldRecordActivity extends AppCompatActivity {
 
@@ -38,11 +39,11 @@ public class OldRecordActivity extends AppCompatActivity {
 
         ArrayList<Record> records = Singleton.getInstance().getRecording();
 
-        List<String> dateList = new ArrayList<String>();
+        List<String> dateList = new ArrayList<>();
         //Calendar calendar = Calendar.getInstance();
         for (int i=0; i<records.size(); i++) {
           //  calendar.add(Calendar.DATE, 1);
-            SimpleDateFormat curFormater = new SimpleDateFormat(Singleton.getInstance().getDateFormat());
+            SimpleDateFormat curFormater = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
             //String s = " ";
             switch (records.get(i).getType()) {

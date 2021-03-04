@@ -110,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -6);
         Date startDay = calendar.getTime();
-        calendar.add(Calendar.DATE, 6);
+        calendar = Calendar.getInstance();
         Date endDay = calendar.getTime();
         calendar.setTime(startDay);
         long dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                     records.add(Singleton.getInstance().getRecording().get(s));
-                } else {
+                } else if (!dates.get(i).equals(dateFormat.format(records.get(records.size() - 1).getDate()))) {
                     Record record = new Record();
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(records.get(records.size() - 1).getDate());
@@ -263,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setType(j);
                 calendar = Calendar.getInstance();
-                calendar.add(Calendar.DATE, i);
+                calendar.add(Calendar.DATE, -i);
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setDate(calendar.getTime());
             }
         }

@@ -35,4 +35,5 @@
     <string name="PeakAirflow">Huippu Puhallus</string>
     <string name="PlaceHolderText">HelloWorld</string>
     <string name="Dash">-</string>
+    <string name="WeekofRecords">Viikon merkinnät:</string>
 </resources>
