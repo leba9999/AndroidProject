@@ -33,4 +33,7 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_old_record">OldRecordActivity</string>
     <string name="PeakAirflow">Huippu Puhallus</string>
+    <string name="PlaceHolderText">HelloWorld</string>
+    <string name="Dash">-</string>
+    <string name="WeekofRecords">Viikon merkinnät:</string>
 </resources>
