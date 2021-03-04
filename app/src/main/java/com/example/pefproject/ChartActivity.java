@@ -18,9 +18,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -101,18 +99,12 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         setUpChart();
     }
     public void buttonPressed (View view) {
-        switch (view.getId()) {
-            // Buttons id:
-            case R.id.startDateTextView:
-                showDatePickerDialog(startDay);
-                dayTextView = true;
-                break;
-            case R.id.endDateTextView:
-                showDatePickerDialog(endDay);
-                dayTextView = false;
-                break;
-            default:
-                break;
+        if (view.getId() == R.id.startDateTextView){
+            showDatePickerDialog(startDay);
+            dayTextView = true;
+        } else {
+            showDatePickerDialog(endDay);
+            dayTextView = false;
         }
     }
 
@@ -138,27 +130,12 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                 dates.add(dateFormat.format(calendar.getTime()));
             }
         }
-/*
-        while (endDay.getTime() > records.get(records.size() - 1).getDate().getTime()) {
-            Log.i("APP_PEF", "datesSize: " + dates.size() + " records.size:" + (records.size() - 1) + " tempTest:" + tempTest + " Size:" + Singleton.getInstance().getRecording().size() );
-            Record record = new Record();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(records.get(records.size() - 1).getDate());
-            calendar.add(Calendar.DATE, 1);
-            record.setDate(calendar.getTime());
-            records.add(record);
-            if (!dates.contains(dateFormat.format(records.get(records.size() - 1).getDate()))) {
-                dates.add(dateFormat.format(records.get(records.size() - 1).getDate()));
-            }
-        }*/
-        int tempTest = 0;
         for (int i = 0; i < dayCount; i++){
             if (records.isEmpty()){
                 Record record = new Record();
                 record.setDate(startDay);
                 records.add(record);
             }
-            Log.i("APP_PEF", "datesSize: " + dates.size() + " records.size:" + (records.size() - 1) + " tempTest:" + tempTest + " Size:" + Singleton.getInstance().getRecording().size() );
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                         records.add(Singleton.getInstance().getRecording().get(s));
@@ -172,47 +149,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                 }
             }
         }
-        /*
-        for (int i = 0; i < records.size(); i++){
-            //Log.i("APP_PEF", "datesSize: " + dates.size() + " date:" + dates.get(i));
-            //Log.i("APP_PEF", "datesSize: " + dates.size() + " Records[" + i + "]:" + records.get(i).toString() + " Date" + dateFormat.format(records.get(i).getDate()));
-            //Log.i("APP_PEF", "datesSize: " + dates.size() + " date:" + dates.get(i));
-        }
-        for (int x = 0; x < Singleton.getInstance().getRecording().size(); x++){
-            records.add(Singleton.getInstance().getRecording().get(x));
-            // jos dates lista on tyhjä lisätään sinne päivämäärä
-            if (dates.isEmpty()){
-                dates.add(dateFormat.format(records.get(x).getDate()));
-            }
-            // tarkastetaan sisältääkö dates jo kyseisen päivämäärän jos ei niin lisätään se listaan
-            if (!dates.contains(dateFormat.format(records.get(x).getDate()))){
-                dates.add(dateFormat.format(records.get(x).getDate()));
-            }
-        }
-        // jos uniikkeja päivämääriä ei ollut tarpeeksi singletonissa tallennettuna tarvitaan lisätä
-        // tyhjiä merkintöjä jotka sisältävät uniikin päivämäärän
-        while (dates.size() <= dayCount){
-            Record record = new Record();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(records.get(records.size()-1).getDate());
-            calendar.add(Calendar.DATE, 1);
-            record.setDate(calendar.getTime());
-            records.add(record);
-            // jos vahingossa jollain merkinnällä onkin sama päivämäärä niin varmisteaan se ja ei lisätä kopiota
-            if (!dates.contains(dateFormat.format(records.get(records.size()-1).getDate()))){
-                dates.add(dateFormat.format(records.get(records.size()-1).getDate()));
-            }
-        }
-        int tempCount = 1;
-        for (int i = 0; i < dates.size(); i++){
-            Log.i("APP_PEF", "datesSize: " + dates.size() + " date:" + dates.get(i));
-            if (dates.get(i).equals(dateFormat.format(startDay))){
-                //Log.i("APP_PEF", "datesSize: " + dates.size() + " Count" + dayCount);
-                tempCount = i;
-            }
-        }
-        Log.i("APP_PEF", "datesSize: " + dates.size() + " Count" + dayCount);
-        */
         // Taulukkoon halutaan 7 päivän tulokset
         for (int i = 0; i < dayCount; i++){
             // Lisätään BarEntryjä jotka siis sisältävät X arvon ja y arvon
@@ -284,14 +220,11 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         barData.setBarWidth(1f / 3f);
 
-        //barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         barChart.getXAxis().setCenterAxisLabels(true);
-        //barChart.getXAxis().setAvoidFirstLastClipping(true);
 
         barChart.setData(barData);
         barChart.groupBars(0f, 0f, 0f);
 
-        //barChart.setVisibleXRange(0f, 8f);
         barChart.getXAxis().setAxisMinimum(0);
         barChart.getXAxis().setAxisMaximum(dayCount);
         barChart.setPinchZoom(true);
@@ -302,7 +235,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, (int)dayCount ));
         barChart.getDescription().setText(getString(R.string.PeakAirflow));
         barChart.setDrawValueAboveBar(false);
-        //barChart.setAutoScaleMinMaxEnabled(true);
 
         barChart.invalidate();
     }
