@@ -48,8 +48,6 @@ public class Singleton {
      * @param record asetetaan merkintä listaan
      */
     public void addRecord(Record record) {
-        record.setTimeFormat(timeFormat);
-        record.setDateFormat(dateFormat);
         recording.add(record);
     }
 

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Singleton.getInstance().loadData(this);
-        //setTestRecords();
+        setTestRecords();
 
         calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setTestRecords(){
         for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 17; i++) {
+            for (int i = 0; i < 10; i++) {
                 Singleton.getInstance().addRecord(new Record());
 
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).addNormalAirflow(130 + j * 5 + 10 * i);
@@ -268,6 +268,11 @@ public class MainActivity extends AppCompatActivity {
                 Singleton.getInstance().getRecording().get(Singleton.getInstance().getRecording().size() - 1).setDate(calendar.getTime());
             }
         }
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 15);
+        Singleton.getInstance().getRecording().get(4).setDate(calendar.getTime());
+        calendar.add(Calendar.DATE, 10);
+        Singleton.getInstance().getRecording().get(8).setDate(calendar.getTime());
         for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
             Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
         }
