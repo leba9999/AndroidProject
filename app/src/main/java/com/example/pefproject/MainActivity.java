@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Singleton.getInstance().loadData(this);
-        setTestRecords();
+        //setTestRecords();
 
         calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         if (records.isEmpty()){
             return;
         }
-        Date date = calendar.getTime();
+        calendar = Calendar.getInstance();
         for (int i = 0; i < records.size(); i++){
             if (dateFormat.format(records.get(i).getDate()).equals(dateFormat.format(calendar.getTime()))){
                 if (records.get(i).getType() == Record.PM){
@@ -195,30 +195,39 @@ public class MainActivity extends AppCompatActivity {
         BarDataSet morningDataSet = new BarDataSet(morningAirflow, "");
         morningDataSet.setColors(morningColors);
         morningDataSet.setStackLabels(colorLabels);
+        morningDataSet.setValueTextSize(12f);
 
         BarDataSet eveningDataSet = new BarDataSet(eveningAirflow, "");
         eveningDataSet.setColors(eveningColors);
         eveningDataSet.setStackLabels(colorLabels);
+        eveningDataSet.setValueTextSize(12f);
 
         BarDataSet extraDataSet = new BarDataSet(extraAirflow, "");
         extraDataSet.setColors(extraColors);
         extraDataSet.setStackLabels(colorLabels);
+        extraDataSet.setValueTextSize(12f);
 
         BarData barData = new BarData(morningDataSet, eveningDataSet, extraDataSet);
-        barChart.setData(barData);
-        barData.setBarWidth(barChart.getXAxis().getGridLineWidth() / 3);
 
-        barChart.groupBars(0f, 0f, 0f);
-        barChart.setFitBars(true);
-        //barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        barData.setBarWidth(1f / 3f);
+
         barChart.getXAxis().setCenterAxisLabels(true);
-        barChart.getXAxis().setAvoidFirstLastClipping(true);
-        barChart.setVisibleXRange(0f, 7.4f);
-        barChart.setScaleYEnabled(false);
+
+        barChart.setData(barData);
+        barChart.groupBars(0f, 0f, 0f);
+
         barChart.getXAxis().setAxisMinimum(0);
-        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, dates.size()));
+        barChart.getXAxis().setAxisMaximum(dayCount);
+        barChart.setPinchZoom(true);
+
+        barChart.setScaleYEnabled(false);
+        barChart.setScaleXEnabled(true);
+
+        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, (int)dayCount ));
         barChart.getDescription().setText(getString(R.string.PeakAirflow));
         barChart.setDrawValueAboveBar(false);
+
+        barChart.invalidate();
         Log.i(logTag, " setUpChart: Ready");
     }
 
@@ -281,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         Log.i(logTag, "onResume: Start");
-        //Singleton.getInstance().loadData(this);
+        Singleton.getInstance().loadData(this);
         loadDayRecord();
         super.onResume();
         Log.i(logTag, "onResume: End");
