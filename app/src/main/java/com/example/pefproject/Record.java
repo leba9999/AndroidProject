@@ -67,6 +67,8 @@ public class Record {
      */
     public void addNormalAirflow(int AirflowValue) {
         this.normalAirflow.add(AirflowValue);
+        if(medicineAirflow.size() > 3)
+            medicineAirflow.remove(medicineAirflow.size() - 1);
     }
 
     /**
@@ -75,6 +77,8 @@ public class Record {
      */
     public void addMedicineAirflow(int AirflowValue) {
         this.medicineAirflow.add(AirflowValue);
+        if(medicineAirflow.size() > 3)
+            medicineAirflow.remove(medicineAirflow.size() - 1);
     }
 
     /**
