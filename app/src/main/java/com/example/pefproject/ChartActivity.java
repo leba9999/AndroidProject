@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -21,6 +20,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Luokalla ChartActivity asetetaan ChartActivityyn taulukko joka sisältää Singletonista ladattujen merkintöjen huippu puhallus arvot
+ * @author Leevi Koskinen
+ * @version 05.03.2021
+ */
 public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     private TextView startDateText;
@@ -36,10 +40,18 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     private Date startDay;
     private Date endDay;
     private Calendar calendar;
+
+    /**
+     * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot
+     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+       this.year = 0;
+       this.month = 0;
+       this.day = 0;
 
         dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
@@ -52,8 +64,9 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         startDay = new Date();
         endDay = new Date();
 
+        calendar.add(Calendar.DATE, -10);
         startDay = calendar.getTime();
-        calendar.add(Calendar.DATE, 10);
+        calendar = Calendar.getInstance();
         endDay = calendar.getTime();
 
         day_1 = startDay.getTime();
@@ -62,11 +75,14 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         startDateText.setText(dateFormat.format(startDay.getTime()));
         endDateText.setText(dateFormat.format(endDay.getTime()));
 
-        Log.i("APP_PEF", "2 Calendar:" + calendar.getTimeInMillis());
-        Log.i("APP_PEF", "3 Calendar:" + ((day_2 - day_1) / (24 * 60 * 60 * 1000)));
         dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
         setUpChart();
     }
+
+    /**
+     * Näyttää androidin kalenterin käyttäjälle. Josta käyttäjä voi valita päivämäärän
+     * @param date date asettaa kalenterin päivämäärän haluttuun päivään
+     */
     public void showDatePickerDialog(Date date){
         calendar.setTimeInMillis(date.getTime());
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -78,6 +94,13 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         datePickerDialog.show();
     }
 
+    /**
+     * Kuuntelinjan DatePickerDialog.OnDateSetListener onDateSet funktio joka kutsutaan kun käyttäjä on valinnut ja hyväksynyt päivämäärän
+     * @param view DatePicker: valitsia joka kuuluu avattuun dialogiin
+     * @param year int: valittu vuosi
+     * @param month int: valittu kuukausi (0-11)
+     * @param day int: valittu päivä (1-31, riippuu valitusta kuukaudesta)
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         this.year = year;
@@ -98,6 +121,12 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
         setUpChart();
     }
+
+    /**
+     * Tutkitaan mitä viewiä on painettu. Jos startDateTextView on painettu niin näytetään kalenteri joka sisältää aloitus päivämäärän.
+     * Jos endDateTextView on painettu kalenteri näyttää lopetus päivämäärän.
+     * @param view tutkitaan minkä näkymän id:tä on painettu
+     */
     public void buttonPressed (View view) {
         if (view.getId() == R.id.startDateTextView){
             showDatePickerDialog(startDay);
@@ -108,8 +137,11 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         }
     }
 
+    /**
+     * Asettaa taulukko näkymään palkki taulukon joka sisältää valittujen päivämäärien välisten merkintöjen huippu arvot.
+     * Lisää tyhjiä merkintöjä väliin jos Singletonista löydetyt merkinnät eivät täytä kaikkia päivämääriä/kohtia
+     */
     private void setUpChart(){
-        Log.i("APP_PEF", "Start");
         BarChart barChart = findViewById(R.id.barChartView);
 
         ArrayList<BarEntry> morningAirflow = new ArrayList<>();
@@ -139,7 +171,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                         records.add(Singleton.getInstance().getRecording().get(s));
-                } else if (!dates.get(i).equals(dateFormat.format(records.get(records.size() - 1).getDate()))) {
+                } else {
                     Record record = new Record();
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(records.get(records.size() - 1).getDate());
@@ -148,10 +180,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
                     records.add(record);
                 }
             }
-        }
-        Log.i("APP_PEF", "Records:" + records.size());
-        for (int i = 0; i < records.size(); i++){
-            Log.i("APP_PEF", "Date:"+  dateFormat.format(records.get(i).getDate()) +" Records:" + records.get(i).toString());
         }
         // Taulukkoon halutaan 7 päivän tulokset
         for (int i = 0; i < dayCount; i++){
@@ -236,7 +264,7 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         barChart.setScaleYEnabled(false);
         barChart.setScaleXEnabled(true);
 
-        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, (int)dayCount ));
+        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates));
         barChart.getDescription().setText(getString(R.string.PeakAirflow));
         barChart.setDrawValueAboveBar(false);
 

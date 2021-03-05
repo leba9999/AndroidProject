@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,6 +19,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Luokalla MainActivity asetetaan: taulukko joka sisältää viikon merkintöjen huippu arvot jotka on Singletonista ladattu,
+ * haetaan Singletonista tämän hetkisen päivämäärän merkintöjen huippu arvot texView:hin
+ * ja liikutaan muihin aktiviteetteihin
+ * @author Leevi Koskinen
+ * @version 05.03.2021
+ */
 public class MainActivity extends AppCompatActivity {
     private final String logTag = "com.example.pefproject.APP_MainActivity.java";
     private TextView morningTextView;
@@ -35,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private Calendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(logTag, "onCreate: Start");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Singleton.getInstance().loadData(this);
@@ -60,14 +65,12 @@ public class MainActivity extends AppCompatActivity {
 
         setUpChart();
         loadDayRecord();
-        Log.i(logTag, "onCreate: End");
     }
 
     /**
      * Lataa päivän huippu arvot näkyviin MainActivityssä
      */
     private void loadDayRecord(){
-        Log.i(logTag, " loadDayRecord: Start");
         ArrayList<Record> records = Singleton.getInstance().getRecording();
         if (records.isEmpty()){
             return;
@@ -90,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        Log.i(logTag, " loadDayRecord: Ready");
     }
 
     /**
      * Asettaa taulukolle viikon puhallusten huippu arvot ja värit
      */
     private void setUpChart(){
-        Log.i(logTag, " setUpChart: Start");
         BarChart barChart = findViewById(R.id.barView);
 
         ArrayList<BarEntry> morningAirflow = new ArrayList<>();
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                     records.add(Singleton.getInstance().getRecording().get(s));
-                } else if (!dates.get(i).equals(dateFormat.format(records.get(records.size() - 1).getDate()))) {
+                } else {
                     Record record = new Record();
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(records.get(records.size() - 1).getDate());
@@ -224,12 +225,11 @@ public class MainActivity extends AppCompatActivity {
         barChart.setScaleYEnabled(false);
         barChart.setScaleXEnabled(true);
 
-        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates, (int)dayCount ));
+        barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates));
         barChart.getDescription().setText(getString(R.string.PeakAirflow));
         barChart.setDrawValueAboveBar(false);
 
         barChart.invalidate();
-        Log.i(logTag, " setUpChart: Ready");
     }
 
     /**
@@ -273,27 +273,24 @@ public class MainActivity extends AppCompatActivity {
         Singleton.getInstance().getRecording().get(4).setDate(calendar.getTime());
         calendar.add(Calendar.DATE, 10);
         Singleton.getInstance().getRecording().get(8).setDate(calendar.getTime());
-        for (int i = 0; i < Singleton.getInstance().getRecording().size(); i++){
-            Log.i(logTag, "Record ["+ i +"] : " + Singleton.getInstance().getRecording().get(i).toString());
-        }
     }
 
+    /**
+     * Kun aktiviteetti pysäytetään tallenetaan Singletonin arvot käyttäen singletonin saveData() funktiota
+     */
     @Override
     protected void onPause() {
         Singleton.getInstance().saveData(this);
         super.onPause();
     }
-    @Override
-    protected void onStop() {
-        Singleton.getInstance().saveData(this);
-        super.onStop();
-    }
+
+    /**
+     * Kun aktiviteetti palaa takaisin toimintaan ladataan Singletonin arvot käyttäen singletonin loadData() funktiota
+     */
     @Override
     protected void onResume() {
-        Log.i(logTag, "onResume: Start");
         Singleton.getInstance().loadData(this);
         loadDayRecord();
         super.onResume();
-        Log.i(logTag, "onResume: End");
     }
 }

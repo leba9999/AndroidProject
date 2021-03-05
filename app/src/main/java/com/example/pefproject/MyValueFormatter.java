@@ -13,11 +13,11 @@ public class MyValueFormatter extends ValueFormatter {
 
     /**
      * Formatoi XAxisin annetun String Arraylistan mukaan.
-     * @param dates asetetaan dates lista dates arraylistaan
+     * @param dates asetetaan dates Arraylistalla formatoitavat arvot
      */
-    public MyValueFormatter(ArrayList<String> dates, int countOfDays){
+    public MyValueFormatter(ArrayList<String> dates){
         this.dates = dates;
-        this.countOfDays = countOfDays;
+        this.countOfDays = dates.size();
     }
     @Override
     public String getAxisLabel(float value, AxisBase axis){
