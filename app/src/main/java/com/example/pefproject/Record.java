@@ -2,16 +2,14 @@ package com.example.pefproject;
 
 import androidx.annotation.NonNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Luokka sisältää merkinnälle kaiken tarpeellisen datan. Esim pv, aika, kommentti ja ilmankulun arvot
  * @author Leevi Koskinen
- * @version 03.03.2021
+ * @version 0.01 05.03.2021
  */
 public class Record {
     // Normaali puhalluksen arvolista
