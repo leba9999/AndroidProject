@@ -118,7 +118,7 @@ public class OldRecordActivity extends AppCompatActivity  implements DatePickerD
 
         ArrayList<Record> records = Singleton.getInstance().getRecording();
         ArrayList<String> dates = new ArrayList<>();
-
+        ArrayList<String> dateList = new ArrayList<>();
         calendar.setTime(startDay);
 
         dates.add(dateFormat.format(startDay));
@@ -131,7 +131,7 @@ public class OldRecordActivity extends AppCompatActivity  implements DatePickerD
             }
         }
 
-        List<String> dateList = new ArrayList<>();
+
         //Calendar calendar = Calendar.getInstance();
 
         for (int i = 0; i < dayCount; i++) {
