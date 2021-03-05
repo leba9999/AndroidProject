@@ -76,8 +76,6 @@ public class NewRecordActivity extends AppCompatActivity {
         secondNumberMed.addTextChangedListener(saveTextWatcher);
         thirdNumberMed.addTextChangedListener(saveTextWatcher);
 
-        Bundle b = getIntent().getExtras();
-        int i = b.getInt(OldRecordActivity.EXTRA, -1);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
 
