@@ -19,6 +19,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Luokka hallitsee Uusi merkintä aktiviteettiä.
+ * @author Janne Lähteenmäki
+ * @version 0.01 5.3.2021
+ */
 public class NewRecordActivity extends AppCompatActivity {
     private final String logTag = "com.example.pefproject.APP_NewRecordActivity.java";
     private TextView dateTextView;
@@ -92,7 +97,6 @@ public class NewRecordActivity extends AppCompatActivity {
             secondNumberMed.setText(records.get(i).getMedicineAirflowList().get(1).toString());
             thirdNumberMed.setText(records.get(i).getMedicineAirflowList().get(2).toString());
             commentText.setText(records.get(i).getComment());
-
         }
 
         switch (record.getType()) {
@@ -109,13 +113,16 @@ public class NewRecordActivity extends AppCompatActivity {
                 radioGroupTime.clearCheck();
                 break;
         }
-
     }
 
+    /**
+     * TextWatcher metodi seuraa onko puhallusarvo paikoille kirjoitettu merkkejä. (Normal ja Med editTextViewit).
+     * Mikäli yksikin paikka on tyhjänä, tallentaminen ei onnistu.
+     * Kun kaikki paikat ovat täytetty vähintään yhdellä merkillä, tallennus nappula muuttuu enable muotoon ja tallennus nappulaa voi painaa.
+     */
     private TextWatcher saveTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
 
         @Override
@@ -134,10 +141,15 @@ public class NewRecordActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     };
 
+    /**
+     * Kun tallennusnappulaa painetaan suoritetaan metodi saveRecords.
+     * Tallennetaan saadut tiedot sharedpreferenceihin.
+     * Vaihdetaan activityä activityyn, josta on siirrytty nykyiseen NewRecordActivityyn.
+     * @param view Tallenna nappulan view.
+     */
     public void onSaveButtonClicked(View view) {
         saveRecords();
         Singleton.getInstance().saveData(this);
@@ -156,6 +168,10 @@ public class NewRecordActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Asettaa listan tyypin riippuen mikä radiobutton on painettuna. (Aamu/ilta/ylimääräinen).
+     * Lisää oikeaan listaan luvut jotka ovat syötetty puhallusarvo paikoille. (Normal ja Med editTextViewit).
+     */
     public void saveRecords() {
         switch (radioGroupTime.getCheckedRadioButtonId()) {
             case R.id.radioButtonEve:

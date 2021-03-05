@@ -36,14 +36,14 @@
             android:layout_width="match_parent"
             android:layout_height="78dp">
 
-            <Button
-                android:id="@+id/OldRecordActivity"
-                android:layout_width="380sp"
-                android:layout_height="wrap_content"
-                android:onClick="buttonPressed"
-                android:text="@string/OldRecordButton"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"/>
+                <Button
+                    android:id="@+id/OldRecordActivity"
+                    android:layout_width="380sp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:onClick="buttonPressed"
+                    android:text="@string/OldRecordButton"
+                    android:textColorLink="#FFFFFF" />
 
         </RelativeLayout>
 
