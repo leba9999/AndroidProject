@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private  SimpleDateFormat dateFormat;
 
     private Calendar calendar;
+    /**
+     * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot
+     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
