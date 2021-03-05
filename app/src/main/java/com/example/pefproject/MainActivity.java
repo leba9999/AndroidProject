@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
 /**
  * Luokalla MainActivity asetetaan: taulukko joka sisältää viikon merkintöjen huippu arvot jotka on Singletonista ladattu,
  * haetaan Singletonista tämän hetkisen päivämäärän merkintöjen huippu arvot texView:hin
@@ -279,12 +281,17 @@ public class MainActivity extends AppCompatActivity {
         if (view.getId() == R.id.NewRecordButton){
             intent = new Intent(this, NewRecordActivity.class);
             intent.putExtra(OldRecordActivity.EXTRA, -1);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            //intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         } else if (view.getId() == R.id.ChartButton){
             intent = new Intent(this, ChartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } else {
             intent = new Intent(this, OldRecordActivity.class);
+            //intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }
