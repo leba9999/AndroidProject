@@ -104,21 +104,22 @@ public class NewRecordActivity extends AppCompatActivity {
             secondNumberMed.setText(records.get(i).getMedicineAirflowList().get(1).toString());
             thirdNumberMed.setText(records.get(i).getMedicineAirflowList().get(2).toString());
             commentText.setText(records.get(i).getComment());
-        }
 
-        switch (record.getType()) {
-            case Record.AM:
-                rbMorn.setChecked(true);
-                break;
-            case Record.PM:
-                rbEve.setChecked(true);
-                break;
-            case Record.EXTRA:
-                rbExtra.setChecked(true);
-                break;
-            default:
-                radioGroupTime.clearCheck();
-                break;
+            switch (records.get(i).getType()) {
+                case Record.AM:
+                    rbMorn.setChecked(true);
+                    break;
+                case Record.PM:
+                    rbEve.setChecked(true);
+                    break;
+                case Record.EXTRA:
+                    rbExtra.setChecked(true);
+                    break;
+                default:
+                    radioGroupTime.clearCheck();
+                    break;
+
+            }
         }
     }
 
@@ -180,7 +181,6 @@ public class NewRecordActivity extends AppCompatActivity {
             nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
         }
         startActivity(nextActivity);
-
     }
 
     /**
@@ -188,26 +188,24 @@ public class NewRecordActivity extends AppCompatActivity {
      * Lisää oikeaan listaan luvut jotka ovat syötetty puhallusarvo paikoille. (Normal ja Med editTextViewit).
      */
     public void saveRecords() {
+
+        int type;
+
         switch (radioGroupTime.getCheckedRadioButtonId()) {
             case R.id.radioButtonEve:
-                record.setType(Record.PM);
+                type = Record.PM;
                 break;
             case R.id.radioButtonMorn:
-                record.setType(Record.AM);
+                type = Record.AM;
                 break;
             case R.id.radioButtonOver:
-                record.setType(Record.EXTRA);
+                type = Record.EXTRA;
                 break;
             default:
+                type = -1;
                 break;
         }
-        //EditText firstNumberNormal = (EditText) firstNumberNormal;
-        //EditText secondNumberNormal = (EditText) findViewById(R.id.editTextSecondNumberNormal);
-        //EditText thirdNumberNormal = (EditText) findViewById(R.id.editTextThirdNumberNormal);
-        //EditText firstNumberMed = (EditText) findViewById(R.id.editTextFirstNumberMed);
-        //EditText secondNumberMed = (EditText) findViewById(R.id.editTextSecondNumberMed);
-        //EditText thirdNumberMed = (EditText) findViewById(R.id.editTextThirdNumberMed);
-        //EditText comment = (EditText) findViewById(R.id.editTextComment);
+
         if (i == -1) {
             record.addNormalAirflow(Integer.parseInt(firstNumberNormal.getText().toString()));
             record.addNormalAirflow(Integer.parseInt(secondNumberNormal.getText().toString()));
@@ -217,6 +215,7 @@ public class NewRecordActivity extends AppCompatActivity {
             record.addMedicineAirflow(Integer.parseInt(thirdNumberMed.getText().toString()));
             record.setComment(commentText.getText().toString());
             record.setDate(date);
+            record.setType(type);
             Singleton.getInstance().addRecord(record);
         } else {
             records.get(i).getNormalAirflowList().set(0, Integer.parseInt(firstNumberNormal.getText().toString()));
@@ -226,10 +225,10 @@ public class NewRecordActivity extends AppCompatActivity {
             records.get(i).getMedicineAirflowList().set(1, Integer.parseInt(secondNumberMed.getText().toString()));
             records.get(i).getMedicineAirflowList().set(2, Integer.parseInt(thirdNumberMed.getText().toString()));
             records.get(i).setComment(commentText.getText().toString());
+            records.get(i).setType(type);
             records.get(i).setDate(date);
+
         }
-
-
     }
 
 }
