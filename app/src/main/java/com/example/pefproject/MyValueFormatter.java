@@ -22,6 +22,13 @@ public class MyValueFormatter extends ValueFormatter {
         this.dates = dates;
         this.countOfDays = dates.size();
     }
+
+    /**
+     * Hakee akselin merkin value muuttujan avulla
+     * @param value float: X akselin arvo mikä halutaan formatoida
+     * @param axis AxisBase: mikä akseli formatoidaan. (Ei vaikuta)
+     * @return String palauttaa annetun listan arvon
+     */
     @Override
     public String getAxisLabel(float value, AxisBase axis){
         String format = Singleton.getInstance().getDateFormat();
