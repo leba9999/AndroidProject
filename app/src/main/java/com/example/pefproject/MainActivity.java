@@ -51,6 +51,20 @@ public class MainActivity extends AppCompatActivity {
         Singleton.getInstance().loadData(this);
 
         calendar = Calendar.getInstance();
+        for (int i = 0; i < 30; i++){
+            calendar.add(Calendar.DATE, -1);
+            Record record = new Record();
+            record.setDate(calendar.getTime());
+            record.addNormalAirflow(200 + 10 * i);
+            record.addNormalAirflow(200 + 10 * i);
+            record.addNormalAirflow(200 + 10 * i);
+            record.addMedicineAirflow(300 + 10 * i);
+            record.addMedicineAirflow(300 + 10 * i);
+            record.addMedicineAirflow(300 + 10 * i);
+            Singleton.getInstance().addRecord(record);
+        }
+
+        calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
@@ -290,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             intent = new Intent(this, OldRecordActivity.class);
+
             //intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
             //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
@@ -312,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         Singleton.getInstance().loadData(this);
         loadDayRecord();
+        setUpChart();
         super.onResume();
     }
 }

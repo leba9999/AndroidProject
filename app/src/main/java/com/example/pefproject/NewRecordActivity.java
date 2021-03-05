@@ -1,13 +1,19 @@
 package com.example.pefproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,6 +35,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
  */
 public class NewRecordActivity extends AppCompatActivity {
     private final String logTag = "com.example.pefproject.APP_NewRecordActivity.java";
+
     private TextView dateTextView;
     private TextView medlesTextView;
     private TextView medTextView;
@@ -57,10 +64,11 @@ public class NewRecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_record);
         Singleton.getInstance().loadData(this);
 
+        dateTextView = findViewById(R.id.textViewDate);
+
         b = getIntent().getExtras();
         i = b.getInt(OldRecordActivity.EXTRA, -1);
         records = Singleton.getInstance().getRecording();
-        dateTextView = findViewById(R.id.textViewDate);
         medlesTextView = findViewById(R.id.textViewMedles);
         medTextView = findViewById(R.id.textViewMed);
         radioGroupTime = findViewById(R.id.radioGroupTime);
@@ -70,6 +78,7 @@ public class NewRecordActivity extends AppCompatActivity {
         rbEve = findViewById(R.id.radioButtonEve);
         rbExtra = findViewById(R.id.radioButtonOver);
         buttonSave = findViewById(R.id.buttonSave);
+
         firstNumberNormal = findViewById(R.id.editTextFirstNumberNormal);
         secondNumberNormal = findViewById(R.id.editTextSecondNumberNormal);
         thirdNumberNormal = findViewById(R.id.editTextThirdNumberNormal);
@@ -120,6 +129,37 @@ public class NewRecordActivity extends AppCompatActivity {
                     break;
 
             }
+        }
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
+        dateTextView.setOnClickListener(v -> {
+            calendar.setTime(date);
+            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+        });
+        datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            calendar.set(year, month, dayOfMonth);
+            date = calendar.getTime();
+            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
+        });
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Log.i("dsd", "ascasdasdasfasfaf");
+                if (i < 0) {
+                    NavUtils.navigateUpFromSameTask(this);
+                } else {
+                    nextActivity = new Intent(this, OldRecordActivity.class);
+                    //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
+                    nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
+                    startActivity(nextActivity);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

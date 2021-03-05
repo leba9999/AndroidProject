@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class OldRecordActivity extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener {
+public class OldRecordActivity extends AppCompatActivity {
 
     public static final String EXTRA = "OldRecords";
     private String recordType;
@@ -28,16 +28,10 @@ public class OldRecordActivity extends AppCompatActivity  implements DatePickerD
     private TextView startDateText;
     private TextView endDateText;
 
-    private int year;
-    private int month;
-    private int day;
     private boolean dayTextView;
     private long dayCount;
 
     private SimpleDateFormat dateFormat;
-
-    private long day_1;
-    private long day_2;
 
     private Date startDay;
     private Date endDay;
@@ -62,63 +56,43 @@ public class OldRecordActivity extends AppCompatActivity  implements DatePickerD
         calendar = Calendar.getInstance();
         endDay = calendar.getTime();
 
-        day_1 = startDay.getTime();
-        day_2 = endDay.getTime();
-
         startDateText.setText(dateFormat.format(startDay.getTime()));
         endDateText.setText(dateFormat.format(endDay.getTime()));
 
-        dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
-
-        this.year = 0;
-        this.month = 0;
-        this.day = 0;
-
+        dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         startDateText.setOnClickListener(v -> {
-            showDatePickerDialog(startDay);
+            calendar.setTime(startDay);
+            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
             dayTextView = true;
         });
         endDateText.setOnClickListener(v -> {
-            showDatePickerDialog(endDay);
+            calendar.setTime(endDay);
+            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
             dayTextView = false;
         });
+        datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            calendar.set(year, month, dayOfMonth);
+            if (dayTextView){
+                startDay = calendar.getTime();
+                startDateText.setText(dateFormat.format(startDay.getTime()));
+            } else {
+                endDay = calendar.getTime();
+                endDateText.setText(dateFormat.format(endDay.getTime()));
+            }
+            dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+            updateUI();
+        });
     }
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-
-        if (dayTextView){
-            calendar.set(this.year, this.month , this.day);
-            startDay = calendar.getTime();
-            startDateText.setText(dateFormat.format(startDay.getTime()));
-            day_1 = calendar.getTimeInMillis();
-        } else{
-            calendar.set(this.year, this.month , this.day);
-            endDay = calendar.getTime();
-            endDateText.setText(dateFormat.format(endDay.getTime()));
-            day_2 = calendar.getTimeInMillis();
-        }
-        dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
-    }
-    public void showDatePickerDialog(Date date){
-        calendar.setTimeInMillis(date.getTime());
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
-    }
-
     public void updateUI() {
         ListView listView = findViewById(R.id.listViewDates);
 
         ArrayList<Record> records = Singleton.getInstance().getRecording();
         ArrayList<String> dates = new ArrayList<>();
         ArrayList<String> dateList = new ArrayList<>();
+        ArrayList<String> data = new ArrayList<>();
         calendar.setTime(startDay);
 
         dates.add(dateFormat.format(startDay));
@@ -148,16 +122,22 @@ public class OldRecordActivity extends AppCompatActivity  implements DatePickerD
                             recordType = getString(R.string.Extra);
                             break;
                     }
-                    dateList.add(dateFormat.format(records.get(i).getDate()) + "\t \t" + recordType + "\t" +
-                            +records.get(i).getPeakNormalAirflow() + "\t"
-                            + records.get(i).getPeakMedicineAirflow());
+                    data.add(dateFormat.format(records.get(j).getDate()) + "\t \t" + recordType + "\t" +
+                            +records.get(j).getPeakNormalAirflow() + "\t"
+                            + records.get(j).getPeakMedicineAirflow());
+                    dateList.add(dateFormat.format(records.get(j).getDate()));
                 }
             }
         }
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dateList));
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data));
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Intent nextActivity = new Intent(OldRecordActivity.this, NewRecordActivity.class);
-            nextActivity.putExtra(EXTRA, position);
+            for (int j = 0; j < records.size(); j++) {
+                if (dateList.get(position).equals(dateFormat.format(records.get(j).getDate()))){
+                    Log.i("APP_OLD", " " + j + " " + dateFormat.format(records.get(j).getDate()));
+                    nextActivity.putExtra(EXTRA, j);
+                }
+            }
             startActivity(nextActivity);
 
         });

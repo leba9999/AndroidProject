@@ -5,8 +5,6 @@ import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,18 +23,13 @@ import java.util.Locale;
  * @author Leevi Koskinen
  * @version 0.01 05.03.2021
  */
-public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class ChartActivity extends AppCompatActivity {
 
     private TextView startDateText;
     private TextView endDateText;
-    private int year;
-    private int month;
-    private int day;
     private boolean dayTextView;
     private long dayCount;
     private SimpleDateFormat dateFormat;
-    private long day_1;
-    private long day_2;
     private Date startDay;
     private Date endDay;
     private Calendar calendar;
@@ -49,22 +42,13 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-       this.year = 0;
-       this.month = 0;
-       this.day = 0;
 
+        // The callback can be enabled or disabled here or in handleOnBackPressed()
         dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
         startDateText = findViewById(R.id.startDateTextView);
         endDateText = findViewById(R.id.endDateTextView);
-        startDateText.setOnClickListener(v -> {
-            showDatePickerDialog(startDay);
-            dayTextView = true;
-        });
-        endDateText.setOnClickListener(v -> {
-            showDatePickerDialog(endDay);
-            dayTextView = false;
-        });
+
         dayTextView = true;
 
         calendar = Calendar.getInstance();
@@ -77,57 +61,37 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         calendar = Calendar.getInstance();
         endDay = calendar.getTime();
 
-        day_1 = startDay.getTime();
-        day_2 = endDay.getTime();
-
         startDateText.setText(dateFormat.format(startDay.getTime()));
         endDateText.setText(dateFormat.format(endDay.getTime()));
 
-        dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
+        dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
         setUpChart();
-    }
 
-    /**
-     * Näyttää androidin kalenterin käyttäjälle. Josta käyttäjä voi valita päivämäärän
-     * @param date date asettaa kalenterin päivämäärän haluttuun päivään
-     */
-    public void showDatePickerDialog(Date date){
-        calendar.setTimeInMillis(date.getTime());
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
-    }
-
-    /**
-     * Kuuntelinjan DatePickerDialog.OnDateSetListener onDateSet funktio joka kutsutaan kun käyttäjä on valinnut ja hyväksynyt päivämäärän
-     * @param view DatePicker: valitsia joka kuuluu avattuun dialogiin
-     * @param year int: valittu vuosi
-     * @param month int: valittu kuukausi (0-11)
-     * @param day int: valittu päivä (1-31, riippuu valitusta kuukaudesta)
-     */
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        this.year = year;
-        this.month = month;
-        this.day = day;
-
-        if (dayTextView){
-            calendar.set(this.year, this.month , this.day);
-            startDay = calendar.getTime();
-            startDateText.setText(dateFormat.format(startDay.getTime()));
-            day_1 = calendar.getTimeInMillis();
-        } else{
-            calendar.set(this.year, this.month , this.day);
-            endDay = calendar.getTime();
-            endDateText.setText(dateFormat.format(endDay.getTime()));
-            day_2 = calendar.getTimeInMillis();
-        }
-        dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
-        setUpChart();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
+        startDateText.setOnClickListener(v -> {
+            calendar.setTime(startDay);
+            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+            dayTextView = true;
+        });
+        endDateText.setOnClickListener(v -> {
+            calendar.setTime(endDay);
+            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+            dayTextView = false;
+        });
+        datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            calendar.set(year, month, dayOfMonth);
+            if (dayTextView){
+                startDay = calendar.getTime();
+                startDateText.setText(dateFormat.format(startDay.getTime()));
+            } else {
+                endDay = calendar.getTime();
+                endDateText.setText(dateFormat.format(endDay.getTime()));
+            }
+            dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+            setUpChart();
+        });
     }
 
     /**

@@ -20,8 +20,7 @@
         <activity
             android:name=".OldRecordActivity"
             android:label="@string/title_activity_old_record"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.PefProject.NoActionBar">
+            android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
