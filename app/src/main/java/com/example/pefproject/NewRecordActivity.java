@@ -19,6 +19,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
 /**
  * Luokka hallitsee Uusi merkintä aktiviteettiä.
  * @author Janne Lähteenmäki
@@ -44,6 +47,9 @@ public class NewRecordActivity extends AppCompatActivity {
     private Date date;
     private Intent nextActivity;
     private Button buttonSave;
+    private Bundle b;
+    private int i;
+    private ArrayList<Record> records;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,9 @@ public class NewRecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_record);
         Singleton.getInstance().loadData(this);
 
-        ArrayList<Record> records = Singleton.getInstance().getRecording();
+        b = getIntent().getExtras();
+        i = b.getInt(OldRecordActivity.EXTRA, -1);
+        records = Singleton.getInstance().getRecording();
         dateTextView = findViewById(R.id.textViewDate);
         medlesTextView = findViewById(R.id.textViewMedles);
         medTextView = findViewById(R.id.textViewMed);
@@ -75,6 +83,8 @@ public class NewRecordActivity extends AppCompatActivity {
         firstNumberMed.addTextChangedListener(saveTextWatcher);
         secondNumberMed.addTextChangedListener(saveTextWatcher);
         thirdNumberMed.addTextChangedListener(saveTextWatcher);
+
+
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
@@ -132,8 +142,8 @@ public class NewRecordActivity extends AppCompatActivity {
             String thirdMedInput = thirdNumberMed.getText().toString();
 
             buttonSave.setEnabled(!firstNormalInput.isEmpty() && !secondNormalInput.isEmpty() &&
-                                  !thirdNormalInput.isEmpty() && !firstMedInput.isEmpty() &&
-                                  !secondMedInput.isEmpty() && !thirdMedInput.isEmpty());
+                    !thirdNormalInput.isEmpty() && !firstMedInput.isEmpty() &&
+                    !secondMedInput.isEmpty() && !thirdMedInput.isEmpty());
         }
 
         @Override
@@ -152,13 +162,21 @@ public class NewRecordActivity extends AppCompatActivity {
         Singleton.getInstance().saveData(this);
 
         Bundle b = getIntent().getExtras();
-        int i = b.getInt(OldRecordActivity.EXTRA, -1);
+        int x = b.getInt(OldRecordActivity.EXTRA, -1);
 
-        if (i == -1) {
+        if (x == -1) {
             nextActivity = new Intent(this, MainActivity.class);
+
+            //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
+            nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
         } else {
             nextActivity = new Intent(this, OldRecordActivity.class);
+            //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
             nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
         }
         startActivity(nextActivity);
@@ -190,16 +208,28 @@ public class NewRecordActivity extends AppCompatActivity {
         //EditText secondNumberMed = (EditText) findViewById(R.id.editTextSecondNumberMed);
         //EditText thirdNumberMed = (EditText) findViewById(R.id.editTextThirdNumberMed);
         //EditText comment = (EditText) findViewById(R.id.editTextComment);
+        if (i == -1) {
+            record.addNormalAirflow(Integer.parseInt(firstNumberNormal.getText().toString()));
+            record.addNormalAirflow(Integer.parseInt(secondNumberNormal.getText().toString()));
+            record.addNormalAirflow(Integer.parseInt(thirdNumberNormal.getText().toString()));
+            record.addMedicineAirflow(Integer.parseInt(firstNumberMed.getText().toString()));
+            record.addMedicineAirflow(Integer.parseInt(secondNumberMed.getText().toString()));
+            record.addMedicineAirflow(Integer.parseInt(thirdNumberMed.getText().toString()));
+            record.setComment(commentText.getText().toString());
+            record.setDate(date);
+            Singleton.getInstance().addRecord(record);
+        } else {
+            records.get(i).getNormalAirflowList().set(0, Integer.parseInt(firstNumberNormal.getText().toString()));
+            records.get(i).getNormalAirflowList().set(1, Integer.parseInt(secondNumberNormal.getText().toString()));
+            records.get(i).getNormalAirflowList().set(2, Integer.parseInt(thirdNumberNormal.getText().toString()));
+            records.get(i).getMedicineAirflowList().set(0, Integer.parseInt(firstNumberMed.getText().toString()));
+            records.get(i).getMedicineAirflowList().set(1, Integer.parseInt(secondNumberMed.getText().toString()));
+            records.get(i).getMedicineAirflowList().set(2, Integer.parseInt(thirdNumberMed.getText().toString()));
+            records.get(i).setComment(commentText.getText().toString());
+            records.get(i).setDate(date);
+        }
 
-        record.addNormalAirflow(Integer.parseInt(firstNumberNormal.getText().toString()));
-        record.addNormalAirflow(Integer.parseInt(secondNumberNormal.getText().toString()));
-        record.addNormalAirflow(Integer.parseInt(thirdNumberNormal.getText().toString()));
-        record.addMedicineAirflow(Integer.parseInt(firstNumberMed.getText().toString()));
-        record.addMedicineAirflow(Integer.parseInt(secondNumberMed.getText().toString()));
-        record.addMedicineAirflow(Integer.parseInt(thirdNumberMed.getText().toString()));
-        record.setComment(commentText.getText().toString());
-        record.setDate(date);
-        Singleton.getInstance().addRecord(record);
+
     }
 
 }

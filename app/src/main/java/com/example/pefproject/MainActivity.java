@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, OldRecordActivity.class);
             //intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }
