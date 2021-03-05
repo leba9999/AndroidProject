@@ -24,7 +24,7 @@ import java.util.Locale;
  * haetaan Singletonista tämän hetkisen päivämäärän merkintöjen huippu arvot texView:hin
  * ja liikutaan muihin aktiviteetteihin
  * @author Leevi Koskinen
- * @version 05.03.2021
+ * @version 0.01 05.03.2021
  */
 public class MainActivity extends AppCompatActivity {
     private final String logTag = "com.example.pefproject.APP_MainActivity.java";

@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Luokalla ChartActivity asetetaan ChartActivityyn taulukko joka sisältää Singletonista ladattujen merkintöjen huippu puhallus arvot
  * @author Leevi Koskinen
- * @version 05.03.2021
+ * @version 0.01 05.03.2021
  */
 public class ChartActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 

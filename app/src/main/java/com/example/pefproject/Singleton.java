@@ -17,7 +17,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Luokka tallentaa ja lataa SharedPreferenceseistä merkkien tiedot
  * @author Leevi Koskinen
  * @author Peetu Salonen
- * @version 03.03.2021
+ * @version 0.01 05.03.2021
  */
 
 public class Singleton {

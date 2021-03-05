@@ -1,12 +1,15 @@
 package com.example.pefproject;
 
-import android.util.Log;
-
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 
+/**
+ * Formatoi arvot käyttäen isäntä luokkaa ValueFormatter
+ * @author Leevi Koskinen
+ * @version 0.01 05.03.2021
+ */
 public class MyValueFormatter extends ValueFormatter {
     private  ArrayList<String> dates;
     private int countOfDays;
