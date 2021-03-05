@@ -57,6 +57,14 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
 
         startDateText = findViewById(R.id.startDateTextView);
         endDateText = findViewById(R.id.endDateTextView);
+        startDateText.setOnClickListener(v -> {
+            showDatePickerDialog(startDay);
+            dayTextView = true;
+        });
+        endDateText.setOnClickListener(v -> {
+            showDatePickerDialog(endDay);
+            dayTextView = false;
+        });
         dayTextView = true;
 
         calendar = Calendar.getInstance();
@@ -120,21 +128,6 @@ public class ChartActivity extends AppCompatActivity implements DatePickerDialog
         }
         dayCount = ((day_2 - day_1) / (24 * 60 * 60 * 1000)) + 1;
         setUpChart();
-    }
-
-    /**
-     * Tutkitaan mitä viewiä on painettu. Jos startDateTextView on painettu niin näytetään kalenteri joka sisältää aloitus päivämäärän.
-     * Jos endDateTextView on painettu kalenteri näyttää lopetus päivämäärän.
-     * @param view tutkitaan minkä näkymän id:tä on painettu
-     */
-    public void buttonPressed (View view) {
-        if (view.getId() == R.id.startDateTextView){
-            showDatePickerDialog(startDay);
-            dayTextView = true;
-        } else {
-            showDatePickerDialog(endDay);
-            dayTextView = false;
-        }
     }
 
     /**
