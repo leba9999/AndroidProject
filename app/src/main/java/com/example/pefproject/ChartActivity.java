@@ -248,9 +248,6 @@ public class ChartActivity extends AppCompatActivity {
         // Suurin X akselin arvo minkä voi näyttää. Näytetään vain valittujen päivämäärien suurinpaan arvoon asti
         barChart.getXAxis().setAxisMaximum(dayCount);
         // Zoom ja X,Y skaalaus
-        barChart.setPinchZoom(true);
-        barChart.setScaleYEnabled(false);
-        barChart.setScaleXEnabled(true);
         // Formatoidaan X akseli päivämäärien mukaan
         barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates));
         // asetetaan taulukon kuvaus

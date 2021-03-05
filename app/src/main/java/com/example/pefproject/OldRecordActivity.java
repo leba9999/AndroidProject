@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class OldRecordActivity extends AppCompatActivity {
@@ -143,12 +141,6 @@ public class OldRecordActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        Singleton.getInstance().loadData(this);
-        updateUI();
-        super.onStart();
-    }
 
     @Override
     protected void onResume() {
@@ -158,21 +150,8 @@ public class OldRecordActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        Singleton.getInstance().loadData(this);
-        updateUI();
-        super.onRestart();
-    }
-
-    @Override
     protected void onPause() {
         Singleton.getInstance().saveData(this);
         super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        Singleton.getInstance().saveData(this);
-        super.onStop();
     }
 }
