@@ -27,11 +27,18 @@ public class ChartActivity extends AppCompatActivity {
 
     private TextView startDateText;
     private TextView endDateText;
+
     private boolean dayTextView;
+
+    // Kuinka monta päivää on aloitus ja lopetus päivien välissä
     private long dayCount;
+
     private SimpleDateFormat dateFormat;
+
+    // Valitut päivämäärät
     private Date startDay;
     private Date endDay;
+
     private Calendar calendar;
 
     /**
@@ -41,14 +48,18 @@ public class ChartActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
+        // asetetaan SimpleDateFormatille formatointi muoto joka on määritelty Singletonissa
         dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
+        // Haetaan textView:en id:t
         startDateText = findViewById(R.id.startDateTextView);
         endDateText = findViewById(R.id.endDateTextView);
 
+        //
         dayTextView = true;
 
         calendar = Calendar.getInstance();

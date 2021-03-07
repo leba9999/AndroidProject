@@ -88,7 +88,6 @@ public class NewRecordActivity extends AppCompatActivity {
         secondNumberMed.addTextChangedListener(saveTextWatcher);
         thirdNumberMed.addTextChangedListener(saveTextWatcher);
 
-
         SimpleDateFormat dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
         calendar = Calendar.getInstance();
 
@@ -205,7 +204,17 @@ public class NewRecordActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
         }
     };
+    public void deleteButtonClicked(View view) {
+        Singleton.getInstance().getRecording().remove(index);
+        Singleton.getInstance().saveData(this);
 
+        nextActivity = new Intent(this, OldRecordActivity.class);
+        //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
+        nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
+        startActivity(nextActivity);
+    }
     /**
      * Kun tallennusnappulaa painetaan suoritetaan metodi saveRecords.
      * Tallennetaan saadut tiedot sharedpreferenceihin.
