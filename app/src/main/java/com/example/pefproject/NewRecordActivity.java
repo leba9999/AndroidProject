@@ -151,7 +151,7 @@ public class NewRecordActivity extends AppCompatActivity {
     }
 
     /**
-     * Ylikirjoitetaan aktiviteetin onOptionsItemSelected omalla funktiolla, jotta voidaan palata joko aktiviteetin parent aktiviteettiin tai haluttuun aktiviteettiin  (OldRecordActivity)
+     * Ylikirjoitetaan aktiviteetin onOptionsItemSelected omalla funktiolla. Jotta voidaan palata joko aktiviteetin parent aktiviteettiin tai haluttuun aktiviteettiin  (OldRecordActivity)
      * https://developer.android.com/reference/android/app/Activity#onOptionsItemSelected(android.view.MenuItem)
      * @param item MenuItem: Valikon kohta joka valittiin. Arvo ei voi olla null.
      * @return boolean

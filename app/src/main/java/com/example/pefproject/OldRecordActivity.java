@@ -25,6 +25,9 @@ import java.util.Locale;
  */
 public class OldRecordActivity extends AppCompatActivity {
 
+    /**
+     * Intentin avain. Avaimen taakse laitetaan ListView:istä valitun Merkinnän paikka (indeksi).
+     */
     public static final String EXTRA = "OldRecords";
     private String recordType;
 

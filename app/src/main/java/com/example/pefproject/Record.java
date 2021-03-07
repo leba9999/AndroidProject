@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Luokka sisältää merkinnälle kaiken tarpeellisen datan. Esim pv, aika, kommentti ja ilmankulun arvot
+ * Luokka sisältää merkinnälle kaiken tarpeellisen datan. päivämäärn, kellonajan, vapaaehtoisen kommentin, puhallusten arvot ja merkinnän tyypin (ilta, aamu, ylimääräinen)
  * @author Leevi Koskinen
  * @version 0.01 05.03.2021
  */

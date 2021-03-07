@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Singleton luokka sisältää Merkintöjen listan, aika- ja päiväformaatit
- * Singletonilla on tarkoitus helpottaa muiden luokkien pääsy merkkien tietoihin, lisäämään niitä ja muokkaamaan suhteellisen hallitusti
+ * Singleton luokka sisältää Merkintöjen listan, aika- ja päiväformaatit.
+ * Singletonilla on tarkoitus helpottaa muiden luokkien pääsy merkkien tietoihin, lisäämään niitä ja muokkaamaan suhteellisen hallitusti.
  * Luokka tallentaa ja lataa SharedPreferenceseistä merkkien tiedot
  * @author Leevi Koskinen
  * @author Peetu Salonen
@@ -39,6 +39,10 @@ public class Singleton {
         dateFormat = "dd.MM.yyyy";
     }
 
+    /**
+     * Palauttaa Singleton luokan ilmentymän.
+     * @return Singleton instance
+     */
     public static Singleton getInstance() {
         return instance;
     }

@@ -44,7 +44,6 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        // The callback can be enabled or disabled here or in handleOnBackPressed()
         dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
         startDateText = findViewById(R.id.startDateTextView);
