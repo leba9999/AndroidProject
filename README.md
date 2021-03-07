@@ -16,4 +16,7 @@ PATA tarjoaa helpon käyttöliittymän merkintöjen luontiin, muokaamiseen ja tu
 - API 30
 
 ### Kuvakaapaukset päänäkymistä:
-<img src="Screenshots/Screenshot_1615155206.png" width="308"> <img src="Screenshots/Screenshot_1615155237.png" width="308"> <img src="Screenshots/Screenshot_1615155263.png" width="308">
+:
+<img src="Screenshots/Screenshot_1615155206.png" width="258" alt="Päävalikko" title="Päävalikko">
+<img src="Screenshots/Screenshot_1615155237.png" width="258" alt="Vanhat Merkinnät" title="Vanhat Merkinnät">
+<img src="Screenshots/Screenshot_1615155263.png" width="258" alt="Taulukko" title="Taulukko">
