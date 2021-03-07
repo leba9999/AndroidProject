@@ -50,25 +50,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Singleton.getInstance().loadData(this);
 
-        calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
+        this.calendar = Calendar.getInstance();
+        // luodaan uusi SimpleDateFormat olio Singletonissa olevalla formaatilla
+        this.dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
+        // Haetaan viewit id:llä
         this.morningTextView = findViewById(R.id.morningTextView);
         this.eveningTextView = findViewById(R.id.eveningTextView);
         this.extraTextView = findViewById(R.id.extraTextView);
         this.recordTextView = findViewById(R.id.recordTextView);
 
-        normalFirstLetter = getString(R.string.Normal).substring(0, getString(R.string.Normal).length()-(getString(R.string.Normal).length() - 1));
-        medicineFirstLetter = getString(R.string.Medicine).substring(0, getString(R.string.Medicine).length()-(getString(R.string.Medicine).length() - 1));
+        // Hankitaan Normaalin ja Lääkeen ensimmäinen kirjain jotta voidaan laittaa se textviewiin (Normaali: 340 -> N: 340)
+        this.normalFirstLetter = getString(R.string.Normal).substring(0, getString(R.string.Normal).length()-(getString(R.string.Normal).length() - 1));
+        this.medicineFirstLetter = getString(R.string.Medicine).substring(0, getString(R.string.Medicine).length()-(getString(R.string.Medicine).length() - 1));
 
-        recordTextView.setText(getString(R.string.Record) + ": " + dateFormat.format(date));
-        morningTextView.setText(getString(R.string.Morning) +":\n"+ normalFirstLetter + ":---\n" + medicineFirstLetter + ":---");
-        eveningTextView.setText(getString(R.string.Evening) +":\n"+ normalFirstLetter + ":---\n" + medicineFirstLetter + ":---");
-        extraTextView.setText(getString(R.string.Extra) +":\n"+ normalFirstLetter + ":---\n" + medicineFirstLetter + ":---");
+        // Asetetaan tekstit TextVieweihin.
+        this.recordTextView.setText(getString(R.string.Record) + ": " + this.dateFormat.format(calendar.getTime()));
+        this.morningTextView.setText(getString(R.string.Morning) +":\n"+ this.normalFirstLetter + ":---\n" +this.medicineFirstLetter + ":---");
+        this.eveningTextView.setText(getString(R.string.Evening) +":\n"+ this.normalFirstLetter + ":---\n" + this.medicineFirstLetter + ":---");
+        this.extraTextView.setText(getString(R.string.Extra) +":\n"+ this.normalFirstLetter + ":---\n" + this.medicineFirstLetter + ":---");
 
-        setUpChart();
-        loadDayRecord();
+        this.setUpChart();
+        this.loadDayRecord();
     }
 
     /**
@@ -79,21 +82,23 @@ public class MainActivity extends AppCompatActivity {
         if (records.isEmpty()){
             return;
         }
-        calendar = Calendar.getInstance();
+        // Varmistetaan että kalenterilla on tämä päivä tällä hetkellä
+        this.calendar = Calendar.getInstance();
+        // Käydääm merkinnät läpi ja lisätään niiden merkintöjen arvot textview:n jotka vastaavat tätä päivää
         for (int i = 0; i < records.size(); i++){
-            if (dateFormat.format(records.get(i).getDate()).equals(dateFormat.format(calendar.getTime()))){
+            if (this.dateFormat.format(records.get(i).getDate()).equals(this.dateFormat.format(this.calendar.getTime()))){
                 if (records.get(i).getType() == Record.PM){
-                    eveningTextView.setText(getString(R.string.Evening) +":\n"
-                            + normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
-                            + medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
+                    this.eveningTextView.setText(getString(R.string.Evening) +":\n"
+                            + this.normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
+                            + this.medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
                 }else if (records.get(i).getType() == Record.AM) {
-                    morningTextView.setText(getString(R.string.Morning) +":\n"
-                            + normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
-                            + medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
+                    this.morningTextView.setText(getString(R.string.Morning) +":\n"
+                            + this.normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
+                            + this.medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
                 }else if (records.get(i).getType() == Record.EXTRA) {
-                    extraTextView.setText(getString(R.string.Extra) +":\n"
-                            + normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
-                            + medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
+                    this.extraTextView.setText(getString(R.string.Extra) +":\n"
+                            + this.normalFirstLetter + ": " + records.get(i).getPeakNormalAirflow() +"\n"
+                            + this.medicineFirstLetter + ": " + records.get(i).getPeakMedicineAirflow());
                 }
             }
         }
@@ -126,24 +131,24 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -6);
-        Date startDay = calendar.getTime();
-        calendar = Calendar.getInstance();
-        Date endDay = calendar.getTime();
-        calendar.setTime(startDay);
+        this.calendar = Calendar.getInstance();
+        this.calendar.add(Calendar.DATE, -6);
+        Date startDay = this.calendar.getTime();
+        this.calendar = Calendar.getInstance();
+        Date endDay = this.calendar.getTime();
+        this.calendar.setTime(startDay);
         // lasketaan monta päivää on aloitus ja lopetus päivämäärien välissä
         long dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
 
         // lisätään ensimmäinen päivämäärä dates listaan
-        dates.add(dateFormat.format(startDay));
+        dates.add(this.dateFormat.format(startDay));
         for (int i = 1; i < dayCount; i++){
             // Kalenterin päivämäärää nostetaan aina yhdellä jotta saadaan uusi päivämäärä dates listaan
-            calendar.add(Calendar.DATE, 1);
+            this.calendar.add(Calendar.DATE, 1);
             // jos dates lista sisältää jo kyseisen päivämäärän niin ei lisätä sitä koska dates ei saa sisältää kopioita
             // ja dates  listan pitää olla päivä järjestyksessä
-            if (!dates.contains(dateFormat.format(calendar.getTime()))) {
-                dates.add(dateFormat.format(calendar.getTime()));
+            if (!dates.contains(this.dateFormat.format(this.calendar.getTime()))) {
+                dates.add(this.dateFormat.format(this.calendar.getTime()));
             }
         }
         // loopataan päivät läpi
@@ -158,16 +163,16 @@ public class MainActivity extends AppCompatActivity {
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 // Tarkastetaan onko kyseinen päivä sama kuin Singletonissa olevan merkinnän
                 // jos on niin lisätään se records listaan
-                if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
+                if (dates.get(i).equals(this.dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                     records.add(Singleton.getInstance().getRecording().get(s));
                 } else {
                     // Uusi tyhjä merkintä jolle asetetaan päivämääräksi edellisen merkinnän päivämäärä + 1
                     // ja lisätään merkintä records listaan
                     Record record = new Record();
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(records.get(records.size() - 1).getDate());
-                    calendar.add(Calendar.DATE, 1);
-                    record.setDate(calendar.getTime());
+                    this.calendar = Calendar.getInstance();
+                    this.calendar.setTime(records.get(records.size() - 1).getDate());
+                    this.calendar.add(Calendar.DATE, 1);
+                    record.setDate(this.calendar.getTime());
                     records.add(record);
                 }
             }
@@ -190,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             // jos päivämäärät ovat samat lisätään kyseisen päivämäärän merkinnän tiedot taulukkoon values muuttujalla
             for (int d  = 0; d < records.size(); d++){
                 //Log.i("APP_PEF", "datesSize: " + dates.size() + " dayCount:" + dayCount+ " tempCount:" + tempCount+ " i:" + i + " KOKO:" + (((int)dayCount - 1) - i));
-                if (dateFormat.format(records.get(d).getDate()).equals(dates.get((  (((int)dayCount - 1) - i))))) {
+                if (this.dateFormat.format(records.get(d).getDate()).equals(dates.get((dates.size() - 1) - i))) {
                     float [] values = {
                             records.get(d).getPeakNormalAirflow(),
                             records.get(d).getPeakMedicineAirflow(),
@@ -284,7 +289,6 @@ public class MainActivity extends AppCompatActivity {
             intent = new Intent(this, NewRecordActivity.class);
             intent.putExtra(OldRecordActivity.EXTRA, -1);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            //intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         } else if (view.getId() == R.id.ChartButton){
             intent = new Intent(this, ChartActivity.class);
@@ -292,9 +296,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             intent = new Intent(this, OldRecordActivity.class);
-
-            //intent.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         }
     }

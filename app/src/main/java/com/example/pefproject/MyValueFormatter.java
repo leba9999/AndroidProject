@@ -32,8 +32,8 @@ public class MyValueFormatter extends ValueFormatter {
     @Override
     public String getAxisLabel(float value, AxisBase axis){
         String format = Singleton.getInstance().getDateFormat();
-        if ((value >= countOfDays || value < 0))
+        if ((value >= this.countOfDays || value < 0))
             return "Val:"+ value;
-        return  dates.get(( countOfDays - 1) - (  (int)value)).substring(0, format.length() - 5);
+        return  this.dates.get((this.countOfDays - 1) - ((int)value)).substring(0, format.length() - 5);
     }
 }

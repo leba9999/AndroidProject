@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PefProject</string>
+    <string name="app_name">PATA</string>
     <string name="OldRecordButton">Vanha Merkintä</string>
     <string name="NewRecordButton">Uusi Merkintä</string>
     <string name="huomenta">Huomenta</string>
@@ -28,13 +28,13 @@
     <string name="editTextFirstNumberMed">1.</string>
     <string name="editTextSecondNumberMed">2.</string>
     <string name="editTextThirdNumberMed">3.</string>
-    <string name="title_activity_old_record_2">old_record_2</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="title_activity_old_record">OldRecordActivity</string>
     <string name="PeakAirflow">Huippu Puhallus</string>
     <string name="PlaceHolderText">HelloWorld</string>
     <string name="Dash">-</string>
     <string name="WeekofRecords">Viikon merkinnät:</string>
     <string name="buttonDel">Poista</string>
+    <string name="titleChartActivityName">Taulukko</string>
+    <string name="titleNewRecordActivityName_ADD">Uusi Merkintä</string>
+    <string name="titleNewRecordActivityName_EDIT">Muokkaa Merkintää</string>
+    <string name="titleOldRecordActivityName">Vanhat Merkinnät</string>
 </resources>

@@ -20,7 +20,6 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 
@@ -35,20 +34,17 @@ public class NewRecordActivity extends AppCompatActivity {
     private RadioGroup radioGroupTime;
     private Record record;
     private Calendar calendar;
-    private EditText firstNumberNormal;
-    private EditText secondNumberNormal;
-    private EditText thirdNumberNormal;
-    private EditText firstNumberMed;
-    private EditText secondNumberMed;
-    private EditText thirdNumberMed;
+
+    ArrayList<EditText> editTexts;
+
     private EditText commentText;
+
     private RadioButton rbMorn, rbEve, rbExtra;
-    private Date date;
     private Intent nextActivity;
     private Button buttonSave;
     private Button buttonDel;
+
     private int index;
-    private ArrayList<Record> records;
 
     /**
      * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot.
@@ -66,89 +62,69 @@ public class NewRecordActivity extends AppCompatActivity {
 
         index = getIntent().getIntExtra(OldRecordActivity.EXTRA, -1);
 
-        records = Singleton.getInstance().getRecording();
         radioGroupTime = findViewById(R.id.radioGroupTime);
         commentText = findViewById(R.id.editTextComment);
-        record = new Record();
         rbMorn = findViewById(R.id.radioButtonMorn);
         rbEve = findViewById(R.id.radioButtonEve);
         rbExtra = findViewById(R.id.radioButtonOver);
         buttonSave = findViewById(R.id.buttonSave);
         buttonDel = findViewById(R.id.buttonDel);
 
-        firstNumberNormal = findViewById(R.id.editTextFirstNumberNormal);
-        secondNumberNormal = findViewById(R.id.editTextSecondNumberNormal);
-        thirdNumberNormal = findViewById(R.id.editTextThirdNumberNormal);
-        firstNumberMed = findViewById(R.id.editTextFirstNumberMed);
-        secondNumberMed = findViewById(R.id.editTextSecondNumberMed);
-        thirdNumberMed = findViewById(R.id.editTextThirdNumberMed);
+        editTexts = new ArrayList<>();
+        editTexts.add(findViewById(R.id.editTextFirstNumberNormal));
+        editTexts.add(findViewById(R.id.editTextSecondNumberNormal));
+        editTexts.add(findViewById(R.id.editTextThirdNumberNormal));
 
-        firstNumberNormal.addTextChangedListener(saveTextWatcher);
-        secondNumberNormal.addTextChangedListener(saveTextWatcher);
-        thirdNumberNormal.addTextChangedListener(saveTextWatcher);
-        firstNumberMed.addTextChangedListener(saveTextWatcher);
-        secondNumberMed.addTextChangedListener(saveTextWatcher);
-        thirdNumberMed.addTextChangedListener(saveTextWatcher);
+        editTexts.add(findViewById(R.id.editTextFirstNumberMed));
+        editTexts.add(findViewById(R.id.editTextSecondNumberMed));
+        editTexts.add(findViewById(R.id.editTextThirdNumberMed));
 
+        for (int i = 0; i < editTexts.size(); i++){
+            editTexts.get(i).addTextChangedListener(saveTextWatcher);
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
         calendar = Calendar.getInstance();
 
         if (index < 0) {
-            //Date date = calendar.getTime();
-            date = record.getDate();
+            record = new Record();
             buttonDel.setVisibility(View.INVISIBLE);
-            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
-            switch (record.getType()) {
-                case Record.AM:
-                    rbMorn.setChecked(true);
-                    break;
-                case Record.PM:
-                    rbEve.setChecked(true);
-                    break;
-                case Record.EXTRA:
-                    rbExtra.setChecked(true);
-                    break;
-                default:
-                    radioGroupTime.clearCheck();
-                    break;
-            }
         } else {
-            date = records.get(index).getDate();
-            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
-            //for(int index = 0; index < records.get(i).getNormalAirflowList().size(); index++) {
-            firstNumberNormal.setText(records.get(index).getNormalAirflowList().get(0).toString());
-            secondNumberNormal.setText(records.get(index).getNormalAirflowList().get(1).toString());
-            thirdNumberNormal.setText(records.get(index).getNormalAirflowList().get(2).toString());
-            firstNumberMed.setText(records.get(index).getMedicineAirflowList().get(0).toString());
-            secondNumberMed.setText(records.get(index).getMedicineAirflowList().get(1).toString());
-            thirdNumberMed.setText(records.get(index).getMedicineAirflowList().get(2).toString());
-            commentText.setText(records.get(index).getComment());
+            record = Singleton.getInstance().getRecording().get(index);
+            setTitle(getString(R.string.titleNewRecordActivityName_EDIT));
 
-            switch (records.get(index).getType()) {
-                case Record.AM:
-                    rbMorn.setChecked(true);
-                    break;
-                case Record.PM:
-                    rbEve.setChecked(true);
-                    break;
-                case Record.EXTRA:
-                    rbExtra.setChecked(true);
-                    break;
-                default:
-                    radioGroupTime.clearCheck();
-                    break;
-            }
+            editTexts.get(0).setText(record.getNormalAirflowList().get(0).toString());
+            editTexts.get(1).setText(record.getNormalAirflowList().get(1).toString());
+            editTexts.get(2).setText(record.getNormalAirflowList().get(2).toString());
+            editTexts.get(3).setText(record.getMedicineAirflowList().get(0).toString());
+            editTexts.get(4).setText(record.getMedicineAirflowList().get(1).toString());
+            editTexts.get(5).setText(record.getMedicineAirflowList().get(2).toString());
+            commentText.setText(record.getComment());
+        }
+        dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(record.getDate()));
+        switch (record.getType()) {
+            case Record.AM:
+                rbMorn.setChecked(true);
+                break;
+            case Record.PM:
+                rbEve.setChecked(true);
+                break;
+            case Record.EXTRA:
+                rbExtra.setChecked(true);
+                break;
+            default:
+                radioGroupTime.clearCheck();
+                break;
         }
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         dateTextView.setOnClickListener(v -> {
-            calendar.setTime(date);
+            calendar.setTime(record.getDate());
             datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
         datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
             calendar.set(year, month, dayOfMonth);
-            date = calendar.getTime();
-            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
+            record.setDate(calendar.getTime());
+            dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(calendar.getTime()));
         });
     }
 
@@ -160,23 +136,18 @@ public class NewRecordActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Log.i("dsd", "ascasdasdasfasfaf");
+        if (item.getItemId() == android.R.id.home) {
                 if (index < 0) {
                     NavUtils.navigateUpFromSameTask(this);
                 } else {
                     nextActivity = new Intent(this, OldRecordActivity.class);
-                    //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
                     nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
                     startActivity(nextActivity);
                 }
                 return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -191,16 +162,13 @@ public class NewRecordActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String firstNormalInput = firstNumberNormal.getText().toString();
-            String secondNormalInput = secondNumberNormal.getText().toString();
-            String thirdNormalInput = thirdNumberNormal.getText().toString();
-            String firstMedInput = firstNumberMed.getText().toString();
-            String secondMedInput = secondNumberMed.getText().toString();
-            String thirdMedInput = thirdNumberMed.getText().toString();
-
-            buttonSave.setEnabled(!firstNormalInput.isEmpty() && !secondNormalInput.isEmpty() &&
-                    !thirdNormalInput.isEmpty() && !firstMedInput.isEmpty() &&
-                    !secondMedInput.isEmpty() && !thirdMedInput.isEmpty());
+            boolean notEmpty = true;
+            for (int i = 0; i < editTexts.size(); i++){
+                if (editTexts.get(i).getText().toString().isEmpty()){
+                    notEmpty = false;
+                }
+            }
+            buttonSave.setEnabled(notEmpty);
         }
 
         @Override
@@ -218,9 +186,7 @@ public class NewRecordActivity extends AppCompatActivity {
         Singleton.getInstance().saveData(this);
 
         nextActivity = new Intent(this, OldRecordActivity.class);
-        //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
         nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
         startActivity(nextActivity);
     }
@@ -233,21 +199,14 @@ public class NewRecordActivity extends AppCompatActivity {
     public void onSaveButtonClicked(View view) {
         saveRecords();
         Singleton.getInstance().saveData(this);
-        index = getIntent().getIntExtra(OldRecordActivity.EXTRA, -1);
 
         if (index < 0) {
             nextActivity = new Intent(this, MainActivity.class);
-
-            //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
             nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
         } else {
             nextActivity = new Intent(this, OldRecordActivity.class);
-            //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //nextActivity.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
             nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
         }
         startActivity(nextActivity);
@@ -258,47 +217,26 @@ public class NewRecordActivity extends AppCompatActivity {
      * Lisää uuden tai vaihtaa muokatun Merkinnän, jonka arvot on syötetty puhallusarvojen paikoille. (Normal ja Med editTextViewit).
      */
     public void saveRecords() {
-
-        int type;
-
-        switch (radioGroupTime.getCheckedRadioButtonId()) {
-            case R.id.radioButtonEve:
-                type = Record.PM;
-                break;
-            case R.id.radioButtonMorn:
-                type = Record.AM;
-                break;
-            case R.id.radioButtonOver:
-                type = Record.EXTRA;
-                break;
-            default:
-                type = -1;
-                break;
+        record.addNormalAirflow(Integer.parseInt(editTexts.get(0).getText().toString()));
+        record.addNormalAirflow(Integer.parseInt(editTexts.get(1).getText().toString()));
+        record.addNormalAirflow(Integer.parseInt(editTexts.get(2).getText().toString()));
+        record.addMedicineAirflow(Integer.parseInt(editTexts.get(3).getText().toString()));
+        record.addMedicineAirflow(Integer.parseInt(editTexts.get(4).getText().toString()));
+        record.addMedicineAirflow(Integer.parseInt(editTexts.get(5).getText().toString()));
+        record.setComment(commentText.getText().toString());
+        if (radioGroupTime.getCheckedRadioButtonId() == R.id.radioButtonEve) {
+            record.setType(Record.PM);
+        } else if (radioGroupTime.getCheckedRadioButtonId() == R.id.radioButtonMorn) {
+            record.setType(Record.AM);
+        } else if (radioGroupTime.getCheckedRadioButtonId() == R.id.radioButtonOver) {
+            record.setType(Record.EXTRA);
+        } else {
+                record.setType(-1);
         }
-
         if (index < 0) {
-            record.addNormalAirflow(Integer.parseInt(firstNumberNormal.getText().toString()));
-            record.addNormalAirflow(Integer.parseInt(secondNumberNormal.getText().toString()));
-            record.addNormalAirflow(Integer.parseInt(thirdNumberNormal.getText().toString()));
-            record.addMedicineAirflow(Integer.parseInt(firstNumberMed.getText().toString()));
-            record.addMedicineAirflow(Integer.parseInt(secondNumberMed.getText().toString()));
-            record.addMedicineAirflow(Integer.parseInt(thirdNumberMed.getText().toString()));
-            record.setComment(commentText.getText().toString());
-            record.setDate(date);
-            record.setType(type);
             Singleton.getInstance().addRecord(record);
         } else {
-            records.get(index).getNormalAirflowList().set(0, Integer.parseInt(firstNumberNormal.getText().toString()));
-            records.get(index).getNormalAirflowList().set(1, Integer.parseInt(secondNumberNormal.getText().toString()));
-            records.get(index).getNormalAirflowList().set(2, Integer.parseInt(thirdNumberNormal.getText().toString()));
-            records.get(index).getMedicineAirflowList().set(0, Integer.parseInt(firstNumberMed.getText().toString()));
-            records.get(index).getMedicineAirflowList().set(1, Integer.parseInt(secondNumberMed.getText().toString()));
-            records.get(index).getMedicineAirflowList().set(2, Integer.parseInt(thirdNumberMed.getText().toString()));
-            records.get(index).setComment(commentText.getText().toString());
-            records.get(index).setType(type);
-            records.get(index).setDate(date);
-
+            Singleton.getInstance().getRecording().set(index, record);
         }
     }
-
 }

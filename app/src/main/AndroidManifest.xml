@@ -3,13 +3,14 @@
     package="com.example.pefproject">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PefProject">
         <activity android:name=".ChartActivity"
+            android:label="@string/titleChartActivityName"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -19,7 +20,7 @@
         </activity>
         <activity
             android:name=".OldRecordActivity"
-            android:label="@string/title_activity_old_record"
+            android:label="@string/titleOldRecordActivityName"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait">
 
@@ -31,6 +32,7 @@
         <activity
             android:name=".NewRecordActivity"
             android:parentActivityName=".MainActivity"
+            android:label="@string/titleNewRecordActivityName_ADD"
             android:screenOrientation="portrait">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -39,6 +41,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".MainActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

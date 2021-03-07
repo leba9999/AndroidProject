@@ -1,5 +1,7 @@
 package com.example.pefproject;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -47,8 +49,8 @@ public class Record {
      */
     public Record() {
         // Luodaan uudet listat
-        normalAirflow = new ArrayList<>();
-        medicineAirflow = new ArrayList<>();
+        this.normalAirflow = new ArrayList<>();
+        this.medicineAirflow = new ArrayList<>();
         // Haetaan java kalenteri ja sen kautta kellon aika
         Calendar calendar = Calendar.getInstance();
         // vertaillaan onko aamu vai ilta ja asetetaan merkinnän tyyppi sen mukaan
@@ -58,7 +60,7 @@ public class Record {
             this.type = AM;
         }
         // Asetetaan merkinnän päivämäärä
-        date = calendar.getTime();
+        this.date = calendar.getTime();
     }
 
     /**
@@ -67,8 +69,9 @@ public class Record {
      */
     public void addNormalAirflow(int AirflowValue) {
         this.normalAirflow.add(AirflowValue);
-        if(normalAirflow.size() > 3)
-            normalAirflow.remove(normalAirflow.size() - 1);
+        if(normalAirflow.size() > 3) {
+            this.normalAirflow.remove(this.normalAirflow.size() - 1);
+        }
     }
 
     /**
@@ -77,8 +80,9 @@ public class Record {
      */
     public void addMedicineAirflow(int AirflowValue) {
         this.medicineAirflow.add(AirflowValue);
-        if(medicineAirflow.size() > 3)
-            medicineAirflow.remove(medicineAirflow.size() - 1);
+        if(this.medicineAirflow.size() > 3) {
+            this.medicineAirflow.remove(this.medicineAirflow.size() - 1);
+        }
     }
 
     /**
@@ -118,33 +122,33 @@ public class Record {
     /**
      * haetaan huippu arvo normalAirflow ArrrayListasta
      * palauttaa huippu arvon
-     * @return int tempPeak
+     * @return int airflowPeak
      */
     public int getPeakNormalAirflow(){
-        int tempPeak = 0;
+        int airflowPeak = 0;
         // Käydään läpi normaalien puhallusten arvot ja asetetaan aina suurin tempPeak muuttujaan
         for (Integer number : this.normalAirflow) {
-            if(number >= tempPeak){
-                tempPeak = number;
+            if(number >= airflowPeak){
+                airflowPeak = number;
             }
         }
-        return tempPeak;
+        return airflowPeak;
     }
 
     /**
      * haetaan huippu arvo medicineAirflow ArrrayListasta
      * palauttaa huippu arvon
-     * @return int tempPeak
+     * @return int airflowPeak
      */
     public int getPeakMedicineAirflow(){
-        int tempPeak = 0;
+        int airflowPeak = 0;
         // Käydään läpi lääke puhallusten arvot ja asetetaan aina suurin tempPeak muuttujaan
         for (Integer number : this.medicineAirflow) {
-            if(number >= tempPeak){
-                tempPeak = number;
+            if(number >= airflowPeak){
+                airflowPeak = number;
             }
         }
-        return tempPeak;
+        return airflowPeak;
     }
 
     /**
@@ -171,6 +175,22 @@ public class Record {
      */
     public int getType() {
         return this.type;
+    }
+
+    /**
+     * Millainen merkintä kyseessä. Onko merkintä aamu, ilta vai extra String muodossa
+     * @return String
+     */
+    public String getTypeString(Context context) {
+        switch (this.type) {
+            case Record.AM:
+                return context.getString(R.string.Morning);
+            case Record.PM:
+                return context.getString(R.string.Evening);
+            case Record.EXTRA:
+                return context.getString(R.string.Extra);
+        }
+        return "No Type";
     }
 
     /**

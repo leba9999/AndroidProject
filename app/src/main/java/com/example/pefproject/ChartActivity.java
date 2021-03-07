@@ -38,7 +38,7 @@ public class ChartActivity extends AppCompatActivity {
     // Valitut päivämäärät
     private Date startDay;
     private Date endDay;
-
+    private DatePickerDialog datePickerDialog;
     private Calendar calendar;
 
     /**
@@ -53,55 +53,64 @@ public class ChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chart);
 
         // asetetaan SimpleDateFormatille formatointi muoto joka on määritelty Singletonissa
-        dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
+        this.dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
         // Haetaan textView:en id:t
-        startDateText = findViewById(R.id.startDateTextView);
-        endDateText = findViewById(R.id.endDateTextView);
+        this.startDateText = findViewById(R.id.startDateTextView);
+        this.endDateText = findViewById(R.id.endDateTextView);
 
-        //
-        dayTextView = true;
+        // Kumpaa päivää muokataa. Aloituspäivä on true ja Lopetuspäivä on false
+        this.dayTextView = true;
 
-        calendar = Calendar.getInstance();
+        // Haetaan kalenteri ja luodaan uudet päivä oliot
+        this.calendar = Calendar.getInstance();
+        this.startDay = new Date();
+        this.endDay = new Date();
 
-        startDay = new Date();
-        endDay = new Date();
+        // vähennetään kymmenen päivää aloituspäivästä jotta saadaan näkyviin tästä päivästä 10 päivää taaksepäin merkintöjä
+        this.calendar.add(Calendar.DATE, -10);
+        this.startDay = this.calendar.getTime();
+        this.calendar = Calendar.getInstance();
+        this.endDay = this.calendar.getTime();
 
-        calendar.add(Calendar.DATE, -10);
-        startDay = calendar.getTime();
-        calendar = Calendar.getInstance();
-        endDay = calendar.getTime();
+        // Asetetaan päivämäärät textView:n näkyviin.
+        this.startDateText.setText(this.dateFormat.format(this.startDay.getTime()));
+        this.endDateText.setText(this.dateFormat.format(this.endDay.getTime()));
 
-        startDateText.setText(dateFormat.format(startDay.getTime()));
-        endDateText.setText(dateFormat.format(endDay.getTime()));
+        // Lasketaan aloitus ja lopetus päivien välillä olevien päivien määrät.
+        this.dayCount = ((this.endDay.getTime() - this.startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
 
-        dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+        // Asetetaan taulukko
         setUpChart();
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        startDateText.setOnClickListener(v -> {
-            calendar.setTime(startDay);
-            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
-            datePickerDialog.show();
-            dayTextView = true;
+        // Luodaan uusi datePickerDialog
+        this.datePickerDialog = new DatePickerDialog(this);
+        // Asetetaan OnClieckListener starDateTextViewille jossa asetetaan kalenterille ajaksi startDate koska Date luokasta ei enään saa
+        // vuotta, kuukautta ja päivää ulos. Kalenterin kautta voidaan antaa datePickerDialog:lle päivämäärä jossa se on "oletuksena" kun avataan dialog
+        this.startDateText.setOnClickListener(v -> {
+            this.calendar.setTime(this.startDay);
+            this.datePickerDialog.updateDate(this.calendar.get(Calendar.YEAR),this.calendar.get(Calendar.MONTH),this.calendar.get(Calendar.DAY_OF_MONTH));
+            this.datePickerDialog.show();
+            this.dayTextView = true;
         });
         endDateText.setOnClickListener(v -> {
-            calendar.setTime(endDay);
-            datePickerDialog.updateDate(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
-            datePickerDialog.show();
-            dayTextView = false;
+            this.calendar.setTime(this.endDay);
+            this.datePickerDialog.updateDate(this.calendar.get(Calendar.YEAR),this.calendar.get(Calendar.MONTH),this.calendar.get(Calendar.DAY_OF_MONTH));
+            this.datePickerDialog.show();
+            this.dayTextView = false;
         });
-        datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-            calendar.set(year, month, dayOfMonth);
-            if (dayTextView){
-                startDay = calendar.getTime();
-                startDateText.setText(dateFormat.format(startDay.getTime()));
+        // Asetetaan setOnDateSetListener datePickerDialog:lle jossa katsotaan kumpaa textView:ä(aloitus- ja lopetuspäivä) muokataan dayTextView muutujalla
+        this.datePickerDialog.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            this.calendar.set(year, month, dayOfMonth);
+            if (this.dayTextView){
+                this.startDay = this.calendar.getTime();
+                this.startDateText.setText(this.dateFormat.format(this.startDay.getTime()));
             } else {
-                endDay = calendar.getTime();
-                endDateText.setText(dateFormat.format(endDay.getTime()));
+                this.endDay = this.calendar.getTime();
+                this.endDateText.setText(this.dateFormat.format(this.endDay.getTime()));
             }
-            dayCount = ((endDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-            setUpChart();
+            this.dayCount = ((this.endDay.getTime() - this.startDay.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+            this.setUpChart();
         });
     }
 
@@ -132,46 +141,46 @@ public class ChartActivity extends AppCompatActivity {
         }
         // asetetaan kalenterille aika sama kuin aloitus päivä jotta voidaan sitten lisätä aina yksi päivä lisää kunnes päästään
         // lopetus päivämäärään
-        calendar.setTime(startDay);
+        this.calendar.setTime(this.startDay);
         // lisätään ensimmäinen päivämäärä dates listaan
-        dates.add(dateFormat.format(startDay));
-        for (int i = 1; i < dayCount; i++){
+        dates.add(this.dateFormat.format(this.startDay));
+        for (int i = 1; i < this.dayCount; i++){
             // Kalenterin päivämäärää nostetaan aina yhdellä jotta saadaan uusi päivämäärä dates listaan
-            calendar.add(Calendar.DATE, 1);
+            this.calendar.add(Calendar.DATE, 1);
             // jos dates lista sisältää jo kyseisen päivämäärän niin ei lisätä sitä koska dates ei saa sisältää kopioita
             // ja dates  listan pitää olla päivä järjestyksessä
-            if (!dates.contains(dateFormat.format(calendar.getTime()))) {
-                dates.add(dateFormat.format(calendar.getTime()));
+            if (!dates.contains(this.dateFormat.format(this.calendar.getTime()))) {
+                dates.add(this.dateFormat.format(this.calendar.getTime()));
             }
         }
         // loopataan päivät läpi
-        for (int i = 0; i < dayCount; i++){
+        for (int i = 0; i < this.dayCount; i++){
             // jos records on tyhjä lisätään sinne ensimmäinen arvo
             if (records.isEmpty()){
                 Record record = new Record();
-                record.setDate(startDay);
+                record.setDate(this.startDay);
                 records.add(record);
             }
             // loopataan Singletonissa olevat merkinnät läpi
             for (int s = 0; s < Singleton.getInstance().getRecording().size(); s++) {
                 // Tarkastetaan onko kyseinen päivä sama kuin Singletonissa olevan merkinnän
                 // jos on niin lisätään se records listaan
-                if (dates.get(i).equals(dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
+                if (dates.get(i).equals(this.dateFormat.format(Singleton.getInstance().getRecording().get(s).getDate()))) {
                         records.add(Singleton.getInstance().getRecording().get(s));
                 } else {
                     // Uusi tyhjä merkintä jolle asetetaan päivämääräksi edellisen merkinnän päivämäärä + 1
                     // ja lisätään merkintä records listaan
                     Record record = new Record();
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(records.get(records.size() - 1).getDate());
-                    calendar.add(Calendar.DATE, 1);
-                    record.setDate(calendar.getTime());
+                    this.calendar = Calendar.getInstance();
+                    this.calendar.setTime(records.get(records.size() - 1).getDate());
+                    this.calendar.add(Calendar.DATE, 1);
+                    record.setDate(this.calendar.getTime());
                     records.add(record);
                 }
             }
         }
         // Taulukkoon halututujen päivien määrä käydään läpi
-        for (int i = 0; i < dayCount; i++){
+        for (int i = 0; i < this.dayCount; i++){
             // Lisätään BarEntryjä jotka siis sisältävät X arvon ja y arvon
             morningAirflow.add(new BarEntry(i, 0));
             eveningAirflow.add(new BarEntry(i, 0));
@@ -187,7 +196,7 @@ public class ChartActivity extends AppCompatActivity {
             // Käydään kaikki merkinnät läpi ja vertaillaan viimeisempien merkintöjen päivämääriä uusimpien päivämäärien kanssa
             // jos päivämäärät ovat samat lisätään kyseisen päivämäärän merkinnän tiedot taulukkoon values muuttujalla
             for (int d  = 0; d < records.size(); d++){
-                if (dateFormat.format(records.get(d).getDate()).equals(dates.get((  (((int)dayCount - 1) - i))))) {
+                if (this.dateFormat.format(records.get(d).getDate()).equals(dates.get((dates.size() - 1) - i))) {
                     float [] values = {
                             records.get(d).getPeakNormalAirflow(),
                             records.get(d).getPeakMedicineAirflow(),
@@ -256,7 +265,7 @@ public class ChartActivity extends AppCompatActivity {
         // Pienin X akselin arvo minkä voi näyttää. Ei mennä negatiivisen puolelle
         barChart.getXAxis().setAxisMinimum(0);
         // Suurin X akselin arvo minkä voi näyttää. Näytetään vain valittujen päivämäärien suurinpaan arvoon asti
-        barChart.getXAxis().setAxisMaximum(dayCount);
+        barChart.getXAxis().setAxisMaximum(this.dayCount);
         // Zoom ja X,Y skaalaus
         // Formatoidaan X akseli päivämäärien mukaan
         barChart.getXAxis().setValueFormatter(new MyValueFormatter(dates));
