@@ -46,6 +46,7 @@ public class NewRecordActivity extends AppCompatActivity {
     private Date date;
     private Intent nextActivity;
     private Button buttonSave;
+    private Button buttonDel;
     private int index;
     private ArrayList<Record> records;
 
@@ -73,6 +74,7 @@ public class NewRecordActivity extends AppCompatActivity {
         rbEve = findViewById(R.id.radioButtonEve);
         rbExtra = findViewById(R.id.radioButtonOver);
         buttonSave = findViewById(R.id.buttonSave);
+        buttonDel = findViewById(R.id.buttonDel);
 
         firstNumberNormal = findViewById(R.id.editTextFirstNumberNormal);
         secondNumberNormal = findViewById(R.id.editTextSecondNumberNormal);
@@ -94,6 +96,7 @@ public class NewRecordActivity extends AppCompatActivity {
         if (index < 0) {
             //Date date = calendar.getTime();
             date = record.getDate();
+            buttonDel.setVisibility(View.INVISIBLE);
             dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
             switch (record.getType()) {
                 case Record.AM:
@@ -204,6 +207,12 @@ public class NewRecordActivity extends AppCompatActivity {
         public void afterTextChanged(Editable s) {
         }
     };
+
+    /**
+     * Kun poistanappulaa painetaan, poistetaan valittuna oleva merkintä.
+     * Vaihdetaan aktiviteettiä takaisin vanhoihin merkintöihin.
+     * @param view Poista nappulan view.
+     */
     public void deleteButtonClicked(View view) {
         Singleton.getInstance().getRecording().remove(index);
         Singleton.getInstance().saveData(this);
