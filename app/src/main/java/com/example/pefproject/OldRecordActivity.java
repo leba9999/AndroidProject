@@ -40,8 +40,9 @@ public class OldRecordActivity extends AppCompatActivity {
     private Date endDay;
     private Calendar calendar;
     /**
-     * Kutsutaan kun aktiviteetti luodaan.
-     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen.
+     * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot.
+     * Asetetaan setOnClickListener funktiot TextView:ille ja setOnDateSetListener DatePickerDialog:ille.
+     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,16 +110,11 @@ public class OldRecordActivity extends AppCompatActivity {
 
         dates.add(dateFormat.format(startDay));
         for (int i = 1; i < dayCount; i++){
-
             calendar.add(Calendar.DATE, 1);
-
             if (!dates.contains(dateFormat.format(calendar.getTime()))) {
                 dates.add(dateFormat.format(calendar.getTime()));
             }
         }
-
-
-        //Calendar calendar = Calendar.getInstance();
 
         for (int i = 0; i < dayCount; i++) {
             for (int j = 0; j < records.size(); j++) {
@@ -151,7 +147,6 @@ public class OldRecordActivity extends AppCompatActivity {
                 }
             }
             startActivity(nextActivity);
-
         });
     }
 

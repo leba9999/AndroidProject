@@ -35,7 +35,8 @@ public class ChartActivity extends AppCompatActivity {
     private Calendar calendar;
 
     /**
-     * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot
+     * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot.
+     * Asetetaan setOnClickListener funktiot TextView:ille ja setOnDateSetListener DatePickerDialog:ille.
      * @param savedInstanceState sisältää aktiviteetin tallennetun instancen
      */
     @Override
@@ -176,7 +177,6 @@ public class ChartActivity extends AppCompatActivity {
             // Käydään kaikki merkinnät läpi ja vertaillaan viimeisempien merkintöjen päivämääriä uusimpien päivämäärien kanssa
             // jos päivämäärät ovat samat lisätään kyseisen päivämäärän merkinnän tiedot taulukkoon values muuttujalla
             for (int d  = 0; d < records.size(); d++){
-                //Log.i("APP_PEF", "datesSize: " + dates.size() + " dayCount:" + dayCount+ " tempCount:" + tempCount+ " i:" + i + " KOKO:" + (((int)dayCount - 1) - i));
                 if (dateFormat.format(records.get(d).getDate()).equals(dates.get((  (((int)dayCount - 1) - i))))) {
                     float [] values = {
                             records.get(d).getPeakNormalAirflow(),

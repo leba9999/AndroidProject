@@ -48,9 +48,12 @@ public class NewRecordActivity extends AppCompatActivity {
     private Button buttonSave;
     private int index;
     private ArrayList<Record> records;
+
     /**
-     * Kutsutaan kun aktiviteetti luodaan.
-     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen.
+     * Kutsutaan kun aktiviteetti luodaan. Asetetaan kaikille luokan muuttujille arvot.
+     * Asetetaan setOnClickListener funktiot TextView:ille ja setOnDateSetListener DatePickerDialog:ille.
+     * Jos aktiviteetti on kutsuttu oldRecordActivityn kautta haetaan intentin avulla tietyn merkinnän arvot ja asetetaan ne paikoilleen
+     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,11 +150,16 @@ public class NewRecordActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Ylikirjoitetaan aktiviteetin onOptionsItemSelected omalla funktiolla, jotta voidaan palata joko aktiviteetin parent aktiviteettiin tai haluttuun aktiviteettiin  (OldRecordActivity)
+     * https://developer.android.com/reference/android/app/Activity#onOptionsItemSelected(android.view.MenuItem)
+     * @param item MenuItem: Valikon kohta joka valittiin. Arvo ei voi olla null.
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Log.i("dsd", "ascasdasdasfasfaf");
                 if (index < 0) {
                     NavUtils.navigateUpFromSameTask(this);
                 } else {
@@ -227,8 +235,8 @@ public class NewRecordActivity extends AppCompatActivity {
     }
 
     /**
-     * Asettaa listan tyypin riippuen mikä radiobutton on painettuna. (Aamu/ilta/ylimääräinen).
-     * Lisää oikeaan listaan luvut jotka ovat syötetty puhallusarvo paikoille. (Normal ja Med editTextViewit).
+     * Asettaa Merkinnän tyypin riippuen mikä radiobutton on painettuna. (Aamu/ilta/ylimääräinen).
+     * Lisää uuden tai vaihtaa muokatun Merkinnän, jonka arvot on syötetty puhallusarvojen paikoille. (Normal ja Med editTextViewit).
      */
     public void saveRecords() {
 

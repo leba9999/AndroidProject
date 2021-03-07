@@ -51,20 +51,6 @@ public class MainActivity extends AppCompatActivity {
         Singleton.getInstance().loadData(this);
 
         calendar = Calendar.getInstance();
-        for (int i = 0; i < 30; i++){
-            calendar.add(Calendar.DATE, -1);
-            Record record = new Record();
-            record.setDate(calendar.getTime());
-            record.addNormalAirflow(200 + 10 * i);
-            record.addNormalAirflow(200 + 10 * i);
-            record.addNormalAirflow(200 + 10 * i);
-            record.addMedicineAirflow(300 + 10 * i);
-            record.addMedicineAirflow(300 + 10 * i);
-            record.addMedicineAirflow(300 + 10 * i);
-            Singleton.getInstance().addRecord(record);
-        }
-
-        calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         dateFormat = new SimpleDateFormat(Singleton.getInstance().getDateFormat(), Locale.getDefault());
 
@@ -86,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Lataa päivän huippu arvot näkyviin MainActivityssä
+     * Lataa päivän huippu arvot Singletonissta näkyviin MainActivityn TextView laatikoihin
      */
     private void loadDayRecord(){
         ArrayList<Record> records = Singleton.getInstance().getRecording();
@@ -114,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Asettaa taulukolle viikon puhallusten huippu arvot ja värit
+     * Asettaa taulukko näkymään palkki taulukon joka sisältää viikon merkintöjen huippu arvot.
+     * Lisää tyhjiä merkintöjä väliin jos Singletonista löydetyt merkinnät eivät täytä kaikkia päivämääriä/kohtia
+     * Asettaa aamu-,ilta- ja ylimääräisille merkinnöille värit
      */
     private void setUpChart(){
         // Haetaan barChartView barChartille
