@@ -169,9 +169,9 @@ public class NewRecordActivity extends AppCompatActivity {
     }
 
     /**
-     * TextWatcher metodi seuraa onko puhallusarvo paikoille kirjoitettu merkkejä. (Normal ja Med editTextViewit).
-     * Mikäli yksikin paikka on tyhjänä, tallentaminen ei onnistu.
-     * Kun kaikki paikat ovat täytetty vähintään yhdellä merkillä, tallennus nappula muuttuu enable muotoon ja tallennus nappulaa voi painaa.
+     * TextWatcher metodi seuraa onko puhallusarvo kentille kirjoitettu merkkejä. (Normal ja Med editTextViewit).
+     * Mikäli yksikin kenttä on tyhjänä, tallentaminen ei onnistu.
+     * Kun kaikki kentät ovat täytetty vähintään yhdellä merkillä, tallennus nappula muuttuu enable muotoon ja tallennus nappulaa voi painaa.
      */
     private TextWatcher saveTextWatcher = new TextWatcher() {
         @Override
@@ -180,6 +180,7 @@ public class NewRecordActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            //Alustetaan muuttujat datalla joka haetaan tekstikentistä.
             String firstNormalInput = firstNumberNormal.getText().toString();
             String secondNormalInput = secondNumberNormal.getText().toString();
             String thirdNormalInput = thirdNumberNormal.getText().toString();
@@ -187,6 +188,7 @@ public class NewRecordActivity extends AppCompatActivity {
             String secondMedInput = secondNumberMed.getText().toString();
             String thirdMedInput = thirdNumberMed.getText().toString();
 
+            //Asetetaan Tallennusnappula enable muotoon jos jokaisessa puhallusarvo kentässä on vähintään yksi merkki.
             buttonSave.setEnabled(!firstNormalInput.isEmpty() && !secondNormalInput.isEmpty() &&
                     !thirdNormalInput.isEmpty() && !firstMedInput.isEmpty() &&
                     !secondMedInput.isEmpty() && !thirdMedInput.isEmpty());
@@ -208,6 +210,7 @@ public class NewRecordActivity extends AppCompatActivity {
         Singleton.getInstance().saveData(this);
         index = getIntent().getIntExtra(OldRecordActivity.EXTRA, -1);
 
+        //Jos indeksi on -1 (Määräytyy sen mukaan mistä aktiviteetistä ollaan siirrytty) siirrytään MainActivityyn.
         if (index < 0) {
             nextActivity = new Intent(this, MainActivity.class);
 
@@ -216,6 +219,7 @@ public class NewRecordActivity extends AppCompatActivity {
             nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             nextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             //nextActivity.putExtra(OldRecordActivity.EXTRA, -1);
+        //Muuten siirrytään OldRecordActivityyn.
         } else {
             nextActivity = new Intent(this, OldRecordActivity.class);
             //nextActivity.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -228,7 +232,7 @@ public class NewRecordActivity extends AppCompatActivity {
 
     /**
      * Asettaa listan tyypin riippuen mikä radiobutton on painettuna. (Aamu/ilta/ylimääräinen).
-     * Lisää oikeaan listaan luvut jotka ovat syötetty puhallusarvo paikoille. (Normal ja Med editTextViewit).
+     * Lisää oikeaan listaan luvut jotka ovat syötetty puhallusarvo kentille. (Normal ja Med editTextViewit).
      */
     public void saveRecords() {
 
