@@ -18,6 +18,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Luokka hallitsee Vanha Merkintä aktiviteettiä. (OldRecordActivity).
+ * @author Peetu Salonen
+ * @version 0.01 07.03.2021
+ */
 public class OldRecordActivity extends AppCompatActivity {
 
     public static final String EXTRA = "OldRecords";
@@ -34,7 +39,10 @@ public class OldRecordActivity extends AppCompatActivity {
     private Date startDay;
     private Date endDay;
     private Calendar calendar;
-
+    /**
+     * Kutsutaan kun aktiviteetti luodaan.
+     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +92,12 @@ public class OldRecordActivity extends AppCompatActivity {
             updateUI();
         });
     }
+
+    /**
+     * Hakee merkintöjen listan.
+     * Asettaa Layouttiin haetun listan sekä oikean päivämäärän.
+     * Aloittaa NewRecord aktiviteetin ja tuo valitun päivän datan muokkaamista varten.
+     */
     public void updateUI() {
         ListView listView = findViewById(R.id.listViewDates);
 
@@ -141,7 +155,10 @@ public class OldRecordActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Lataa sharedPreferenseistä Record classin ArrayListin.
+     * Suorittaa metodin updateUI().
+     */
     @Override
     protected void onResume() {
         Singleton.getInstance().loadData(this);
@@ -149,6 +166,9 @@ public class OldRecordActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    /**
+     * Tallentaa sharedPreferenseihin ArrayListin joka sisältää Record classin.
+     */
     @Override
     protected void onPause() {
         Singleton.getInstance().saveData(this);

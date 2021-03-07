@@ -25,9 +25,9 @@ import java.util.Locale;
 
 
 /**
- * Luokka hallitsee Uusi merkintä aktiviteettiä.
+ * Luokka hallitsee Uusi merkintä aktiviteettiä. (NewRecordActivity).
  * @author Janne Lähteenmäki
- * @version 0.01 5.3.2021
+ * @version 0.01 05.03.2021
  */
 public class NewRecordActivity extends AppCompatActivity {
 
@@ -48,7 +48,10 @@ public class NewRecordActivity extends AppCompatActivity {
     private Button buttonSave;
     private int index;
     private ArrayList<Record> records;
-
+    /**
+     * Kutsutaan kun aktiviteetti luodaan.
+     * @param savedInstanceState sisältää aktiviteetin tallennetun instancen.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +146,7 @@ public class NewRecordActivity extends AppCompatActivity {
             dateTextView.setText(getString(R.string.textViewDate) + ": " + dateFormat.format(date));
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -196,7 +200,7 @@ public class NewRecordActivity extends AppCompatActivity {
     /**
      * Kun tallennusnappulaa painetaan suoritetaan metodi saveRecords.
      * Tallennetaan saadut tiedot sharedpreferenceihin.
-     * Vaihdetaan activityä activityyn, josta on siirrytty nykyiseen NewRecordActivityyn.
+     * Vaihdetaan aktiviteetistä toiseen aktiviteettiin, josta on siirrytty nykyiseen NewRecordActivityyn.
      * @param view Tallenna nappulan view.
      */
     public void onSaveButtonClicked(View view) {
