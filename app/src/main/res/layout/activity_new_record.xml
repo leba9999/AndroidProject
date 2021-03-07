@@ -9,23 +9,25 @@
 
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="380dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="6dp"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/myrect"
         android:enabled="false"
         android:onClick="onSaveButtonClicked"
         android:text="@string/tallennaButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewDate"
-        android:layout_width="360dp"
+        android:layout_width="0dp"
         android:layout_height="33dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/myrect"
@@ -33,144 +35,170 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextComment"
-        android:layout_width="380dp"
+        android:layout_width="0dp"
         android:layout_height="148dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="68dp"
         android:background="@drawable/myrect"
         android:ems="10"
         android:gravity="top"
         android:hint="@string/textViewComment"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewMedles"
-        android:layout_width="152dp"
+        android:layout_width="0dp"
         android:layout_height="189dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/myrect"
         android:gravity="center_horizontal"
         android:text="@string/textViewMedles"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextComment"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTime" />
 
     <EditText
         android:id="@+id/editTextThirdNumberNormal"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="14dp"
         android:ems="10"
         android:hint="@string/editTextThirdNumberNormal"
         android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/textViewMedles"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMedles"
+        app:layout_constraintStart_toStartOf="@+id/textViewMedles"
         app:layout_constraintTop_toBottomOf="@+id/editTextSecondNumberNormal" />
 
     <EditText
         android:id="@+id/editTextFirstNumberNormal"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="14dp"
         android:ems="10"
         android:hint="@string/editTextFirstNumberNormal"
         android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberNormal"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMedles"
+        app:layout_constraintStart_toStartOf="@+id/textViewMedles"
         app:layout_constraintTop_toBottomOf="@+id/textViewMedles" />
 
     <EditText
         android:id="@+id/editTextSecondNumberNormal"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="14dp"
         android:ems="10"
         android:hint="@string/editTextSecondNumberNormal"
         android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextThirdNumberNormal"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMedles"
+        app:layout_constraintStart_toStartOf="@+id/textViewMedles"
         app:layout_constraintTop_toBottomOf="@+id/editTextFirstNumberNormal" />
 
     <TextView
         android:id="@+id/textViewMed"
-        android:layout_width="152dp"
+        android:layout_width="0dp"
         android:layout_height="189dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/myrect"
         android:gravity="center_horizontal"
         android:text="@string/textViewMed"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/editTextComment"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextFirstNumberMed"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:ems="10"
-        android:hint="@string/editTextFirstNumberMed"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:maxLength="3"
-        app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberMed"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMed" />
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupTime"
+        app:layout_constraintVertical_bias="0.502" />
 
     <EditText
         android:id="@+id/editTextSecondNumberMed"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/editTextSecondNumberMed"
         android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/editTextThirdNumberMed"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMed"
+        app:layout_constraintStart_toStartOf="@+id/textViewMed"
         app:layout_constraintTop_toBottomOf="@+id/editTextFirstNumberMed" />
 
     <EditText
-        android:id="@+id/editTextThirdNumberMed"
-        android:layout_width="130dp"
+        android:id="@+id/editTextFirstNumberMed"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/editTextFirstNumberMed"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:maxLength="3"
+        app:layout_constraintBottom_toTopOf="@+id/editTextSecondNumberMed"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMed"
+        app:layout_constraintStart_toStartOf="@+id/textViewMed"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMed" />
+
+    <EditText
+        android:id="@+id/editTextThirdNumberMed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/editTextThirdNumberMed"
         android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/textViewMed"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewMed"
+        app:layout_constraintStart_toStartOf="@+id/textViewMed"
         app:layout_constraintTop_toBottomOf="@+id/editTextSecondNumberMed" />
 
     <RadioGroup
         android:id="@+id/radioGroupTime"
-        android:layout_width="360dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/myrect"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDate">
 
@@ -194,5 +222,13 @@
             android:text="@string/radioButtonOver" />
 
     </RadioGroup>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

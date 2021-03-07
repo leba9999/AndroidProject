@@ -160,6 +160,7 @@ public class NewRecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Log.i("dsd", "ascasdasdasfasfaf");
                 if (index < 0) {
                     NavUtils.navigateUpFromSameTask(this);
                 } else {
@@ -177,9 +178,9 @@ public class NewRecordActivity extends AppCompatActivity {
     }
 
     /**
-     * TextWatcher metodi seuraa onko puhallusarvo paikoille kirjoitettu merkkejä. (Normal ja Med editTextViewit).
-     * Mikäli yksikin paikka on tyhjänä, tallentaminen ei onnistu.
-     * Kun kaikki paikat ovat täytetty vähintään yhdellä merkillä, tallennus nappula muuttuu enable muotoon ja tallennus nappulaa voi painaa.
+     * TextWatcher metodi seuraa onko puhallusarvo kentille kirjoitettu merkkejä. (Normal ja Med editTextViewit).
+     * Mikäli yksikin kenttä on tyhjänä, tallentaminen ei onnistu.
+     * Kun kaikki kentät ovat täytetty vähintään yhdellä merkillä, tallennus nappula muuttuu enable muotoon ja tallennus nappulaa voi painaa.
      */
     private TextWatcher saveTextWatcher = new TextWatcher() {
         @Override
