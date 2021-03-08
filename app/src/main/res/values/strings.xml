@@ -1,3 +1,8 @@
+<!--
+@author Leevi Koskinen
+@author Janne Lähteenmäki
+@author Peetu Salonen
+-->
 <resources>
     <string name="app_name">PATA</string>
     <string name="OldRecordButton">Vanha Merkintä</string>

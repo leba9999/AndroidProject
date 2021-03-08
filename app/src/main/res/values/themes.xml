@@ -1,3 +1,8 @@
+<!--
+@author Leevi Koskinen
+@author Janne Lähteenmäki
+@author Peetu Salonen
+-->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.PefProject" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
