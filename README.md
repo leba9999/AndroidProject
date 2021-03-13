@@ -20,3 +20,17 @@ PATA tarjoaa helpon käyttöliittymän merkintöjen luontiin, muokaamiseen ja tu
 <img src="Screenshots/Screenshot_1615155206.png" width="258" alt="Päävalikko" title="Päävalikko">
 <img src="Screenshots/Screenshot_1615155237.png" width="258" alt="Vanhat Merkinnät" title="Vanhat Merkinnät">
 <img src="Screenshots/Screenshot_1615155263.png" width="258" alt="Taulukko" title="Taulukko">
+
+## Tekijät:
+- Leevi Koskinen
+- Peetu Salonen
+- Janne Lähteenmäki
+
+Projekti on suoritettu osana [Metropolian](https://www.metropolia.fi) amk tutkintoa, 1.vuoden kursilla: Mobiilit terveyssovellukset.
+
+Sovelluksen kehitystyö ei enään jatku meidän osalta.
+<p>
+ <a href="https://www.metropolia.fi">
+<img src="https://www.metropolia.fi/themes/basic/images/metropolia.svg" width="258" alt="https://www.metropolia.fi" title="https://www.metropolia.fi">
+ </a>
+</p>
