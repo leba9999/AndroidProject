@@ -2,7 +2,7 @@
 
 ## PATA: Pef -mittauksen ApuTyökalu App
 
-PATA sovelluksella tuodaan Pef -mittausten kirjaaminen nykyaikaan. Voit sanoa hyvästit paperisille Pef -mittaus taulukoille ja toivottaa tervetuleeksi kätevän mobiilisovelluksen.
+PATA sovelluksella tuodaan [Pef -mittausten](https://www.allergia.fi/astma/astmatutkimukset/pef-taulukko-ja-pef-viitearvot/) kirjaaminen nykyaikaan. Voit sanoa hyvästit paperisille Pef -mittaus [taulukoille](https://www.allergia.fi/site/assets/files/1924/pef_taulukko_ja_ohje_aia.pdf) ja toivottaa tervetuleeksi kätevän mobiilisovelluksen.
 PATA tarjoaa helpon käyttöliittymän merkintöjen luontiin, muokaamiseen ja tutkimiseen taulukoiden muodossa.
 
 PATA tekee automaattisesti pieniä helpotuksia käyttäjälle. Uuden puhalluksen merkitsemisessä sovellus valitsee kellonajan mukaan onko kyseessä ilta vai aamu merkintä. Käyttäjällä on mahdollisuus vaihtaa niin merkinnän ajankohtaa kuin päivämäärää tarpeen vaatiessa. Taulukot täyttyvät automaattisesti kirjattujen puhallusten huippu arvoilla.
